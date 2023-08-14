@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_keep_clone/constants/color.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,11 +14,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
-      child: const Scaffold(
+      child: Scaffold(
         resizeToAvoidBottomInset: false,
-        drawer: Drawer(),
-        bottomNavigationBar: _BottomBar(),
-        body: Column(
+        drawer: const Drawer(),
+        bottomNavigationBar: const _BottomBar(),
+        floatingActionButton: _getFloatingButton(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+        body: const Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _Header(),
@@ -25,6 +28,15 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _getFloatingButton() {
+    return FloatingActionButton(
+      onPressed: () {},
+      shape: const CircleBorder(),
+      tooltip: 'Increment',
+      child: SvgPicture.asset('assets/images/google-plus-icon.svg', width: 30),
     );
   }
 }

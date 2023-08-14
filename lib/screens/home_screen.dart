@@ -16,6 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: const Scaffold(
         resizeToAvoidBottomInset: false,
         drawer: Drawer(),
+        bottomNavigationBar: _BottomBar(),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -98,6 +99,58 @@ class _ContentState extends State<_Content> {
           padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
           crossAxisCount: 2,
           children: List.generate(4, (index) => const Card())),
+    );
+  }
+}
+
+class _BottomBar extends StatelessWidget {
+  const _BottomBar();
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomAppBar(
+      height: 50,
+      shape: const CircularNotchedRectangle(),
+      padding: const EdgeInsets.all(0),
+      clipBehavior: Clip.antiAlias,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          IconButton(
+            tooltip: 'Open navigation menu',
+            icon: const Icon(
+              Icons.check_box_outlined,
+              color: CustomColors.actionsColor,
+            ),
+            onPressed: () {},
+          ),
+          IconButton(
+            tooltip: 'Search',
+            icon: const Icon(
+              Icons.brush,
+              color: CustomColors.actionsColor,
+            ),
+            onPressed: () {},
+          ),
+          IconButton(
+            tooltip: 'Favorite',
+            icon: const Icon(
+              Icons.mic_none,
+              color: CustomColors.actionsColor,
+            ),
+            onPressed: () {},
+          ),
+          IconButton(
+            tooltip: 'Favorite',
+            icon: const Icon(
+              Icons.image_outlined,
+              color: CustomColors.actionsColor,
+            ),
+            onPressed: () {},
+          )
+        ],
+      ),
     );
   }
 }

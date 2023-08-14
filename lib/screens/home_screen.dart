@@ -9,20 +9,18 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        key: _scaffoldKey,
+      child: const Scaffold(
         resizeToAvoidBottomInset: false,
-        drawer: const Drawer(),
-        body: const Column(
+        drawer: Drawer(),
+        body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _Header(),
+            _Content(),
           ],
         ),
       ),
@@ -81,5 +79,25 @@ class _Header extends StatelessWidget {
           Icons.view_agenda_outlined,
           color: CustomColors.actionsColor,
         ));
+  }
+}
+
+class _Content extends StatefulWidget {
+  const _Content({super.key});
+
+  @override
+  State<_Content> createState() => _ContentState();
+}
+
+class _ContentState extends State<_Content> {
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: GridView.count(
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
+          crossAxisCount: 2,
+          children: List.generate(4, (index) => const Card())),
+    );
   }
 }

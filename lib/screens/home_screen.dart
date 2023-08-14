@@ -18,15 +18,23 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         key: _scaffoldKey,
         resizeToAvoidBottomInset: false,
-        body: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
-          header(),
-        ]),
         drawer: const Drawer(),
+        body: const Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _Header(),
+          ],
+        ),
       ),
     );
   }
+}
 
-  Widget header() {
+class _Header extends StatelessWidget {
+  const _Header({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {},
       child: Container(

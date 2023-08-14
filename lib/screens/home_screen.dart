@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_keep_clone/constants/color.dart';
+import 'package:google_keep_clone/widgets/drawer_menu.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        drawer: const Drawer(),
+        drawer: const DrawerMenu(),
         bottomNavigationBar: const _BottomBar(),
         floatingActionButton: _getFloatingButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,

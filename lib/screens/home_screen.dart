@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../constants/color.dart';
+import '../models/Note.dart';
 import '../widgets/drawer_menu.dart';
+import '../widgets/note_item.dart';
 import '../widgets/user_menu.dart';
 import 'new_note_screen.dart';
 import 'search_note_screen.dart';
@@ -15,6 +17,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final List<Note> notes = [
+    Note(title: 'Selam', note: 'Test note', lastEditDate: DateTime.now()),
+    Note(title: 'Selam', note: 'Test note', lastEditDate: DateTime.now()),
+    Note(title: 'Selam', note: 'Test note', lastEditDate: DateTime.now()),
+    Note(title: 'Selam', note: 'Test note', lastEditDate: DateTime.now()),
+  ];
   int _gridCrossAxisCount = 2;
 
   @override
@@ -104,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
           crossAxisCount: _gridCrossAxisCount,
-          children: List.generate(4, (index) => const Card())),
+          children: List.generate(4, (index) => NoteItem(note: notes[index]))),
     );
   }
 

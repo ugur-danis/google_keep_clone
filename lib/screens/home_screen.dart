@@ -20,32 +20,15 @@ class _HomeScreenState extends State<HomeScreen> {
         bottomNavigationBar: const _BottomBar(),
         floatingActionButton: _getFloatingButton(),
         floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-        body: const Column(
+        body: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _Header(),
-            _Content(),
-          ],
+          children: [_getHeader(), _getContent()],
         ),
       ),
     );
   }
 
-  Widget _getFloatingButton() {
-    return FloatingActionButton(
-      onPressed: () {},
-      shape: const CircleBorder(),
-      tooltip: 'Increment',
-      child: SvgPicture.asset('assets/images/google-plus-icon.svg', width: 30),
-    );
-  }
-}
-
-class _Header extends StatelessWidget {
-  const _Header({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _getHeader() {
     return GestureDetector(
       onTap: () {},
       child: Container(
@@ -75,6 +58,17 @@ class _Header extends StatelessWidget {
     );
   }
 
+  IconButton switchViewButton() {
+    return IconButton(
+        onPressed: () {
+          setState(() {});
+        },
+        icon: const Icon(
+          Icons.view_agenda_outlined,
+          color: CustomColors.actionsColor,
+        ));
+  }
+
   Widget avatar() {
     return GestureDetector(
       onTap: () {},
@@ -85,32 +79,22 @@ class _Header extends StatelessWidget {
     );
   }
 
-  IconButton switchViewButton() {
-    return IconButton(
-        onPressed: () {},
-        icon: const Icon(
-          Icons.view_agenda_outlined,
-          color: CustomColors.actionsColor,
-        ));
-  }
-}
-
-class _Content extends StatefulWidget {
-  const _Content();
-
-  @override
-  State<_Content> createState() => _ContentState();
-}
-
-class _ContentState extends State<_Content> {
-  @override
-  Widget build(BuildContext context) {
+  Widget _getContent() {
     return Expanded(
       child: GridView.count(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
           crossAxisCount: 2,
           children: List.generate(4, (index) => const Card())),
+    );
+  }
+
+  Widget _getFloatingButton() {
+    return FloatingActionButton(
+      onPressed: () {},
+      shape: const CircleBorder(),
+      tooltip: 'Increment',
+      child: SvgPicture.asset('assets/images/google-plus-icon.svg', width: 30),
     );
   }
 }

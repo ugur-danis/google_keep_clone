@@ -4,6 +4,7 @@ import 'package:google_keep_clone/constants/color.dart';
 import 'package:google_keep_clone/widgets/drawer_menu.dart';
 
 import '../widgets/user_menu.dart';
+import 'search_note_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -35,7 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _getHeader() {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => const SearchNoteScreen()));
+      },
       child: Container(
         margin: const EdgeInsets.only(top: 10, bottom: 20, left: 20, right: 20),
         child: AppBar(

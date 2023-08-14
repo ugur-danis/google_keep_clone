@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_keep_clone/constants/color.dart';
-import 'package:google_keep_clone/widgets/drawer_menu.dart';
 
+import '../constants/color.dart';
+import '../widgets/drawer_menu.dart';
 import '../widgets/user_menu.dart';
+import 'new_note_screen.dart';
 import 'search_note_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -109,7 +110,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _getFloatingButton() {
     return FloatingActionButton(
-      onPressed: () {},
+      onPressed: () {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => const NewNote()));
+      },
       shape: const CircleBorder(),
       tooltip: 'Increment',
       child: SvgPicture.asset('assets/images/google-plus-icon.svg', width: 30),

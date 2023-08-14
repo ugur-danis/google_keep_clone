@@ -10,6 +10,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int _gridCrossAxisCount = 2;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -61,7 +63,9 @@ class _HomeScreenState extends State<HomeScreen> {
   IconButton switchViewButton() {
     return IconButton(
         onPressed: () {
-          setState(() {});
+          setState(() {
+            _gridCrossAxisCount = _gridCrossAxisCount == 2 ? 1 : 2;
+          });
         },
         icon: const Icon(
           Icons.view_agenda_outlined,
@@ -84,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: GridView.count(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
           padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
-          crossAxisCount: 2,
+          crossAxisCount: _gridCrossAxisCount,
           children: List.generate(4, (index) => const Card())),
     );
   }

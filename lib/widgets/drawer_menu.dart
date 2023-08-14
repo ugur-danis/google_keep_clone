@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../constants/color.dart';
+import 'settings_screen.dart';
 
 class DrawerMenu extends StatefulWidget {
   const DrawerMenu({super.key});
@@ -67,7 +68,10 @@ class _DrawerMenuState extends State<DrawerMenu> {
               selected: _selectedIndex == 5,
               title: const Text('Settings'),
               leading: const Icon(Icons.settings),
-              onTap: () => onItemTapped(5),
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const Settings()));
+              },
             ),
           ],
         ),

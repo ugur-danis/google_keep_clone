@@ -3,6 +3,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_keep_clone/constants/color.dart';
 import 'package:google_keep_clone/widgets/drawer_menu.dart';
 
+import '../widgets/user_menu.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -76,7 +78,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget avatar() {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return const UserMenu();
+          },
+        );
+      },
       child: const CircleAvatar(
         radius: 16,
         backgroundImage: AssetImage('assets/images/profile-img.png'),

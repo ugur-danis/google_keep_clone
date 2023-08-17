@@ -32,7 +32,10 @@ class _DrawerMenuState extends State<DrawerMenu> {
           children: [
             Container(
               margin: const EdgeInsets.only(bottom: 20),
-              child: const Text('Google Keep', style: TextStyle(fontSize: 24)),
+              child: Text(
+                'Google Keep',
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
             ),
             ListTile(
               selected: _selectedIndex == 0,

@@ -47,7 +47,7 @@ class _SearchNoteScreenState extends State<SearchNoteScreen> {
             child: Text(
               'Eşleşen not yok',
               style: TextStyle(
-                fontSize: 12,
+                fontSize: Theme.of(context).textTheme.bodySmall!.fontSize,
                 color: Theme.of(context).colorScheme.secondary,
               ),
             ),

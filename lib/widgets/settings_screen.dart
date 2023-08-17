@@ -8,7 +8,7 @@ class Settings extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text('Ayarlar', style: TextStyle(fontSize: 18)),
+        title: Text('Ayarlar', style: Theme.of(context).textTheme.titleMedium),
       ),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -16,8 +16,10 @@ class Settings extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Görüntüleme seçenekleri',
-                  style: TextStyle(fontSize: 20)),
+              Text(
+                'Görüntüleme seçenekleri',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
               const SizedBox(height: 15),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -66,8 +68,10 @@ class Settings extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 35),
-              const Text('Hatırlatıcı varsayılanları',
-                  style: TextStyle(fontSize: 20)),
+              Text(
+                'Hatırlatıcı varsayılanları',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
               const SizedBox(height: 15),
               const Padding(
                 padding: EdgeInsets.only(bottom: 30),
@@ -99,7 +103,10 @@ class Settings extends StatelessWidget {
                   ],
                 ),
               ),
-              const Text('Paylaşım', style: TextStyle(fontSize: 20)),
+              Text(
+                'Paylaşım',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

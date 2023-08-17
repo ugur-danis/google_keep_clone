@@ -43,20 +43,22 @@ class UserMenu extends StatelessWidget {
           children: [
             TextButton(
               onPressed: () {},
-              child: const Text(
+              child: Text(
                 'Gizlilik Politikası',
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: Theme.of(context).textTheme.bodySmall!.fontSize,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
             ),
             const Icon(Icons.circle, size: 4),
             TextButton(
               onPressed: () {},
-              child: const Text(
-                'Gizlilik Politikası',
+              child: Text(
+                'Hizmet Şartları',
                 style: TextStyle(
-                  fontSize: 10,
+                  fontSize: Theme.of(context).textTheme.bodySmall!.fontSize,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
             )
@@ -192,14 +194,14 @@ class UserMenu extends StatelessWidget {
       ),
       centerTitle: true,
       backgroundColor: Colors.transparent,
-      title: const Padding(
-        padding: EdgeInsets.only(top: 10),
+      title: Padding(
+        padding: const EdgeInsets.only(top: 10),
         child: Text(
           'Google',
-          style: TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.w500,
-          ),
+          style: Theme.of(context)
+              .textTheme
+              .headlineSmall!
+              .copyWith(fontWeight: FontWeight.w500),
         ),
       ),
       leading: IconButton(

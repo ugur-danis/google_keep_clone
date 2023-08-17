@@ -34,11 +34,14 @@ class NewNote extends StatelessWidget {
               onPressed: () {},
               icon: const Icon(Icons.color_lens_outlined),
             ),
-            const Expanded(
+            Expanded(
               child: Text(
                 'Düzenlenme saati: 15:06',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 10),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall!
+                    .copyWith(fontSize: 10),
               ),
             ),
             const SizedBox(width: 48),
@@ -48,22 +51,22 @@ class NewNote extends StatelessWidget {
             ),
           ],
         ),
-        body: const Padding(
-          padding: EdgeInsets.all(20),
+        body: Padding(
+          padding: const EdgeInsets.all(20),
           child: Column(
             children: [
               Expanded(
                 child: TextField(
-                  style: TextStyle(fontSize: 20),
+                  style: Theme.of(context).textTheme.titleLarge!,
                   expands: true,
                   maxLines: null,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Başlık',
                     border: InputBorder.none,
                   ),
                 ),
               ),
-              Expanded(
+              const Expanded(
                 flex: 10,
                 child: TextField(
                   expands: true,

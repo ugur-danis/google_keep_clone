@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_keep_clone/constants/color.dart';
 
 class Settings extends StatelessWidget {
   const Settings({Key? key}) : super(key: key);
@@ -8,7 +7,7 @@ class Settings extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: CustomColors.backgroundColor,
+        backgroundColor: Colors.transparent,
         title: const Text('Ayarlar', style: TextStyle(fontSize: 18)),
       ),
       body: ListView(

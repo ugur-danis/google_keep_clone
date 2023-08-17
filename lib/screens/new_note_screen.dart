@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_keep_clone/constants/color.dart';
 
 class NewNote extends StatelessWidget {
   const NewNote({Key? key}) : super(key: key);
@@ -8,28 +7,19 @@ class NewNote extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+          backgroundColor: Colors.transparent,
           actions: [
             IconButton(
               onPressed: () {},
-              icon: const Icon(
-                Icons.push_pin_outlined,
-                color: CustomColors.actionsColor,
-              ),
+              icon: const Icon(Icons.push_pin_outlined),
             ),
             IconButton(
               onPressed: () {},
-              icon: const Icon(
-                Icons.notification_add_outlined,
-                color: CustomColors.actionsColor,
-              ),
+              icon: const Icon(Icons.notification_add_outlined),
             ),
             IconButton(
               onPressed: () {},
-              icon: const Icon(
-                Icons.archive_outlined,
-                color: CustomColors.actionsColor,
-              ),
+              icon: const Icon(Icons.archive_outlined),
             ),
           ],
         ),
@@ -38,35 +28,23 @@ class NewNote extends StatelessWidget {
           children: [
             IconButton(
               onPressed: () {},
-              icon: const Icon(
-                Icons.add_box_outlined,
-                color: CustomColors.actionsColor,
-              ),
+              icon: const Icon(Icons.add_box_outlined),
             ),
             IconButton(
               onPressed: () {},
-              icon: const Icon(
-                Icons.color_lens_outlined,
-                color: CustomColors.actionsColor,
-              ),
+              icon: const Icon(Icons.color_lens_outlined),
             ),
             const Expanded(
               child: Text(
                 'Düzenlenme saati: 15:06',
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 10,
-                  color: CustomColors.actionsColor,
-                ),
+                style: TextStyle(fontSize: 10),
               ),
             ),
             const SizedBox(width: 48),
             IconButton(
               onPressed: () {},
-              icon: const Icon(
-                Icons.more_vert,
-                color: CustomColors.actionsColor,
-              ),
+              icon: const Icon(Icons.more_vert),
             ),
           ],
         ),

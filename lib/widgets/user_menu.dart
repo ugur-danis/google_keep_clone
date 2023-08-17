@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_keep_clone/constants/color.dart';
 
 class UserMenu extends StatelessWidget {
   const UserMenu({super.key});
@@ -20,7 +19,6 @@ class UserMenu extends StatelessWidget {
         ),
       ),
       elevation: 0,
-      backgroundColor: CustomColors.userMenuContainerBg,
       titlePadding: const EdgeInsets.all(0),
       title: dialogTitle(context),
       children: <Widget>[
@@ -29,15 +27,12 @@ class UserMenu extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(18),
-            color: CustomColors.userMenuContentBg,
+            color: Theme.of(context).scaffoldBackgroundColor.withAlpha(180),
           ),
           child: Column(
             children: [
-              userMenuTop(),
-              const Divider(
-                color: Colors.white38,
-                thickness: 1,
-              ),
+              userMenuTop(context),
+              const Divider(),
               userMenuBottom(context),
             ],
           ),
@@ -82,21 +77,15 @@ class UserMenu extends StatelessWidget {
           child: TextButton.icon(
             style: const ButtonStyle(
               alignment: Alignment.centerLeft,
-              foregroundColor: MaterialStatePropertyAll(
-                CustomColors.secondaryTextColor,
-              ),
             ),
-            label: const Text(
+            label: Text(
               'Başka bir hesap ekle',
-              style: TextStyle(
-                fontSize: 12,
-              ),
+              style: Theme.of(context).textTheme.labelSmall,
             ),
             onPressed: () {},
             icon: const Icon(
               Icons.person_add_alt,
               size: 20,
-              color: CustomColors.secondaryTextColor,
             ),
           ),
         ),
@@ -105,21 +94,15 @@ class UserMenu extends StatelessWidget {
           child: TextButton.icon(
             style: const ButtonStyle(
               alignment: Alignment.centerLeft,
-              foregroundColor: MaterialStatePropertyAll(
-                CustomColors.secondaryTextColor,
-              ),
             ),
-            label: const Text(
+            label: Text(
               'Bu cihazdaki hesapları yönet',
-              style: TextStyle(
-                fontSize: 12,
-              ),
+              style: Theme.of(context).textTheme.labelSmall,
             ),
             onPressed: () {},
             icon: const Icon(
               Icons.manage_accounts_outlined,
               size: 20,
-              color: CustomColors.secondaryTextColor,
             ),
           ),
         )
@@ -127,7 +110,7 @@ class UserMenu extends StatelessWidget {
     );
   }
 
-  Widget userMenuTop() {
+  Widget userMenuTop(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(14),
       child: Column(
@@ -136,21 +119,20 @@ class UserMenu extends StatelessWidget {
           Row(
             children: [
               userMenuAvatar(),
-              const Padding(
-                padding: EdgeInsets.only(left: 10),
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Uğur Danış',
-                        style: TextStyle(
-                          fontSize: 12,
-                        )),
+                    Text(
+                      'Uğur Danış',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
                     Text(
                       'ugur946658@gmail.com',
-                      style: TextStyle(
-                        fontSize: 10,
-                        color: CustomColors.actionsColor,
-                      ),
+                      style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
                     ),
                   ],
                 ),
@@ -209,7 +191,7 @@ class UserMenu extends StatelessWidget {
         ),
       ),
       centerTitle: true,
-      backgroundColor: CustomColors.userMenuContainerBg,
+      backgroundColor: Colors.transparent,
       title: const Padding(
         padding: EdgeInsets.only(top: 10),
         child: Text(

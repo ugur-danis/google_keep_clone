@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../constants/color.dart';
 import '../models/Note.dart';
 import '../widgets/drawer_menu.dart';
 import '../widgets/note_item.dart';
@@ -55,12 +54,14 @@ class _HomeScreenState extends State<HomeScreen> {
           primary: true,
           scrolledUnderElevation: 0,
           toolbarHeight: 50,
-          backgroundColor: CustomColors.appBarBg,
           shape: const StadiumBorder(),
           titleSpacing: 0,
-          title: const Text(
+          title: Text(
             'Notlarınızda arayın',
-            style: TextStyle(color: CustomColors.actionsColor, fontSize: 14),
+            style: Theme.of(context)
+                .textTheme
+                .bodySmall!
+                .copyWith(color: Theme.of(context).colorScheme.secondary),
           ),
           actions: [
             switchViewButton(),
@@ -80,10 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
             _gridCrossAxisCount = _gridCrossAxisCount == 2 ? 1 : 2;
           });
         },
-        icon: const Icon(
-          Icons.view_agenda_outlined,
-          color: CustomColors.actionsColor,
-        ));
+        icon: const Icon(Icons.view_agenda_outlined));
   }
 
   Widget avatar() {
@@ -142,34 +140,22 @@ class _BottomBar extends StatelessWidget {
         children: <Widget>[
           IconButton(
             tooltip: 'Open navigation menu',
-            icon: const Icon(
-              Icons.check_box_outlined,
-              color: CustomColors.actionsColor,
-            ),
+            icon: const Icon(Icons.check_box_outlined),
             onPressed: () {},
           ),
           IconButton(
             tooltip: 'Search',
-            icon: const Icon(
-              Icons.brush,
-              color: CustomColors.actionsColor,
-            ),
+            icon: const Icon(Icons.brush),
             onPressed: () {},
           ),
           IconButton(
             tooltip: 'Favorite',
-            icon: const Icon(
-              Icons.mic_none,
-              color: CustomColors.actionsColor,
-            ),
+            icon: const Icon(Icons.mic_none),
             onPressed: () {},
           ),
           IconButton(
             tooltip: 'Favorite',
-            icon: const Icon(
-              Icons.image_outlined,
-              color: CustomColors.actionsColor,
-            ),
+            icon: const Icon(Icons.image_outlined),
             onPressed: () {},
           )
         ],

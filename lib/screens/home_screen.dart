@@ -54,9 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: AppBar(
           primary: true,
           scrolledUnderElevation: 0,
-          elevation: 0,
           toolbarHeight: 50,
-          backgroundColor: CustomColors.bottomAppBarBg,
+          backgroundColor: CustomColors.appBarBg,
           shape: const StadiumBorder(),
           titleSpacing: 0,
           title: const Text(

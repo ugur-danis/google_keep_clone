@@ -57,9 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
           elevation: 0,
           toolbarHeight: 50,
           backgroundColor: CustomColors.bottomAppBarBg,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(30)),
-          ),
+          shape: const StadiumBorder(),
           titleSpacing: 0,
           title: const Text(
             'Notlarınızda arayın',

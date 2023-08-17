@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
       trackColor: MaterialStatePropertyAll(Colors.blue.shade100),
       thumbColor: MaterialStatePropertyAll(Colors.blue.shade900),
     ),
+    scaffoldBackgroundColor: CustomColors.backgroundColor,
   );
 
   @override

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import '../models/Note.dart';
 
 class NewNote extends StatelessWidget {
   const NewNote({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final note = ModalRoute.of(context)!.settings.arguments as Note;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -54,6 +57,7 @@ class NewNote extends StatelessWidget {
         child: Column(
           children: [
             TextField(
+              controller: TextEditingController(text: note.title),
               style: Theme.of(context).textTheme.titleLarge!,
               maxLines: null,
               decoration: const InputDecoration(
@@ -61,9 +65,10 @@ class NewNote extends StatelessWidget {
                 border: InputBorder.none,
               ),
             ),
-            const TextField(
+            TextField(
+              controller: TextEditingController(text: note.note),
               maxLines: null,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Not',
                 border: InputBorder.none,
               ),

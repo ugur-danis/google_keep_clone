@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_keep_clone/screens/new_note_screen.dart';
 
 import '../models/Note.dart';
 
@@ -25,21 +26,32 @@ class _NoteItemState extends State<NoteItem> {
         ),
         borderRadius: const BorderRadius.all(Radius.circular(12)),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Text(widget.note.title),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Text(widget.note.note,
-                  maxLines: 6, overflow: TextOverflow.ellipsis),
+      child: InkWell(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const NewNote(),
+                  settings: RouteSettings(
+                    arguments: widget.note,
+                  )));
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Text(widget.note.title),
             ),
-          )
-        ],
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Text(widget.note.note,
+                    maxLines: 6, overflow: TextOverflow.ellipsis),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

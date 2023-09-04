@@ -139,22 +139,22 @@ class _BottomBar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           IconButton(
-            tooltip: 'Open navigation menu',
+            tooltip: 'New list',
             icon: const Icon(Icons.check_box_outlined),
             onPressed: () {},
           ),
           IconButton(
-            tooltip: 'Search',
+            tooltip: 'New draw note',
             icon: const Icon(Icons.brush),
             onPressed: () {},
           ),
           IconButton(
-            tooltip: 'Favorite',
+            tooltip: 'New voice note',
             icon: const Icon(Icons.mic_none),
             onPressed: () {},
           ),
           IconButton(
-            tooltip: 'Favorite',
+            tooltip: 'New image note',
             icon: const Icon(Icons.image_outlined),
             onPressed: () {},
           )

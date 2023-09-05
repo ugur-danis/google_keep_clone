@@ -31,10 +31,7 @@ class _NoteItemState extends State<NoteItem> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => const NewNote(),
-                  settings: RouteSettings(
-                    arguments: widget.note,
-                  )));
+                  builder: (context) => NewNote(noteId: widget.note.id)));
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

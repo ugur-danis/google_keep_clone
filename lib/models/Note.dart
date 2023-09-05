@@ -1,13 +1,17 @@
 // ignore_for_file: file_names
+import 'package:uuid/uuid.dart';
 
 class Note {
-  final String title;
-  final String note;
-  final DateTime lastEditDate;
+  late final String id;
+  String title;
+  String note;
+  DateTime lastEditDate;
 
   Note({
-    required this.title,
-    required this.note,
+    this.title = '',
+    this.note = '',
     required this.lastEditDate,
-  });
+  }) {
+    id = const Uuid().v4();
+  }
 }

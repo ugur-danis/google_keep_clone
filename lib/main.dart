@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_keep_clone/providers/note_provider.dart';
 import 'package:google_keep_clone/screens/home_screen.dart';
+import 'package:provider/provider.dart';
 
 import 'constants/color.dart';
 
@@ -51,11 +53,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Google Keep Clone',
-      theme: theme,
-      home: const SafeArea(
-        child: HomeScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => NoteProvider()),
+      ],
+      child: MaterialApp(
+        title: 'Google Keep Clone',
+        theme: theme,
+        home: const SafeArea(
+          child: HomeScreen(),
+        ),
       ),
     );
   }

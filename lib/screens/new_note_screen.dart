@@ -1,13 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:google_keep_clone/providers/note_provider.dart';
+import 'package:provider/provider.dart';
 import '../models/Note.dart';
 
-class NewNote extends StatelessWidget {
-  const NewNote({Key? key}) : super(key: key);
+class NewNote extends StatefulWidget {
+  NewNote({Key? key, this.noteId = ''}) : super(key: key) {
+    isNewNote = noteId.isEmpty;
+  }
+
+  final String noteId;
+  late final bool isNewNote;
+
+  @override
+  State<NewNote> createState() => _NewNoteState();
+}
+
+class _NewNoteState extends State<NewNote> {
+  late final Note _note;
+  final TextEditingController _titleEditingController = TextEditingController();
+  final TextEditingController _noteEditingController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (widget.isNewNote) {
+      _note = Note(lastEditDate: DateTime.now());
+      Future.delayed(const Duration(seconds: 1), () {
+        context.read<NoteProvider>().addNote(_note);
+      });
+    } else {
+      _note = context
+          .read<NoteProvider>()
+          .notes
+          .singleWhere((element) => element.id == widget.noteId);
+    }
+
+    _titleEditingController.text = _note.title;
+    _noteEditingController.text = _note.note;
+
+    _titleEditingController.addListener(() {
+      setState(() {
+        _note.title = _titleEditingController.text;
+      });
+    });
+
+    _noteEditingController.addListener(() {
+      setState(() {
+        _note.note = _noteEditingController.text;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final note = ModalRoute.of(context)!.settings.arguments as Note;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -57,7 +103,7 @@ class NewNote extends StatelessWidget {
         child: Column(
           children: [
             TextField(
-              controller: TextEditingController(text: note.title),
+              controller: _titleEditingController,
               style: Theme.of(context).textTheme.titleLarge!,
               maxLines: null,
               decoration: const InputDecoration(
@@ -66,7 +112,7 @@ class NewNote extends StatelessWidget {
               ),
             ),
             TextField(
-              controller: TextEditingController(text: note.note),
+              controller: _noteEditingController,
               maxLines: null,
               decoration: const InputDecoration(
                 hintText: 'Not',

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:google_keep_clone/providers/note_provider.dart';
-import 'package:google_keep_clone/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'constants/color.dart';
+import 'providers/note_provider.dart';
+import 'screens/login_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -48,7 +48,24 @@ class MyApp extends StatelessWidget {
       trackColor: MaterialStatePropertyAll(Colors.blue.shade100),
       thumbColor: MaterialStatePropertyAll(Colors.blue.shade900),
     ),
+    filledButtonTheme: const FilledButtonThemeData(
+      style: ButtonStyle(
+        backgroundColor: MaterialStatePropertyAll(Colors.blue),
+        foregroundColor: MaterialStatePropertyAll(Colors.white),
+        shape: MaterialStatePropertyAll(
+          ContinuousRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+        ),
+      ),
+    ),
+    inputDecorationTheme: const InputDecorationTheme(
+      floatingLabelStyle: TextStyle(color: Colors.blue),
+    ),
     scaffoldBackgroundColor: CustomColors.umbra,
+    checkboxTheme: const CheckboxThemeData(
+      checkColor: MaterialStatePropertyAll(Colors.blue),
+    ),
   );
 
   @override
@@ -60,9 +77,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Google Keep Clone',
         theme: theme,
-        home: const SafeArea(
-          child: HomeScreen(),
-        ),
+        home: const LoginScreen(),
       ),
     );
   }

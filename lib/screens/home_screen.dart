@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_keep_clone/providers/note_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/note_provider.dart';
@@ -22,17 +21,19 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        drawer: const DrawerMenu(),
-        bottomNavigationBar: const _BottomBar(),
-        floatingActionButton: _getFloatingButton(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [_getHeader(), _getContent()],
+    return SafeArea(
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          drawer: const DrawerMenu(),
+          bottomNavigationBar: const _BottomBar(),
+          floatingActionButton: _getFloatingButton(),
+          floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [_getHeader(), _getContent()],
+          ),
         ),
       ),
     );

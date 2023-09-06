@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:google_keep_clone/screens/new_note_screen.dart';
 
+import '../screens/new_note_screen.dart';
 import '../models/Note.dart';
 
-class NoteItem extends StatefulWidget {
+class NoteItem extends StatelessWidget {
   const NoteItem({Key? key, required this.note}) : super(key: key);
   final Note note;
 
-  @override
-  State<NoteItem> createState() => _NoteItemState();
-}
-
-class _NoteItemState extends State<NoteItem> {
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -31,19 +26,19 @@ class _NoteItemState extends State<NoteItem> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => NewNote(noteId: widget.note.id)));
+                  builder: (context) => NewNote(noteId: note.id)));
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.all(10),
-              child: Text(widget.note.title),
+              child: Text(note.title),
             ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Text(widget.note.note,
+                child: Text(note.note,
                     maxLines: 6, overflow: TextOverflow.ellipsis),
               ),
             )

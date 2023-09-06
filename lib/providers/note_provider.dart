@@ -16,4 +16,13 @@ class NoteProvider extends ChangeNotifier {
     _notes.add(note);
     notifyListeners();
   }
+
+  void updateNote(Note note) {
+    int index = _notes.indexWhere((element) => element.id == note.id);
+    if (index == -1) return;
+
+    _notes[index] = note;
+
+    notifyListeners();
+  }
 }

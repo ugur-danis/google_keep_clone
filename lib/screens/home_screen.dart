@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_keep_clone/providers/note_provider.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/note_provider.dart';
 import '../widgets/drawer_menu.dart';
 import '../widgets/note_item.dart';
 import '../widgets/user_menu.dart';
@@ -99,13 +100,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _getContent() {
     return Expanded(
       child: GridView.count(
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-          padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
-          crossAxisCount: _gridCrossAxisCount,
-          children: List.generate(
-              context.watch<NoteProvider>().notes.length,
-              (index) =>
-                  NoteItem(note: context.watch<NoteProvider>().notes[index]))),
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
+        crossAxisCount: _gridCrossAxisCount,
+        children: List.generate(
+          context.watch<NoteProvider>().notes.length,
+          (index) => NoteItem(note: context.watch<NoteProvider>().notes[index]),
+        ),
+      ),
     );
   }
 

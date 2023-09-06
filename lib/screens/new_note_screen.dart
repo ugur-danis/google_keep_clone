@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_keep_clone/providers/note_provider.dart';
 import 'package:provider/provider.dart';
+
+import '../providers/note_provider.dart';
 import '../models/Note.dart';
 
 class NewNote extends StatefulWidget {
@@ -43,12 +45,14 @@ class _NewNoteState extends State<NewNote> {
       setState(() {
         _note.title = _titleEditingController.text;
       });
+      context.read<NoteProvider>().updateNote(_note);
     });
 
     _noteEditingController.addListener(() {
       setState(() {
         _note.note = _noteEditingController.text;
       });
+      context.read<NoteProvider>().updateNote(_note);
     });
   }
 

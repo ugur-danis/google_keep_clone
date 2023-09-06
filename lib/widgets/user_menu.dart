@@ -71,44 +71,48 @@ class UserMenu extends StatelessWidget {
   Widget userMenuBottom(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(
-          width: width,
-          child: TextButton.icon(
-            style: const ButtonStyle(
-              alignment: Alignment.centerLeft,
-            ),
-            label: Text(
-              'Başka bir hesap ekle',
-              style: Theme.of(context).textTheme.labelSmall,
-            ),
-            onPressed: () {},
-            icon: const Icon(
-              Icons.person_add_alt,
-              size: 20,
-            ),
-          ),
-        ),
-        SizedBox(
-          width: width,
-          child: TextButton.icon(
-            style: const ButtonStyle(
-              alignment: Alignment.centerLeft,
-            ),
-            label: Text(
-              'Bu cihazdaki hesapları yönet',
-              style: Theme.of(context).textTheme.labelSmall,
-            ),
-            onPressed: () {},
-            icon: const Icon(
-              Icons.manage_accounts_outlined,
-              size: 20,
+    return Padding(
+      padding: const EdgeInsets.only(left: 20, bottom: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: width,
+            child: TextButton.icon(
+              style: const ButtonStyle(
+                alignment: Alignment.centerLeft,
+              ),
+              label: Text(
+                'Başka bir hesap ekle',
+                style: Theme.of(context).textTheme.labelLarge,
+              ),
+              onPressed: () {},
+              icon: const Icon(
+                Icons.person_add_alt,
+                size: 26,
+              ),
             ),
           ),
-        )
-      ],
+          const SizedBox(height: 10),
+          SizedBox(
+            width: width,
+            child: TextButton.icon(
+              style: const ButtonStyle(
+                alignment: Alignment.centerLeft,
+              ),
+              label: Text(
+                'Bu cihazdaki hesapları yönet',
+                style: Theme.of(context).textTheme.labelLarge,
+              ),
+              onPressed: () {},
+              icon: const Icon(
+                Icons.manage_accounts_outlined,
+                size: 26,
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 

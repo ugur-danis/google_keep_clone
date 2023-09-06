@@ -9,7 +9,6 @@ class SearchNoteScreen extends StatefulWidget {
 
 class _SearchNoteScreenState extends State<SearchNoteScreen> {
   final FocusNode _inputNode = FocusNode();
-  // declear a focusNode object
 
   @override
   void initState() {
@@ -21,14 +20,16 @@ class _SearchNoteScreenState extends State<SearchNoteScreen> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: SearchBar(
-            focusNode: _inputNode,
-            hintText: 'Notlarınızda arayın',
+      child: SafeArea(
+        child: Scaffold(
+          appBar: AppBar(
+            title: SearchBar(
+              focusNode: _inputNode,
+              hintText: 'Notlarınızda arayın',
+            ),
           ),
+          body: notFound(context),
         ),
-        body: notFound(context),
       ),
     );
   }

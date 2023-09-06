@@ -25,4 +25,9 @@ class NoteProvider extends ChangeNotifier {
 
     notifyListeners();
   }
+
+  void deleteNote(Note note) {
+    _notes.remove(note);
+    notifyListeners();
+  }
 }

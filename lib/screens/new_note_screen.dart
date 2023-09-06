@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 import '../providers/note_provider.dart';
 import '../models/Note.dart';
@@ -58,77 +59,89 @@ class _NewNoteState extends State<NewNote> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.push_pin_outlined),
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.notification_add_outlined),
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.archive_outlined),
-            ),
-          ],
-        ),
-        bottomNavigationBar: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.add_box_outlined),
-            ),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.color_lens_outlined),
-            ),
-            Expanded(
-              child: Text(
-                'Düzenlenme saati: 15:06',
-                textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall!
-                    .copyWith(fontSize: 10),
+      child: WillPopScope(
+        onWillPop: () {
+          if (_note.note.isEmpty && _note.title.isEmpty) {
+            context.read<NoteProvider>().deleteNote(_note);
+          }
+
+          return Future.value(true);
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            actions: [
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.push_pin_outlined),
               ),
-            ),
-            const SizedBox(width: 48),
-            IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.more_vert),
-            ),
-          ],
-        ),
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              TextField(
-                controller: _titleEditingController,
-                style: Theme.of(context).textTheme.titleLarge!,
-                maxLines: null,
-                decoration: const InputDecoration(
-                  hintText: 'Başlık',
-                  border: InputBorder.none,
-                ),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.notification_add_outlined),
               ),
-              TextField(
-                controller: _noteEditingController,
-                maxLines: null,
-                decoration: const InputDecoration(
-                  hintText: 'Not',
-                  border: InputBorder.none,
-                ),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.archive_outlined),
               ),
             ],
           ),
+          bottomNavigationBar: buildBottomNavigationBar(context),
+          body: SingleChildScrollView(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                TextField(
+                  controller: _titleEditingController,
+                  style: Theme.of(context).textTheme.titleLarge!,
+                  maxLines: null,
+                  decoration: const InputDecoration(
+                    hintText: 'Başlık',
+                    border: InputBorder.none,
+                  ),
+                ),
+                TextField(
+                  controller: _noteEditingController,
+                  maxLines: null,
+                  decoration: const InputDecoration(
+                    hintText: 'Not',
+                    border: InputBorder.none,
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
+    );
+  }
+
+  Row buildBottomNavigationBar(BuildContext context) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.add_box_outlined),
+        ),
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.color_lens_outlined),
+        ),
+        Expanded(
+          child: Text(
+            timeago.format(DateTime.now()
+                .subtract(DateTime.now().difference(_note.lastEditDate))),
+            textAlign: TextAlign.center,
+            style:
+                Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 10),
+          ),
+        ),
+        const SizedBox(width: 48),
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.more_vert),
+        ),
+      ],
     );
   }
 }

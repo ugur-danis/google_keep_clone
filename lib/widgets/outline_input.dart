@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 class OutlineInput extends TextField {
   OutlineInput({
     super.key,
-    this.labelText,
+    String? labelText,
+    TextEditingController? controller,
   }) : super(
+          controller: controller,
           decoration: InputDecoration(
             labelText: labelText,
             floatingLabelBehavior: FloatingLabelBehavior.auto,
@@ -14,6 +16,4 @@ class OutlineInput extends TextField {
             ),
           ),
         );
-
-  final String? labelText;
 }

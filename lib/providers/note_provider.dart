@@ -1,33 +1,46 @@
 import 'package:flutter/material.dart';
 
 import '../models/Note.dart';
+import '../services/FirebaseNoteDal.dart';
+import '../services/FirebaseNoteService.dart';
+import '../services/interfaces/INoteService.dart';
 
 class NoteProvider extends ChangeNotifier {
-  final List<Note> _notes = [
-    Note(title: 'Selam', note: 'Test note', lastEditDate: DateTime.now()),
-    Note(title: 'Selam', note: 'Test note', lastEditDate: DateTime.now()),
-    Note(title: 'Selam', note: 'Test note', lastEditDate: DateTime.now()),
-    Note(title: 'Selam', note: 'Test note', lastEditDate: DateTime.now()),
-  ];
+  final List<Note> _notes = [];
+  late final INoteService _noteService;
+
+  NoteProvider() {
+    _noteService = FirebaseNoteService(noteDal: FirebaseNoteDal())
+        .addListener(_handleNotesChange);
+
+    _getNotes();
+  }
 
   List<Note> get notes => _notes;
 
-  void addNote(Note note) {
-    _notes.add(note);
+  void _handleNotesChange(List<Note> notes) {
+    _notes.clear();
+    _notes.addAll(notes);
     notifyListeners();
   }
 
-  void updateNote(Note note) {
-    int index = _notes.indexWhere((element) => element.id == note.id);
-    if (index == -1) return;
-
-    _notes[index] = note;
-
+  void _getNotes() async {
+    await _noteService.getAll();
     notifyListeners();
   }
 
-  void deleteNote(Note note) {
-    _notes.remove(note);
+  void addNote(Note note) async {
+    _noteService.add(note);
+    notifyListeners();
+  }
+
+  void updateNote(Note note) async {
+    await _noteService.update(note);
+    notifyListeners();
+  }
+
+  void deleteNote(Note note) async {
+    await _noteService.delete(note);
     notifyListeners();
   }
 }

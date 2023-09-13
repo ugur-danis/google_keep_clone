@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_keep_clone/utils/date_formatter.dart';
 import 'package:provider/provider.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 import '../providers/note_provider.dart';
 import '../models/Note.dart';
@@ -27,7 +27,7 @@ class _NewNoteState extends State<NewNote> {
     super.initState();
 
     if (widget.isNewNote) {
-      _note = Note(lastEditDate: DateTime.now());
+      _note = Note(title: '', note: '', lastEditDate: DateTime.now());
       Future.delayed(const Duration(seconds: 1), () {
         context.read<NoteProvider>().addNote(_note);
       });
@@ -38,8 +38,8 @@ class _NewNoteState extends State<NewNote> {
           .singleWhere((element) => element.id == widget.noteId);
     }
 
-    _titleEditingController.text = _note.title;
-    _noteEditingController.text = _note.note;
+    _titleEditingController.text = _note.title!;
+    _noteEditingController.text = _note.note!;
 
     _titleEditingController.addListener(() {
       setState(() {
@@ -56,12 +56,34 @@ class _NewNoteState extends State<NewNote> {
     });
   }
 
+  void showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            leading: const Icon(Icons.delete_outlined),
+            title: const Text('Delete'),
+            onTap: () {
+              context.read<NoteProvider>().deleteNote(_note);
+              Navigator.popUntil(
+                context,
+                (route) => route.isFirst,
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: WillPopScope(
         onWillPop: () {
-          if (_note.note.isEmpty && _note.title.isEmpty) {
+          if (_note.note!.isEmpty && _note.title!.isEmpty) {
             context.read<NoteProvider>().deleteNote(_note);
           }
 
@@ -129,8 +151,7 @@ class _NewNoteState extends State<NewNote> {
         ),
         Expanded(
           child: Text(
-            timeago.format(DateTime.now()
-                .subtract(DateTime.now().difference(_note.lastEditDate))),
+            DateFormatter.difference(to: _note.lastEditDate!),
             textAlign: TextAlign.center,
             style:
                 Theme.of(context).textTheme.bodySmall!.copyWith(fontSize: 10),
@@ -138,7 +159,7 @@ class _NewNoteState extends State<NewNote> {
         ),
         const SizedBox(width: 48),
         IconButton(
-          onPressed: () {},
+          onPressed: () => showBottomSheet(context),
           icon: const Icon(Icons.more_vert),
         ),
       ],

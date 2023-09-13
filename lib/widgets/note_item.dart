@@ -26,19 +26,19 @@ class NoteItem extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => NewNote(noteId: note.id)));
+                  builder: (context) => NewNote(noteId: note.id!)));
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: const EdgeInsets.all(10),
-              child: Text(note.title),
+              child: Text(note.title!),
             ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Text(note.note,
+                child: Text(note.note!,
                     maxLines: 6, overflow: TextOverflow.ellipsis),
               ),
             )

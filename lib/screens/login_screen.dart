@@ -12,6 +12,32 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool _isShowPassword = false;
+  String _email = '';
+  String _password = '';
+
+  final TextEditingController _eMailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _eMailController.text = _email;
+    _passwordController.text = _password;
+
+    _eMailController.addListener(() {
+      setState(() {
+        _email = _eMailController.text;
+      });
+    });
+
+    _passwordController.addListener(() {
+      setState(() {
+        _password = _passwordController.text;
+      });
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +60,16 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   const SizedBox(height: 40),
-                  OutlineInput(labelText: 'E-posta'),
+                  OutlineInput(
+                    labelText: 'E-posta',
+                    controller: _eMailController,
+                  ),
                   const SizedBox(height: 20),
-                  OutlineInput(labelText: 'Şifrenizi girin'),
+                  OutlineInput(
+                    labelText: 'Şifrenizi girin',
+                    obscureText: !_isShowPassword,
+                    controller: _passwordController,
+                  ),
                   const SizedBox(height: 10),
                   _buildShowPasswordCheckbox(),
                   const SizedBox(height: 20),

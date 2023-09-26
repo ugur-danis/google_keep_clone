@@ -3,16 +3,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
+import '../../models/Note.dart';
+import '../../utils/types/Query.dart';
 import 'interfaces/IFirebaseNoteDal.dart';
-import '../models/Note.dart';
 
 class FirebaseNoteDal implements IFirebaseNoteDal {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
-  Future<Note?> get() async {
+  Future<Note?> get([FetchQuery? querie]) async {
     final DocumentSnapshot<Map<String, dynamic>> doc =
-        await _firestore.collection('notes').doc().get();
+        await _firestore.collection('notes').doc(querie?['id']).get();
 
     final Map<String, dynamic>? item = doc.data();
     if (item == null) return null;
@@ -21,17 +22,20 @@ class FirebaseNoteDal implements IFirebaseNoteDal {
   }
 
   @override
-  Future<List<Note>> getAll() async {
+  Future<List<Note>> getAll([FetchQuery? querie]) async {
     final List<Note> notes = <Note>[];
 
     try {
-      final CollectionReference<Map<String, dynamic>> ref =
-          _firestore.collection('notes');
+      final QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
+          .collection('notes')
+          .where(
+            'userId',
+            isEqualTo: querie?['userId'],
+          )
+          .get();
 
-      final QuerySnapshot<Map<String, dynamic>> querySnap = await ref.get();
-      for (QueryDocumentSnapshot<Map<String, dynamic>> doc in querySnap.docs) {
+      for (QueryDocumentSnapshot<Map<String, dynamic>> doc in snapshot.docs) {
         Map<String, dynamic> item = doc.data();
-        item['id'] = doc.id;
         notes.add(Note.fromMap(item));
       }
     } catch (e) {
@@ -73,19 +77,19 @@ class FirebaseNoteDal implements IFirebaseNoteDal {
   }
 
   @override
-  void addListener(Function(List<Note>) callback) {
-    final CollectionReference<Map<String, dynamic>> ref =
-        _firestore.collection('notes');
+  void addListener(Function(List<Note>) callback, [FetchQuery? querie]) {
+    final Query<Map<String, dynamic>> snapshot = _firestore
+        .collection('notes')
+        .where('userId', isEqualTo: querie?['userId']);
 
-    ref.snapshots().listen(
+    snapshot.snapshots().listen(
       (event) {
         final List<Note> notes = event.docs.map((doc) {
           final item = doc.data();
-          item['id'] = doc.id;
           return Note.fromMap(item);
         }).toList();
 
-        callback!(notes);
+        callback(notes);
       },
     );
   }

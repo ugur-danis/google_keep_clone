@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 
+import '../main.dart';
 import '../models/Note.dart';
-import '../services/FirebaseNoteDal.dart';
-import '../services/FirebaseNoteService.dart';
-import '../services/interfaces/INoteService.dart';
+import '../services/note/interfaces/IFirebaseNoteManager.dart';
 
 class NoteProvider extends ChangeNotifier {
   final List<Note> _notes = [];
-  late final INoteService _noteService;
+  late final IFirebaseNoteManager _noteManager;
 
   NoteProvider() {
-    _noteService = FirebaseNoteService(noteDal: FirebaseNoteDal())
-        .addListener(_handleNotesChange);
+    _noteManager = locator.get<IFirebaseNoteManager>();
+    _noteManager.addListener(_handleNotesChange);
 
     _getNotes();
   }
@@ -25,22 +24,22 @@ class NoteProvider extends ChangeNotifier {
   }
 
   void _getNotes() async {
-    await _noteService.getAll();
+    await _noteManager.getAll();
     notifyListeners();
   }
 
   void addNote(Note note) async {
-    _noteService.add(note);
+    _noteManager.add(note);
     notifyListeners();
   }
 
   void updateNote(Note note) async {
-    await _noteService.update(note);
+    await _noteManager.update(note);
     notifyListeners();
   }
 
   void deleteNote(Note note) async {
-    await _noteService.delete(note);
+    await _noteManager.delete(note);
     notifyListeners();
   }
 }

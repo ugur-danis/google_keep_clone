@@ -1,18 +1,22 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:google_keep_clone/providers/auth_provider.dart';
-import 'package:google_keep_clone/services/auth/interfaces/IAuthDal.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:get_it/get_it.dart';
 
 import 'firebase_options.dart';
 import 'constants/color.dart';
+import 'providers/auth_provider.dart';
 import 'providers/note_provider.dart';
 import 'screens/home_screen.dart';
 import 'screens/sign_in/sign_in_screen.dart';
 import 'services/auth/AuthManager.dart';
 import 'services/auth/FirebaseAuthDal.dart';
 import 'services/auth/interfaces/IAuthManager.dart';
+import 'services/auth/interfaces/IFirebaseAuthDal.dart';
+import 'services/note/FirebaseNoteDal.dart';
+import 'services/note/FirebaseNoteManager.dart';
+import 'services/note/interfaces/IFirebaseNoteDal.dart';
+import 'services/note/interfaces/IFirebaseNoteManager.dart';
 
 final GetIt locator = GetIt.instance;
 
@@ -32,13 +36,18 @@ Future<void> main() async {
 Future<void> _init() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  configureDependencies();
+  configureDependenciesForFirebase();
 }
 
-void configureDependencies() {
-  locator.registerSingleton<IAuthDal>(FirebaseAuthDal());
-  locator.registerSingleton<IAuthManager>(
-      AuthManager(authDal: locator.get<IAuthDal>()));
+void configureDependenciesForFirebase() {
+  final IFirebaseAuthDal authDal = FirebaseAuthDal();
+  final IAuthManager authManager = AuthManager(authDal: authDal);
+  final IFirebaseNoteDal noteDal = FirebaseNoteDal();
+  final IFirebaseNoteManager noteManager =
+      FirebaseNoteManager(noteDal: noteDal, authDal: authDal);
+
+  locator.registerSingleton<IAuthManager>(authManager);
+  locator.registerSingleton<IFirebaseNoteManager>(noteManager);
 }
 
 class MyApp extends StatelessWidget {

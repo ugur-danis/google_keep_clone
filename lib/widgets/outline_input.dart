@@ -4,9 +4,11 @@ class OutlineInput extends TextField {
   OutlineInput({
     super.key,
     String? labelText,
+    bool obscureText = false,
     TextEditingController? controller,
   }) : super(
           controller: controller,
+          obscureText: obscureText,
           decoration: InputDecoration(
             labelText: labelText,
             floatingLabelBehavior: FloatingLabelBehavior.auto,

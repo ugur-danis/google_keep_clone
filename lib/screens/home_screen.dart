@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/auth_provider.dart';
 import '../providers/note_provider.dart';
 import '../widgets/drawer_menu.dart';
 import '../widgets/note_item.dart';
@@ -91,9 +92,11 @@ class _HomeScreenState extends State<HomeScreen> {
           },
         );
       },
-      child: const CircleAvatar(
+      child: CircleAvatar(
         radius: 16,
-        backgroundImage: AssetImage('assets/images/profile-img.png'),
+        backgroundImage: context.watch<AuthProvider>().user?.photoURL != null
+            ? Image.network(context.watch<AuthProvider>().user!.photoURL!).image
+            : null,
       ),
     );
   }

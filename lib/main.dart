@@ -1,12 +1,44 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:google_keep_clone/providers/auth_provider.dart';
+import 'package:google_keep_clone/services/auth/interfaces/IAuthDal.dart';
 import 'package:provider/provider.dart';
 
+import 'firebase_options.dart';
 import 'constants/color.dart';
 import 'providers/note_provider.dart';
-import 'screens/login_screen.dart';
+import 'screens/home_screen.dart';
+import 'screens/sign_in/sign_in_screen.dart';
+import 'services/auth/AuthManager.dart';
+import 'services/auth/FirebaseAuthDal.dart';
+import 'services/auth/interfaces/IAuthManager.dart';
 
-void main() {
-  runApp(MyApp());
+final GetIt locator = GetIt.instance;
+
+Future<void> main() async {
+  await _init();
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => AuthProvider()),
+        ChangeNotifierProvider(create: (_) => NoteProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
+}
+
+Future<void> _init() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  configureDependencies();
+}
+
+void configureDependencies() {
+  locator.registerSingleton<IAuthDal>(FirebaseAuthDal());
+  locator.registerSingleton<IAuthManager>(
+      AuthManager(authDal: locator.get<IAuthDal>()));
 }
 
 class MyApp extends StatelessWidget {
@@ -70,14 +102,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => NoteProvider()),
-      ],
-      child: MaterialApp(
-        title: 'Google Keep Clone',
-        theme: theme,
-        home: const LoginScreen(),
+    return MaterialApp(
+      title: 'Google Keep Clone',
+      theme: theme,
+      home: FutureBuilder<bool>(
+        future: context.read<AuthProvider>().checkSession(),
+        builder: (context, snapshot) {
+          if (snapshot.data == null) {
+            return const CircularProgressIndicator();
+          }
+          if (snapshot.hasError) {
+            return Text(snapshot.error.toString());
+          }
+          if (snapshot.data == true) {
+            return const HomeScreen();
+          }
+          return const SignInScreen();
+        },
       ),
     );
   }

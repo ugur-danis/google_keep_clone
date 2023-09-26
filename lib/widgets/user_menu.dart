@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/auth_provider.dart';
 
 class UserMenu extends StatelessWidget {
   const UserMenu({super.key});
@@ -124,18 +127,18 @@ class UserMenu extends StatelessWidget {
         children: [
           Row(
             children: [
-              userMenuAvatar(),
+              userMenuAvatar(context),
               Padding(
                 padding: const EdgeInsets.only(left: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Uğur Danış',
+                      context.watch<AuthProvider>().user?.username ?? '',
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     Text(
-                      'ugur946658@gmail.com',
+                      context.watch<AuthProvider>().user!.email!,
                       style: Theme.of(context).textTheme.bodySmall!.copyWith(
                             color: Theme.of(context).colorScheme.secondary,
                           ),
@@ -163,12 +166,14 @@ class UserMenu extends StatelessWidget {
     );
   }
 
-  GestureDetector userMenuAvatar() {
+  GestureDetector userMenuAvatar(BuildContext context) {
     return GestureDetector(
       onTap: () {},
       child: CircleAvatar(
         radius: 20,
-        backgroundImage: const AssetImage('assets/images/profile-img.png'),
+        backgroundImage: context.watch<AuthProvider>().user?.photoURL != null
+            ? Image.network(context.watch<AuthProvider>().user!.photoURL!).image
+            : null,
         child: Container(
           width: 20,
           height: 20,

@@ -1,44 +1,22 @@
+library login_screen;
+
 import 'package:flutter/material.dart';
 
-import '../screens/home_screen.dart';
-import '../widgets/outline_input.dart';
+import '../../main.dart';
+import '../../services/auth/interfaces/IAuthManager.dart';
+import '../../widgets/outline_input.dart';
+import '../sign_in/sign_in_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+part 'sign_up_view_model.dart';
+
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({Key? key}) : super(key: key);
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  bool _isShowPassword = false;
-  String _email = '';
-  String _password = '';
-
-  final TextEditingController _eMailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-
-    _eMailController.text = _email;
-    _passwordController.text = _password;
-
-    _eMailController.addListener(() {
-      setState(() {
-        _email = _eMailController.text;
-      });
-    });
-
-    _passwordController.addListener(() {
-      setState(() {
-        _password = _passwordController.text;
-      });
-    });
-  }
-
-
+class _SignUpScreenState extends State<SignUpScreen> with _SignUpScreenMixin {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -51,14 +29,10 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 children: [
                   Text(
-                    'Oturum aç',
+                    'Hesap oluştur',
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   const SizedBox(height: 10),
-                  Text(
-                    'Google Hesabınızı kullanın',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
                   const SizedBox(height: 40),
                   OutlineInput(
                     labelText: 'E-posta',
@@ -77,10 +51,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      _buildCreateAccountButton(),
+                      _buildIHaveAccountButton(),
                       _buildLoginButton(),
                     ],
-                  )
+                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
@@ -92,11 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   CheckboxListTile _buildShowPasswordCheckbox() {
     return CheckboxListTile(
-      onChanged: (bool? value) {
-        setState(() {
-          _isShowPassword = value ?? false;
-        });
-      },
+      onChanged: _onTogglePasswordVisibility,
       value: _isShowPassword,
       contentPadding: EdgeInsets.zero,
       controlAffinity: ListTileControlAffinity.leading,
@@ -104,24 +75,21 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  TextButton _buildCreateAccountButton() {
+  TextButton _buildIHaveAccountButton() {
     return TextButton(
-      onPressed: () {},
+      onPressed: _navToSignInScreen,
       style: const ButtonStyle(
         padding: MaterialStatePropertyAll(EdgeInsets.zero),
         foregroundColor: MaterialStatePropertyAll(Colors.blue),
       ),
-      child: const Text('Hesap oluşturun'),
+      child: const Text('Zaten heabım var'),
     );
   }
 
   FilledButton _buildLoginButton() {
     return FilledButton(
-      onPressed: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()));
-      },
-      child: const Text('Giriş yap'),
+      onPressed: _signUpWithEmail,
+      child: const Text('Hesap oluştur'),
     );
   }
 }

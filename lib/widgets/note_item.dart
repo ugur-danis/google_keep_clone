@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../screens/new_note_screen.dart';
+import '../screens/new_note/new_note_screen.dart';
 import '../models/Note.dart';
 
 class NoteItem extends StatelessWidget {
@@ -26,7 +26,7 @@ class NoteItem extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => NewNote(noteId: note.id!)));
+                  builder: (context) => NewNoteScreen(noteId: note.id!)));
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
+import '../screens/sign_in/sign_in_screen.dart';
 
 class UserMenu extends StatelessWidget {
   const UserMenu({super.key});

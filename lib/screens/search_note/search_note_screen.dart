@@ -1,4 +1,8 @@
+library search_note;
+
 import 'package:flutter/material.dart';
+
+part 'search_note_view_model.dart';
 
 class SearchNoteScreen extends StatefulWidget {
   const SearchNoteScreen({Key? key}) : super(key: key);
@@ -7,19 +11,12 @@ class SearchNoteScreen extends StatefulWidget {
   State<SearchNoteScreen> createState() => _SearchNoteScreenState();
 }
 
-class _SearchNoteScreenState extends State<SearchNoteScreen> {
-  final FocusNode _inputNode = FocusNode();
-
-  @override
-  void initState() {
-    super.initState();
-    _inputNode.requestFocus();
-  }
-
+class _SearchNoteScreenState extends State<SearchNoteScreen>
+    with _SearchNoteScreenMixin {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+      onTap: focusClear,
       child: SafeArea(
         child: Scaffold(
           appBar: AppBar(

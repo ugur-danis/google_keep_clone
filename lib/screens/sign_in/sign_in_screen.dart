@@ -8,7 +8,7 @@ import '../../main.dart';
 import '../../models/User.dart';
 import '../../services/auth/interfaces/IAuthManager.dart';
 import '../../widgets/outline_input.dart';
-import '../home_screen.dart';
+import '../home/home_screen.dart';
 import '../sign_up/sign_up_screen.dart';
 
 part 'sign_in_view_model.dart';

@@ -1,14 +1,18 @@
+library home_screen;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/auth_provider.dart';
-import '../providers/note_provider.dart';
-import '../widgets/drawer_menu.dart';
-import '../widgets/note_item.dart';
-import '../widgets/user_menu.dart';
-import 'new_note_screen.dart';
-import 'search_note_screen.dart';
+import '../../providers/auth_provider.dart';
+import '../../providers/note_provider.dart';
+import '../../widgets/drawer_menu.dart';
+import '../../widgets/note_item.dart';
+import '../../widgets/user_menu.dart';
+import '../new_note/new_note_screen.dart';
+import '../search_note/search_note_screen.dart';
+
+part 'home_view_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -17,14 +21,12 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  int _gridCrossAxisCount = 2;
-
+class _HomeScreenState extends State<HomeScreen> with _HomeScreenMixin {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
+        onTap: () => focusClear(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           drawer: const DrawerMenu(),
@@ -42,10 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _getHeader() {
     return GestureDetector(
-      onTap: () {
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => const SearchNoteScreen()));
-      },
+      onTap: navToSearchScreen,
       child: Container(
         margin: const EdgeInsets.only(top: 10, bottom: 20, left: 20, right: 20),
         child: AppBar(
@@ -74,12 +73,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   IconButton switchViewButton() {
     return IconButton(
-        onPressed: () {
-          setState(() {
-            _gridCrossAxisCount = _gridCrossAxisCount == 2 ? 1 : 2;
-          });
-        },
-        icon: const Icon(Icons.view_agenda_outlined));
+      onPressed: toggleGridCrossAxisCount,
+      icon: const Icon(Icons.view_agenda_outlined),
+    );
   }
 
   Widget avatar() {
@@ -117,12 +113,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _getFloatingButton() {
     return FloatingActionButton(
-      onPressed: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => NewNote()));
-      },
+      onPressed: navToNewNoteScreen,
       shape: const CircleBorder(),
-      tooltip: 'Increment',
       child: SvgPicture.asset('assets/images/google-plus-icon.svg', width: 30),
     );
   }

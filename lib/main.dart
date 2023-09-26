@@ -7,7 +7,7 @@ import 'firebase_options.dart';
 import 'constants/color.dart';
 import 'providers/auth_provider.dart';
 import 'providers/note_provider.dart';
-import 'screens/home_screen.dart';
+import 'screens/home/home_screen.dart';
 import 'screens/sign_in/sign_in_screen.dart';
 import 'services/auth/AuthManager.dart';
 import 'services/auth/FirebaseAuthDal.dart';

@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
 import '../../models/Note.dart';
-import '../../utils/types/Query.dart';
+import '../../utils/types/FetchQuery.dart';
 import 'interfaces/IFirebaseNoteDal.dart';
 
 class FirebaseNoteDal implements IFirebaseNoteDal {

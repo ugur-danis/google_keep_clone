@@ -2,7 +2,7 @@
 
 import '../../models/Note.dart';
 import '../../models/User.dart';
-import '../../utils/types/Query.dart';
+import '../../utils/types/FetchQuery.dart';
 import '../auth/interfaces/IFirebaseAuthDal.dart';
 import 'interfaces/IFirebaseNoteDal.dart';
 import 'interfaces/IFirebaseNoteManager.dart';

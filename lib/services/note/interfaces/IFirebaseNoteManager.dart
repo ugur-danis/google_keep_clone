@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 
 import '../../../models/Note.dart';
-import '../../../utils/types/Query.dart';
+import '../../../utils/types/FetchQuery.dart';
 import 'INoteManager.dart';
 
 abstract class IFirebaseNoteManager extends INoteManager {

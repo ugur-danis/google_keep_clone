@@ -1,6 +1,6 @@
 // ignore_for_file: file_names
 
-import '../../utils/types/Query.dart';
+import '../../utils/types/FetchQuery.dart';
 import 'IEntity.dart';
 
 abstract class IEntityRepository<T extends IEntity> {

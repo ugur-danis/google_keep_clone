@@ -10,21 +10,23 @@ class NoteProvider extends ChangeNotifier {
 
   NoteProvider() {
     _noteManager = locator.get<IFirebaseNoteManager>();
-    _noteManager.addListener(_handleNotesChange);
-
-    _getNotes();
   }
 
   List<Note> get notes => _notes;
 
+  NoteProvider configure() {
+    _noteManager.addListener(_handleNotesChange);
+    return this;
+  }
+
   void _handleNotesChange(List<Note> notes) {
-    _notes.clear();
-    _notes.addAll(notes);
+    _clearNotesAndAddAll(notes);
     notifyListeners();
   }
 
-  void _getNotes() async {
-    await _noteManager.getAll();
+  void getNotes() async {
+    List<Note> notes = await _noteManager.getAll();
+    _clearNotesAndAddAll(notes);
     notifyListeners();
   }
 
@@ -41,5 +43,10 @@ class NoteProvider extends ChangeNotifier {
   void deleteNote(Note note) async {
     await _noteManager.delete(note);
     notifyListeners();
+  }
+
+  void _clearNotesAndAddAll(List<Note> notes) {
+    _notes.clear();
+    _notes.addAll(notes);
   }
 }

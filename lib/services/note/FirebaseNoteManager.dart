@@ -71,4 +71,9 @@ class FirebaseNoteManager implements IFirebaseNoteManager {
 
     _noteDal.addListener(callback, querie);
   }
+
+  @override
+  void removeListener() {
+    _noteDal.removeListener();
+  }
 }

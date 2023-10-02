@@ -8,4 +8,5 @@ import 'IEntityRepository.dart';
 abstract class IFirebaseEntityRepository<T extends IEntity>
     extends IEntityRepository<T> {
   void addListener(Function(List<Note>) callback, [FetchQuery? querie]);
+  void removeListener();
 }

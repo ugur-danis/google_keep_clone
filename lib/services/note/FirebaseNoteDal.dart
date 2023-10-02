@@ -1,5 +1,7 @@
 // ignore_for_file: file_names
 
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:developer' as developer;
 
@@ -9,6 +11,7 @@ import 'interfaces/IFirebaseNoteDal.dart';
 
 class FirebaseNoteDal implements IFirebaseNoteDal {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? _listener;
 
   @override
   Future<Note?> get([FetchQuery? querie]) async {
@@ -78,11 +81,13 @@ class FirebaseNoteDal implements IFirebaseNoteDal {
 
   @override
   void addListener(Function(List<Note>) callback, [FetchQuery? querie]) {
+    removeListener();
+
     final Query<Map<String, dynamic>> snapshot = _firestore
         .collection('notes')
         .where('userId', isEqualTo: querie?['userId']);
 
-    snapshot.snapshots().listen(
+    _listener = snapshot.snapshots().listen(
       (event) {
         final List<Note> notes = event.docs.map((doc) {
           final item = doc.data();
@@ -92,5 +97,12 @@ class FirebaseNoteDal implements IFirebaseNoteDal {
         callback(notes);
       },
     );
+  }
+
+  @override
+  void removeListener() {
+    if (_listener != null) {
+      _listener!.cancel();
+    }
   }
 }

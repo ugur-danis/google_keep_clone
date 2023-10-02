@@ -3,6 +3,12 @@ part of 'home_screen.dart';
 mixin _HomeScreenMixin on State<HomeScreen> {
   int _gridCrossAxisCount = 2;
 
+  @override
+  void initState() {
+    super.initState();
+    context.read<NoteProvider>().configure().getNotes();
+  }
+
   void focusClear() => FocusScope.of(context).unfocus();
 
   void navToSearchScreen() => Navigator.of(context)

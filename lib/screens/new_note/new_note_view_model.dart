@@ -10,7 +10,12 @@ mixin _NewNoteScreenMixin on State<NewNoteScreen> {
     super.initState();
 
     if (widget.isNewNote) {
-      _note = Note(title: '', note: '', lastEditDate: DateTime.now());
+      _note = Note(
+        userId: context.read<AuthProvider>().user?.id,
+        title: '',
+        note: '',
+        lastEditDate: DateTime.now(),
+      );
       Future.delayed(const Duration(seconds: 1), () {
         context.read<NoteProvider>().addNote(_note);
       });

@@ -3,6 +3,7 @@ library new_note;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../providers/auth_provider.dart';
 import '../../providers/note_provider.dart';
 import '../../models/Note.dart';
 import '../../utils/date_formatter.dart';

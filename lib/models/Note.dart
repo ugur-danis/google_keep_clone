@@ -5,12 +5,14 @@ import '../services/interfaces/IEntity.dart';
 
 class Note extends IEntity {
   String? id;
+  String? userId;
   String? title;
   String? note;
   DateTime? lastEditDate;
 
   Note({
     this.id,
+    this.userId,
     this.lastEditDate,
     this.title = '',
     this.note = '',
@@ -23,6 +25,7 @@ class Note extends IEntity {
     final data = snapshot.data();
     return Note(
       id: data?['id'],
+      userId: data?['userId'],
       title: data?['title'],
       note: data?['note'],
       lastEditDate: (data?['lastEditDate'] as Timestamp).toDate(),
@@ -31,6 +34,7 @@ class Note extends IEntity {
 
   Note.fromMap(Map<String, dynamic> data)
       : id = data['id'],
+        userId = data['userId'],
         title = data['title'],
         note = data['note'],
         lastEditDate = (data['lastEditDate'] as Timestamp).toDate();
@@ -38,12 +42,9 @@ class Note extends IEntity {
   @override
   Map<String, dynamic> toMap() => {
         'id': id,
+        'userId': userId,
         'title': title,
         'note': note,
         'lastEditDate': Timestamp.fromDate(lastEditDate!),
       };
-
-  @override
-  String toString() =>
-      "Response(id: $id,title: $title,note: $note,lastEditDate: $lastEditDate)";
 }

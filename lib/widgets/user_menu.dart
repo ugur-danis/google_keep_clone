@@ -90,7 +90,11 @@ class UserMenu extends StatelessWidget {
                 'Başka bir hesap ekle',
                 style: Theme.of(context).textTheme.labelLarge,
               ),
-              onPressed: () {},
+              onPressed: () async {
+                await context.read<AuthProvider>().signOut();
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const SignInScreen()));
+              },
               icon: const Icon(
                 Icons.person_add_alt,
                 size: 26,

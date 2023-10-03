@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/note_provider.dart';
 import '../../models/Note.dart';
-import '../../utils/date_formatter.dart';
+import '../../utils/formatters/date_formatter.dart';
 
 part 'new_note_view_model.dart';
 

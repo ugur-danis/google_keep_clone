@@ -2,6 +2,7 @@ part of 'new_note_screen.dart';
 
 mixin _NewNoteScreenMixin on State<NewNoteScreen> {
   late final Note _note;
+  Function? _deletedNoteDelegate;
   final TextEditingController _titleEditingController = TextEditingController();
   final TextEditingController _noteEditingController = TextEditingController();
 
@@ -45,10 +46,22 @@ mixin _NewNoteScreenMixin on State<NewNoteScreen> {
   }
 
   void deleteNote() {
-    context.read<NoteProvider>().deleteNote(_note);
-    Navigator.popUntil(
-      context,
-      (route) => route.isFirst,
+    _deletedNoteDelegate =
+        context.read<NoteProvider>().deleteNoteDelayed(_note);
+    notifyNoteDeleted();
+    Navigator.popUntil(context, (route) => route.isFirst);
+  }
+
+  void notifyNoteDeleted() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 6),
+        content: const Text('Note is deleted'),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () => _deletedNoteDelegate!(),
+        ),
+      ),
     );
   }
 

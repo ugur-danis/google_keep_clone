@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 
 import '../main.dart';
@@ -43,6 +45,20 @@ class NoteProvider extends ChangeNotifier {
   void deleteNote(Note note) async {
     await _noteManager.delete(note);
     notifyListeners();
+  }
+
+  Function deleteNoteDelayed(Note note,
+      [Duration duration = const Duration(seconds: 6)]) {
+    _notes.remove(note);
+    notifyListeners();
+
+    final Timer timer = Timer(duration, () => deleteNote(note));
+
+    return () {
+      timer.cancel();
+      _notes.add(note);
+      notifyListeners();
+    };
   }
 
   void _clearNotesAndAddAll(List<Note> notes) {

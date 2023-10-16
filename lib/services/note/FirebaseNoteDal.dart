@@ -52,7 +52,8 @@ class FirebaseNoteDal implements IFirebaseNoteDal {
   Future<void> add(Note note) async {
     try {
       final DocumentReference<Map<String, dynamic>> ref =
-          _firestore.collection('notes').doc();
+          _firestore.collection('notes').doc(note.id);
+
       note.id = ref.id;
       await ref.set(note.toMap());
     } catch (e) {

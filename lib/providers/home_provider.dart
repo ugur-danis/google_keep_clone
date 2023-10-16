@@ -1,22 +1,18 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
 import '../main.dart';
 import '../models/Note.dart';
 import '../services/note/interfaces/IFirebaseNoteManager.dart';
 
-class NoteProvider extends ChangeNotifier {
-  final List<Note> _notes = [];
+class HomeProvider extends ChangeNotifier {
   late final IFirebaseNoteManager _noteManager;
+  final List<Note> _notes = [];
 
-  NoteProvider() {
-    _noteManager = locator.get<IFirebaseNoteManager>();
-  }
+  HomeProvider() : _noteManager = locator.get<IFirebaseNoteManager>();
 
   List<Note> get notes => _notes;
 
-  NoteProvider configure() {
+  HomeProvider configure() {
     _noteManager.addListener(_handleNotesChange);
     return this;
   }
@@ -34,31 +30,18 @@ class NoteProvider extends ChangeNotifier {
 
   void addNote(Note note) async {
     _noteManager.add(note);
-    notifyListeners();
   }
 
   void updateNote(Note note) async {
-    await _noteManager.update(note);
-    notifyListeners();
+    _noteManager.update(note);
   }
 
-  void deleteNote(Note note) async {
-    await _noteManager.delete(note);
-    notifyListeners();
+  void restoreNote(Note note) async {
+    _noteManager.restore(note);
   }
 
-  Function deleteNoteDelayed(Note note,
-      [Duration duration = const Duration(seconds: 6)]) {
-    _notes.remove(note);
-    notifyListeners();
-
-    final Timer timer = Timer(duration, () => deleteNote(note));
-
-    return () {
-      timer.cancel();
-      _notes.add(note);
-      notifyListeners();
-    };
+  void moveNoteToRecycleBin(Note note) async {
+    _noteManager.moveToRecycleBin(note);
   }
 
   void _clearNotesAndAddAll(List<Note> notes) {

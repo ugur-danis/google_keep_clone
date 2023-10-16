@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 import '../../providers/auth_provider.dart';
-import '../../providers/note_provider.dart';
+import '../../providers/home_provider.dart';
 import 'IConfigureDependencies.dart';
 
 class AppInit {
@@ -14,7 +14,7 @@ class AppInit {
 
   final List<SingleChildWidget> providers = [
     ChangeNotifierProvider(create: (_) => AuthProvider()),
-    ChangeNotifierProvider(create: (_) => NoteProvider()),
+    ChangeNotifierProvider(create: (_) => HomeProvider()),
   ];
 
   Future<void> init() async {

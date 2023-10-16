@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/auth_provider.dart';
-import '../../providers/note_provider.dart';
+import '../../providers/home_provider.dart';
 import '../../widgets/drawer_menu.dart';
 import '../../widgets/note_item.dart';
 import '../../widgets/user_menu.dart';
@@ -104,8 +104,8 @@ class _HomeScreenState extends State<HomeScreen> with _HomeScreenMixin {
         padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
         crossAxisCount: _gridCrossAxisCount,
         children: List.generate(
-          context.watch<NoteProvider>().notes.length,
-          (index) => NoteItem(note: context.watch<NoteProvider>().notes[index]),
+          context.watch<HomeProvider>().notes.length,
+          (index) => NoteItem(note: context.watch<HomeProvider>().notes[index]),
         ),
       ),
     );

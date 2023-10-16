@@ -6,7 +6,7 @@ mixin _HomeScreenMixin on State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<NoteProvider>().configure().getNotes();
+    context.read<HomeProvider>().configure().getNotes();
   }
 
   void focusClear() => FocusScope.of(context).unfocus();

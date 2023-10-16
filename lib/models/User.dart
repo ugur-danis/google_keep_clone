@@ -2,7 +2,9 @@
 
 import 'package:firebase_auth/firebase_auth.dart' as FirebaseAuth;
 
-class User {
+import '../services/interfaces/IEntity.dart';
+
+class User extends IEntity {
   User({
     this.id,
     this.username,
@@ -23,4 +25,13 @@ class User {
         email = user?.email,
         photoURL = user?.photoURL,
         refreshToken = user?.refreshToken;
+
+  @override
+  Map<String, dynamic> toMap() => {
+        'id': id,
+        'username': username,
+        'email': email,
+        'photoURL': photoURL,
+        'refreshToken': refreshToken,
+      };
 }

@@ -47,6 +47,22 @@ class Note extends IEntity {
         'note': note,
         'lastEditDate': Timestamp.fromDate(lastEditDate!),
       };
+
+  Note copyWith({
+    String? id,
+    String? userId,
+    String? title,
+    String? note,
+    DateTime? lastEditDate,
+  }) =>
+      Note(
+        id: id ?? this.id,
+        userId: userId ?? this.userId,
+        title: title ?? this.title,
+        note: note ?? this.note,
+        lastEditDate: lastEditDate ?? this.lastEditDate,
+      );
+
   @override
   int get hashCode => Object.hash(id, userId, title, note, lastEditDate);
 

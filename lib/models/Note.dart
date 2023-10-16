@@ -47,4 +47,17 @@ class Note extends IEntity {
         'note': note,
         'lastEditDate': Timestamp.fromDate(lastEditDate!),
       };
+  @override
+  int get hashCode => Object.hash(id, userId, title, note, lastEditDate);
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Note &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          userId == other.userId &&
+          title == other.title &&
+          note == other.note &&
+          lastEditDate == other.lastEditDate;
 }

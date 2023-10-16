@@ -29,11 +29,6 @@ class DarkTheme {
       bottomAppBarTheme: const BottomAppBarTheme(
         color: CustomColors.caviar,
       ),
-      iconButtonTheme: const IconButtonThemeData(
-        style: ButtonStyle(
-          iconColor: MaterialStatePropertyAll(CustomColors.ladyNicole),
-        ),
-      ),
       appBarTheme: const AppBarTheme(
         backgroundColor: CustomColors.caviar,
         actionsIconTheme: IconThemeData(color: CustomColors.ladyNicole),
@@ -59,6 +54,9 @@ class DarkTheme {
       scaffoldBackgroundColor: CustomColors.umbra,
       checkboxTheme: const CheckboxThemeData(
         checkColor: MaterialStatePropertyAll(Colors.blue),
+      ),
+      popupMenuTheme: const PopupMenuThemeData(
+        color: CustomColors.caviar,
       ),
     );
   }

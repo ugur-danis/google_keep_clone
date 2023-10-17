@@ -22,6 +22,11 @@ class DrawerMenu extends StatelessWidget {
 
   final DrawerMenuScreens screen;
 
+  void navTo(BuildContext context, Widget widget) {
+    Navigator.of(context).pop(); // close the drawer
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => widget));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -45,10 +50,7 @@ class DrawerMenu extends StatelessWidget {
               selected: screen == DrawerMenuScreens.notes,
               title: const Text('Notes'),
               leading: const Icon(Icons.lightbulb_outlined),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const HomeScreen()));
-              },
+              onTap: () => navTo(context, const HomeScreen()),
             ),
             ListTile(
               selected: screen == DrawerMenuScreens.reminders,
@@ -72,19 +74,13 @@ class DrawerMenu extends StatelessWidget {
               selected: screen == DrawerMenuScreens.recycleBin,
               title: const Text('Recycle Bin'),
               leading: const Icon(Icons.delete_outlined),
-              onTap: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const RecycleBinScreen()));
-              },
+              onTap: () => navTo(context, const RecycleBinScreen()),
             ),
             ListTile(
               selected: screen == DrawerMenuScreens.settings,
               title: const Text('Settings'),
               leading: const Icon(Icons.settings),
-              onTap: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const SettingsScreen()));
-              },
+              onTap: () => navTo(context, const SettingsScreen()),
             ),
           ],
         ),

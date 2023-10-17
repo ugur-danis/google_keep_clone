@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_keep_clone/main.dart';
-import 'package:google_keep_clone/services/auth/interfaces/IAuthManager.dart';
 
+import '../main.dart';
 import '../models/User.dart';
+import '../services/auth/interfaces/IAuthManager.dart';
 
 class AuthProvider extends ChangeNotifier {
   User? _user;
@@ -19,5 +19,10 @@ class AuthProvider extends ChangeNotifier {
     setUser(user);
 
     return hasSession;
+  }
+
+  Future<void> signOut() async {
+    locator.get<IAuthManager>().signOut();
+    setUser(null);
   }
 }

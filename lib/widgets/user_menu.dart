@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
+import '../screens/sign_in/sign_in_screen.dart';
 
 class UserMenu extends StatelessWidget {
   const UserMenu({super.key});
@@ -89,7 +90,11 @@ class UserMenu extends StatelessWidget {
                 'Başka bir hesap ekle',
                 style: Theme.of(context).textTheme.labelLarge,
               ),
-              onPressed: () {},
+              onPressed: () async {
+                await context.read<AuthProvider>().signOut();
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const SignInScreen()));
+              },
               icon: const Icon(
                 Icons.person_add_alt,
                 size: 26,

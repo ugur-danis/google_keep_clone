@@ -112,7 +112,7 @@ class _RecycleBinScreenState extends State<RecycleBinScreen>
       padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       crossAxisCount: 2,
       children: List.generate(
-        snapshot.data!.length,
+        snapshot.data.length,
         (index) => buildNoteItem(snapshot, index),
       ),
     );

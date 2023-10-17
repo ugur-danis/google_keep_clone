@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> with _HomeScreenMixin {
         onTap: () => focusClear(),
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          drawer: const DrawerMenu(),
+          drawer: const DrawerMenu(screen: DrawerMenuScreens.notes),
           bottomNavigationBar: const _BottomBar(),
           floatingActionButton: _getFloatingButton(),
           floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,

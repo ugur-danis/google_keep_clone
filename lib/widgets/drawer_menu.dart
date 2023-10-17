@@ -1,23 +1,26 @@
 import 'package:flutter/material.dart';
 
 import '../constants/color.dart';
+import '../screens/home/home_screen.dart';
+import '../screens/recycle_bin/recycle_bin_screen.dart';
 import 'settings_screen.dart';
 
-class DrawerMenu extends StatefulWidget {
-  const DrawerMenu({super.key});
-
-  @override
-  State<DrawerMenu> createState() => _DrawerMenuState();
+enum DrawerMenuScreens<int> {
+  notes,
+  reminders,
+  tag,
+  archive,
+  recycleBin,
+  settings;
 }
 
-class _DrawerMenuState extends State<DrawerMenu> {
-  int _selectedIndex = 0;
+class DrawerMenu extends StatelessWidget {
+  const DrawerMenu({
+    super.key,
+    required this.screen,
+  });
 
-  void onItemTapped(index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+  final DrawerMenuScreens screen;
 
   @override
   Widget build(BuildContext context) {
@@ -39,37 +42,43 @@ class _DrawerMenuState extends State<DrawerMenu> {
               ),
             ),
             ListTile(
-              selected: _selectedIndex == 0,
+              selected: screen == DrawerMenuScreens.notes,
               title: const Text('Notes'),
               leading: const Icon(Icons.lightbulb_outlined),
-              onTap: () => onItemTapped(0),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const HomeScreen()));
+              },
             ),
             ListTile(
-              selected: _selectedIndex == 1,
+              selected: screen == DrawerMenuScreens.reminders,
               title: const Text('Reminders'),
               leading: const Icon(Icons.notifications_none),
-              onTap: () => onItemTapped(1),
+              onTap: () => {},
             ),
             ListTile(
-              selected: _selectedIndex == 2,
+              selected: screen == DrawerMenuScreens.tag,
               title: const Text('Create new tag'),
               leading: const Icon(Icons.add),
-              onTap: () => onItemTapped(2),
+              onTap: () => {},
             ),
             ListTile(
-              selected: _selectedIndex == 3,
+              selected: screen == DrawerMenuScreens.archive,
               title: const Text('Archive'),
               leading: const Icon(Icons.archive_outlined),
-              onTap: () => onItemTapped(3),
+              onTap: () => {},
             ),
             ListTile(
-              selected: _selectedIndex == 4,
+              selected: screen == DrawerMenuScreens.recycleBin,
               title: const Text('Recycle Bin'),
               leading: const Icon(Icons.delete_outlined),
-              onTap: () => onItemTapped(4),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const RecycleBinScreen()));
+              },
             ),
             ListTile(
-              selected: _selectedIndex == 5,
+              selected: screen == DrawerMenuScreens.settings,
               title: const Text('Settings'),
               leading: const Icon(Icons.settings),
               onTap: () {

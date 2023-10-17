@@ -25,7 +25,7 @@ class _RecycleBinScreenState extends State<RecycleBinScreen>
       resizeToAvoidBottomInset: false,
       appBar:
           _selectedNotes.isEmpty ? buildAppBar() : buildItemSelectedAppBar(),
-      drawer: const DrawerMenu(),
+      drawer: const DrawerMenu(screen: DrawerMenuScreens.recycleBin),
       body: SafeArea(
         child: buildContent(),
       ),

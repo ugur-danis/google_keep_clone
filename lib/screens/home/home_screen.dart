@@ -1,18 +1,20 @@
-library home_screen;
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
+import '../../main.dart';
+import '../../models/Note.dart';
+import '../../services/note/interfaces/IFirebaseNoteManager.dart';
 import '../../providers/auth_provider.dart';
-import '../../providers/home_provider.dart';
 import '../../widgets/drawer_menu.dart';
 import '../../widgets/note_item.dart';
 import '../../widgets/user_menu.dart';
 import '../new_note/new_note_screen.dart';
 import '../search_note/search_note_screen.dart';
 
-part 'home_view_model.dart';
+part 'home_screen_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,23 +28,26 @@ class _HomeScreenState extends State<HomeScreen> with _HomeScreenMixin {
   Widget build(BuildContext context) {
     return SafeArea(
       child: GestureDetector(
-        onTap: () => focusClear(),
+        onTap: focusClear,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
           drawer: const DrawerMenu(screen: DrawerMenuScreens.notes),
           bottomNavigationBar: const _BottomBar(),
-          floatingActionButton: _getFloatingButton(),
+          floatingActionButton: buildFloatingButton(),
           floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
           body: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [_getHeader(), _getContent()],
+            children: [
+              buildHeader(),
+              buildContent(),
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget _getHeader() {
+  Widget buildHeader() {
     return GestureDetector(
       onTap: navToSearchScreen,
       child: Container(
@@ -50,7 +55,6 @@ class _HomeScreenState extends State<HomeScreen> with _HomeScreenMixin {
         child: AppBar(
           primary: true,
           scrolledUnderElevation: 0,
-          toolbarHeight: 50,
           shape: const StadiumBorder(),
           titleSpacing: 0,
           title: Text(
@@ -61,9 +65,9 @@ class _HomeScreenState extends State<HomeScreen> with _HomeScreenMixin {
                 .copyWith(color: Theme.of(context).colorScheme.secondary),
           ),
           actions: [
-            switchViewButton(),
+            buildSwitchViewButton(),
             const SizedBox(width: 10),
-            avatar(),
+            buildAvatar(),
             const SizedBox(width: 10),
           ],
         ),
@@ -71,14 +75,14 @@ class _HomeScreenState extends State<HomeScreen> with _HomeScreenMixin {
     );
   }
 
-  IconButton switchViewButton() {
+  IconButton buildSwitchViewButton() {
     return IconButton(
       onPressed: toggleGridCrossAxisCount,
       icon: const Icon(Icons.view_agenda_outlined),
     );
   }
 
-  Widget avatar() {
+  Widget buildAvatar() {
     return GestureDetector(
       onTap: () {
         showDialog(
@@ -97,21 +101,51 @@ class _HomeScreenState extends State<HomeScreen> with _HomeScreenMixin {
     );
   }
 
-  Widget _getContent() {
+  Widget buildContent() {
+    return StreamBuilder(
+      stream: _streamController.stream,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(child: Text(snapshot.error.toString()));
+        } else if (snapshot.hasData) {
+          if (snapshot.data.length < 1) {
+            return buildNoNotesText(context);
+          }
+          return buildGridView(snapshot);
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
+
+  Expanded buildNoNotesText(BuildContext context) {
+    return Expanded(
+      child: Center(
+          child: Text(
+        'Notes you add appear here',
+        style: Theme.of(context).textTheme.bodyLarge,
+      )),
+    );
+  }
+
+  Expanded buildGridView(AsyncSnapshot<dynamic> snapshot) {
     return Expanded(
       child: GridView.count(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
         crossAxisCount: _gridCrossAxisCount,
         children: List.generate(
-          context.watch<HomeProvider>().notes.length,
-          (index) => NoteItem(note: context.watch<HomeProvider>().notes[index]),
+          snapshot.data.length,
+          (index) => NoteItem(note: snapshot.data[index]),
         ),
       ),
     );
   }
 
-  Widget _getFloatingButton() {
+  Widget buildFloatingButton() {
     return FloatingActionButton(
       onPressed: navToNewNoteScreen,
       shape: const CircleBorder(),

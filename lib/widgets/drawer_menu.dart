@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants/color.dart';
+import '../screens/archive/archive_screen.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/recycle_bin/recycle_bin_screen.dart';
 import '../screens/settings/settings_screen.dart';
@@ -68,7 +69,7 @@ class DrawerMenu extends StatelessWidget {
               selected: screen == DrawerMenuScreens.archive,
               title: const Text('Archive'),
               leading: const Icon(Icons.archive_outlined),
-              onTap: () => {},
+              onTap: () => navTo(context, const ArchiveScreen()),
             ),
             ListTile(
               selected: screen == DrawerMenuScreens.recycleBin,

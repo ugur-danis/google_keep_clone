@@ -1,9 +1,13 @@
 // ignore_for_file: file_names
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_keep_clone/services/archive/FirebaseArchiveDal.dart';
+import 'package:google_keep_clone/services/archive/FirebaseArchiveManager.dart';
+import 'package:google_keep_clone/services/archive/interfaces/IFirebaseArchiveManager.dart';
 
 import '../../firebase_options.dart';
 import '../../main.dart';
+import '../../services/archive/interfaces/IFirebaseArchiveDal.dart';
 import '../../services/auth/AuthManager.dart';
 import '../../services/auth/FirebaseAuthDal.dart';
 import '../../services/auth/interfaces/IAuthManager.dart';
@@ -33,10 +37,15 @@ class FirebaseConfigureDependencies implements IConfigureDependencies {
     final IFirebaseRecycleBinManager recycleBinManager =
         FirebaseRecycleBinManager(
             noteDal: noteDal, authDal: authDal, recycleBinDal: recycleBinDal);
+    final IFirebaseArchiveDal archiveDal = FirebaseArchiveDal();
+    final IFirebaseArchiveManager archiveManager = FirebaseArchiveManager(
+        archiveDal: archiveDal, authDal: authDal, noteDal: noteDal);
 
     locator.registerLazySingleton<IAuthManager>(() => authManager);
     locator.registerLazySingleton<IFirebaseNoteManager>(() => noteManager);
     locator.registerLazySingleton<IFirebaseRecycleBinManager>(
         () => recycleBinManager);
+    locator
+        .registerLazySingleton<IFirebaseArchiveManager>(() => archiveManager);
   }
 }

@@ -6,6 +6,7 @@ import '../../main.dart';
 import '../../models/Note.dart';
 import '../../services/archive/interfaces/IFirebaseArchiveManager.dart';
 import '../../widgets/drawer_menu.dart';
+import '../../widgets/illustrated_message.dart';
 import '../../widgets/note_item.dart';
 
 part 'archive_screen_model.dart';
@@ -126,19 +127,10 @@ class _ArchiveScreenState extends State<ArchiveScreen>
     );
   }
 
-  Center buildNoNotesMessage(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(Icons.archive_outlined, size: 150),
-          const SizedBox(height: 10),
-          Text(
-            'Your archived notes appear here',
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
-        ],
-      ),
+  IllustratedMessage buildNoNotesMessage(BuildContext context) {
+    return const IllustratedMessage(
+      icon: Icons.archive_outlined,
+      text: 'Your archived notes appear here',
     );
   }
 

@@ -9,6 +9,7 @@ import '../../models/Note.dart';
 import '../../services/note/interfaces/IFirebaseNoteManager.dart';
 import '../../providers/auth_provider.dart';
 import '../../widgets/drawer_menu.dart';
+import '../../widgets/illustrated_message.dart';
 import '../../widgets/note_item.dart';
 import '../../widgets/user_menu.dart';
 import '../edit_note/edit_note_screen.dart';
@@ -109,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> with _HomeScreenMixin {
           return Center(child: Text(snapshot.error.toString()));
         } else if (snapshot.hasData) {
           if (snapshot.data.length < 1) {
-            return buildNoNotesText(context);
+            return buildNoNotesMessage(context);
           }
           return buildGridView(snapshot);
         } else {
@@ -121,13 +122,10 @@ class _HomeScreenState extends State<HomeScreen> with _HomeScreenMixin {
     );
   }
 
-  Expanded buildNoNotesText(BuildContext context) {
-    return Expanded(
-      child: Center(
-          child: Text(
-        'Notes you add appear here',
-        style: Theme.of(context).textTheme.bodyLarge,
-      )),
+  IllustratedMessage buildNoNotesMessage(BuildContext context) {
+    return const IllustratedMessage(
+      icon: Icons.lightbulb_outline,
+      text: 'Notes you add appear here',
     );
   }
 

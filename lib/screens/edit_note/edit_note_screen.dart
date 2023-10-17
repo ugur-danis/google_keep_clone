@@ -10,7 +10,7 @@ import '../../utils/formatters/date_formatter.dart';
 import '../home/home_screen.dart';
 import '../recycle_bin/recycle_bin_screen.dart';
 
-part 'edit_note_view_model.dart';
+part 'edit_note_screen_model.dart';
 
 class EditNoteScreen extends StatefulWidget {
   const EditNoteScreen({

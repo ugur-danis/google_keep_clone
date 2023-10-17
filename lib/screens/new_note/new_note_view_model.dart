@@ -1,8 +1,10 @@
 part of 'new_note_screen.dart';
 
 mixin _NewNoteScreenMixin on State<NewNoteScreen> {
+  late final IFirebaseNoteManager _noteManager;
+  late final IFirebaseRecycleBinManager _recycleBinManager;
   late final Note _note;
-  Function? _deletedNoteDelegate;
+
   final TextEditingController _titleEditingController = TextEditingController();
   final TextEditingController _noteEditingController = TextEditingController();
 
@@ -10,23 +12,30 @@ mixin _NewNoteScreenMixin on State<NewNoteScreen> {
   void initState() {
     super.initState();
 
-    if (widget.isNewNote) {
-      _note = Note(
-        userId: context.read<AuthProvider>().user?.id,
-        title: '',
-        note: '',
-        lastEditDate: DateTime.now(),
-      );
-      Future.delayed(const Duration(seconds: 1), () {
-        context.read<NoteProvider>().addNote(_note);
-      });
+    _noteManager = locator.get<IFirebaseNoteManager>();
+    _recycleBinManager = locator.get<IFirebaseRecycleBinManager>();
+
+    if (widget.note == null) {
+      _handleNewNote();
     } else {
-      _note = context
-          .read<NoteProvider>()
-          .notes
-          .singleWhere((element) => element.id == widget.noteId);
+      _note = widget.note!.copyWith();
     }
 
+    initController();
+  }
+
+  void _handleNewNote() {
+    _note = Note(
+      userId: context.read<AuthProvider>().user?.id,
+      title: '',
+      note: '',
+      lastEditDate: DateTime.now(),
+    );
+
+    _noteManager.add(_note);
+  }
+
+  void initController() {
     _titleEditingController.text = _note.title!;
     _noteEditingController.text = _note.note!;
 
@@ -34,22 +43,69 @@ mixin _NewNoteScreenMixin on State<NewNoteScreen> {
       setState(() {
         _note.title = _titleEditingController.text;
       });
-      context.read<NoteProvider>().updateNote(_note);
+      _noteManager.update(_note);
     });
 
     _noteEditingController.addListener(() {
       setState(() {
         _note.note = _noteEditingController.text;
       });
-      context.read<NoteProvider>().updateNote(_note);
+      _noteManager.update(_note);
     });
   }
 
   void deleteNote() {
-    _deletedNoteDelegate =
-        context.read<NoteProvider>().deleteNoteDelayed(_note);
-    notifyNoteDeleted();
     Navigator.popUntil(context, (route) => route.isFirst);
+    _noteManager.moveToRecycleBin(_note);
+    notifyNoteDeleted();
+  }
+
+  void restoreNoteAndGoHomeScreen() {
+    _noteManager.restore(_note);
+
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => const HomeScreen(),
+      ),
+    );
+  }
+
+  void showNoteDeletionConfirmDialog() {
+    Widget cancelButton = TextButton(
+      child: const Text("Cancel"),
+      onPressed: () => Navigator.of(context).pop(),
+    );
+
+    Widget continueButton = TextButton(
+      child: const Text("Delete"),
+      onPressed: () {
+        _recycleBinManager.delete(_note);
+
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const RecycleBinScreen(),
+          ),
+        );
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        'Permanently delete note?',
+        style: Theme.of(context).textTheme.bodyMedium,
+      ),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => alert,
+    );
   }
 
   void notifyNoteDeleted() {
@@ -59,7 +115,9 @@ mixin _NewNoteScreenMixin on State<NewNoteScreen> {
         content: const Text('Note is deleted'),
         action: SnackBarAction(
           label: 'Undo',
-          onPressed: () => _deletedNoteDelegate!(),
+          onPressed: () {
+            _noteManager.restore(_note);
+          },
         ),
       ),
     );
@@ -67,7 +125,7 @@ mixin _NewNoteScreenMixin on State<NewNoteScreen> {
 
   Future<bool> onWillPop() {
     if (_note.note!.isEmpty && _note.title!.isEmpty) {
-      context.read<NoteProvider>().deleteNote(_note);
+      _noteManager.moveToRecycleBin(_note);
     }
 
     return Future.value(true);

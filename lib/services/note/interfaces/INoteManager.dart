@@ -9,4 +9,6 @@ abstract class INoteManager {
   Future<void> add(Note note);
   Future<void> update(Note note);
   Future<void> delete(Note note);
+  Future<void> restore(Note note);
+  Future<void> moveToRecycleBin(Note note);
 }

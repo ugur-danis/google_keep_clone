@@ -1,5 +1,7 @@
 // ignore_for_file: file_names
 
+import 'package:google_keep_clone/services/recycle_bin/interfaces/IFirebaseRecycleBinDal.dart';
+
 import '../../models/Note.dart';
 import '../../models/User.dart';
 import '../../utils/types/FetchQuery.dart';
@@ -9,12 +11,15 @@ import 'interfaces/IFirebaseNoteManager.dart';
 
 class FirebaseNoteManager implements IFirebaseNoteManager {
   final IFirebaseNoteDal _noteDal;
+  final IFirebaseRecycleBinDal _recycleBinDal;
   final IFirebaseAuthDal _authDal;
 
   FirebaseNoteManager({
     required IFirebaseNoteDal noteDal,
+    required IFirebaseRecycleBinDal recycleBinDal,
     required IFirebaseAuthDal authDal,
   })  : _noteDal = noteDal,
+        _recycleBinDal = recycleBinDal,
         _authDal = authDal;
 
   @override
@@ -25,6 +30,18 @@ class FirebaseNoteManager implements IFirebaseNoteManager {
   @override
   Future<void> delete(Note note) async {
     _noteDal.delete(note);
+  }
+
+  @override
+  Future<void> moveToRecycleBin(Note note) async {
+    _noteDal.delete(note);
+    _recycleBinDal.add(note);
+  }
+
+  @override
+  Future<void> restore(Note note) async {
+    _noteDal.add(note);
+    _recycleBinDal.delete(note);
   }
 
   @override

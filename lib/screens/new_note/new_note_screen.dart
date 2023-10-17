@@ -3,20 +3,26 @@ library new_note;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../main.dart';
 import '../../providers/auth_provider.dart';
-import '../../providers/note_provider.dart';
 import '../../models/Note.dart';
+import '../../services/note/interfaces/IFirebaseNoteManager.dart';
+import '../../services/recycle_bin/interfaces/IFirebaseRecycleBinManager.dart';
 import '../../utils/formatters/date_formatter.dart';
+import '../home/home_screen.dart';
+import '../recycle_bin/recycle_bin_screen.dart';
 
 part 'new_note_view_model.dart';
 
 class NewNoteScreen extends StatefulWidget {
-  NewNoteScreen({Key? key, this.noteId = ''}) : super(key: key) {
-    isNewNote = noteId.isEmpty;
-  }
+  const NewNoteScreen({
+    super.key,
+    this.note,
+    this.isEditable = true,
+  });
 
-  final String noteId;
-  late final bool isNewNote;
+  final Note? note;
+  final bool isEditable;
 
   @override
   State<NewNoteScreen> createState() => _NewNoteScreenState();
@@ -32,20 +38,22 @@ class _NewNoteScreenState extends State<NewNoteScreen>
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.transparent,
-            actions: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.push_pin_outlined),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.notification_add_outlined),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.archive_outlined),
-              ),
-            ],
+            actions: !widget.isEditable
+                ? []
+                : [
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.push_pin_outlined),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.notification_add_outlined),
+                    ),
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.archive_outlined),
+                    ),
+                  ],
           ),
           bottomNavigationBar: buildBottomNavigationBar(context),
           body: SingleChildScrollView(
@@ -54,6 +62,7 @@ class _NewNoteScreenState extends State<NewNoteScreen>
               children: [
                 TextField(
                   controller: _titleEditingController,
+                  readOnly: !widget.isEditable,
                   style: Theme.of(context).textTheme.titleLarge!,
                   maxLines: null,
                   decoration: const InputDecoration(
@@ -63,6 +72,7 @@ class _NewNoteScreenState extends State<NewNoteScreen>
                 ),
                 TextField(
                   controller: _noteEditingController,
+                  readOnly: !widget.isEditable,
                   maxLines: null,
                   decoration: const InputDecoration(
                     hintText: 'Not',
@@ -78,17 +88,32 @@ class _NewNoteScreenState extends State<NewNoteScreen>
   }
 
   void showActionList() {
+    final List<ListTile> actionList = [];
+
+    if (widget.isEditable) {
+      actionList.add(ListTile(
+        leading: const Icon(Icons.delete_outlined),
+        title: const Text('Delete'),
+        onTap: deleteNote,
+      ));
+    } else {
+      actionList.add(ListTile(
+        leading: const Icon(Icons.restore),
+        title: const Text('Restore'),
+        onTap: restoreNoteAndGoHomeScreen,
+      ));
+      actionList.add(ListTile(
+        leading: const Icon(Icons.delete_outlined),
+        title: const Text('Delete completely'),
+        onTap: showNoteDeletionConfirmDialog,
+      ));
+    }
+
     showModalBottomSheet(
       context: context,
       builder: (context) => Column(
         mainAxisSize: MainAxisSize.min,
-        children: [
-          ListTile(
-            leading: const Icon(Icons.delete_outlined),
-            title: const Text('Delete'),
-            onTap: deleteNote,
-          ),
-        ],
+        children: actionList,
       ),
     );
   }
@@ -98,11 +123,13 @@ class _NewNoteScreenState extends State<NewNoteScreen>
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         IconButton(
-          onPressed: () {},
+          disabledColor: Colors.white30,
           icon: const Icon(Icons.add_box_outlined),
+          onPressed: !widget.isEditable ? null : () {},
         ),
         IconButton(
-          onPressed: () {},
+          disabledColor: Colors.white30,
+          onPressed: !widget.isEditable ? null : () {},
           icon: const Icon(Icons.color_lens_outlined),
         ),
         Expanded(

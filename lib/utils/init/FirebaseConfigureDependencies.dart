@@ -12,6 +12,10 @@ import '../../services/note/FirebaseNoteDal.dart';
 import '../../services/note/FirebaseNoteManager.dart';
 import '../../services/note/interfaces/IFirebaseNoteDal.dart';
 import '../../services/note/interfaces/IFirebaseNoteManager.dart';
+import '../../services/recycle_bin/FirebaseRecycleBinDal.dart';
+import '../../services/recycle_bin/FirebaseRecycleBinManager.dart';
+import '../../services/recycle_bin/interfaces/IFirebaseRecycleBinDal.dart';
+import '../../services/recycle_bin/interfaces/IFirebaseRecycleBinManager.dart';
 import 'IConfigureDependencies.dart';
 
 class FirebaseConfigureDependencies implements IConfigureDependencies {
@@ -23,12 +27,16 @@ class FirebaseConfigureDependencies implements IConfigureDependencies {
     final IFirebaseAuthDal authDal = FirebaseAuthDal();
     final IAuthManager authManager = AuthManager(authDal: authDal);
     final IFirebaseNoteDal noteDal = FirebaseNoteDal();
-    final IFirebaseNoteManager noteManager =
-        FirebaseNoteManager(noteDal: noteDal, authDal: authDal);
+    final IFirebaseRecycleBinDal recycleBinDal = FirebaseRecycleBinDal();
+    final IFirebaseNoteManager noteManager = FirebaseNoteManager(
+        noteDal: noteDal, authDal: authDal, recycleBinDal: recycleBinDal);
+    final IFirebaseRecycleBinManager recycleBinManager =
+        FirebaseRecycleBinManager(
+            noteDal: noteDal, authDal: authDal, recycleBinDal: recycleBinDal);
 
     locator.registerLazySingleton<IAuthManager>(() => authManager);
     locator.registerLazySingleton<IFirebaseNoteManager>(() => noteManager);
-    locator.registerSingleton<IAuthManager>(authManager);
-    locator.registerSingleton<IFirebaseNoteManager>(noteManager);
+    locator.registerLazySingleton<IFirebaseRecycleBinManager>(
+        () => recycleBinManager);
   }
 }

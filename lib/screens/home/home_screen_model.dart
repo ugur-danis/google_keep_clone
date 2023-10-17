@@ -37,7 +37,7 @@ mixin _HomeScreenMixin on State<HomeScreen> {
       .push(MaterialPageRoute(builder: (context) => const SearchNoteScreen()));
 
   void navToNewNoteScreen() => Navigator.of(context)
-      .push(MaterialPageRoute(builder: (context) => const NewNoteScreen()));
+      .push(MaterialPageRoute(builder: (context) => const EditNoteScreen()));
 
   void toggleGridCrossAxisCount() => setState(() {
         _gridCrossAxisCount = _gridCrossAxisCount == 2 ? 1 : 2;

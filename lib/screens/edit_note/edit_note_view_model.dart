@@ -1,6 +1,6 @@
-part of 'new_note_screen.dart';
+part of 'edit_note_screen.dart';
 
-mixin _NewNoteScreenMixin on State<NewNoteScreen> {
+mixin _EditNoteScreenMixin on State<EditNoteScreen> {
   late final IFirebaseNoteManager _noteManager;
   late final IFirebaseRecycleBinManager _recycleBinManager;
   late final Note _note;

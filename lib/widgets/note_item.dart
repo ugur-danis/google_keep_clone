@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../screens/new_note/new_note_screen.dart';
+import '../screens/edit_note/edit_note_screen.dart';
 import '../models/Note.dart';
 
 // ignore: must_be_immutable
@@ -49,7 +49,7 @@ class NoteItem extends StatelessWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => NewNoteScreen(
+                  builder: (context) => EditNoteScreen(
                     note: note,
                     isEditable: isEditable,
                   ),

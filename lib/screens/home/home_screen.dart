@@ -11,7 +11,7 @@ import '../../providers/auth_provider.dart';
 import '../../widgets/drawer_menu.dart';
 import '../../widgets/note_item.dart';
 import '../../widgets/user_menu.dart';
-import '../new_note/new_note_screen.dart';
+import '../edit_note/edit_note_screen.dart';
 import '../search_note/search_note_screen.dart';
 
 part 'home_screen_model.dart';

@@ -1,5 +1,3 @@
-library new_note;
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,10 +10,10 @@ import '../../utils/formatters/date_formatter.dart';
 import '../home/home_screen.dart';
 import '../recycle_bin/recycle_bin_screen.dart';
 
-part 'new_note_view_model.dart';
+part 'edit_note_view_model.dart';
 
-class NewNoteScreen extends StatefulWidget {
-  const NewNoteScreen({
+class EditNoteScreen extends StatefulWidget {
+  const EditNoteScreen({
     super.key,
     this.note,
     this.isEditable = true,
@@ -25,11 +23,11 @@ class NewNoteScreen extends StatefulWidget {
   final bool isEditable;
 
   @override
-  State<NewNoteScreen> createState() => _NewNoteScreenState();
+  State<EditNoteScreen> createState() => _EditNoteScreenState();
 }
 
-class _NewNoteScreenState extends State<NewNoteScreen>
-    with _NewNoteScreenMixin {
+class _EditNoteScreenState extends State<EditNoteScreen>
+    with _EditNoteScreenMixin {
   @override
   Widget build(BuildContext context) {
     return SafeArea(

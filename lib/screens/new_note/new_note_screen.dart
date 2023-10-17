@@ -87,6 +87,44 @@ class _NewNoteScreenState extends State<NewNoteScreen>
     );
   }
 
+  void showNoteDeletionConfirmDialog() {
+    Widget cancelButton = TextButton(
+      child: const Text("Cancel"),
+      onPressed: () => Navigator.of(context).pop(),
+    );
+
+    Widget continueButton = TextButton(
+      child: const Text("Delete"),
+      onPressed: () {
+        _recycleBinManager.delete(_note);
+
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const RecycleBinScreen(),
+          ),
+        );
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(
+        'Permanently delete note?',
+        style: Theme.of(context).textTheme.bodyMedium,
+      ),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => alert,
+    );
+  }
+
   void showActionList() {
     final List<ListTile> actionList = [];
 

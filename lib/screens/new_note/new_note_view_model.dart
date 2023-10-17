@@ -12,8 +12,8 @@ mixin _NewNoteScreenMixin on State<NewNoteScreen> {
   void initState() {
     super.initState();
 
-    _noteManager = locator.get<IFirebaseNoteManager>();
-    _recycleBinManager = locator.get<IFirebaseRecycleBinManager>();
+    _noteManager = locator<IFirebaseNoteManager>();
+    _recycleBinManager = locator<IFirebaseRecycleBinManager>();
 
     if (widget.note == null) {
       _handleNewNote();
@@ -21,7 +21,7 @@ mixin _NewNoteScreenMixin on State<NewNoteScreen> {
       _note = widget.note!.copyWith();
     }
 
-    initController();
+    _initController();
   }
 
   void _handleNewNote() {
@@ -35,7 +35,7 @@ mixin _NewNoteScreenMixin on State<NewNoteScreen> {
     _noteManager.add(_note);
   }
 
-  void initController() {
+  void _initController() {
     _titleEditingController.text = _note.title!;
     _noteEditingController.text = _note.note!;
 
@@ -67,44 +67,6 @@ mixin _NewNoteScreenMixin on State<NewNoteScreen> {
       MaterialPageRoute(
         builder: (context) => const HomeScreen(),
       ),
-    );
-  }
-
-  void showNoteDeletionConfirmDialog() {
-    Widget cancelButton = TextButton(
-      child: const Text("Cancel"),
-      onPressed: () => Navigator.of(context).pop(),
-    );
-
-    Widget continueButton = TextButton(
-      child: const Text("Delete"),
-      onPressed: () {
-        _recycleBinManager.delete(_note);
-
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) => const RecycleBinScreen(),
-          ),
-        );
-      },
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text(
-        'Permanently delete note?',
-        style: Theme.of(context).textTheme.bodyMedium,
-      ),
-      actions: [
-        cancelButton,
-        continueButton,
-      ],
-    );
-
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => alert,
     );
   }
 

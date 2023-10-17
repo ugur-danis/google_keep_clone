@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants/color.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/recycle_bin/recycle_bin_screen.dart';
-import 'settings_screen.dart';
+import '../screens/settings/settings_screen.dart';
 
 enum DrawerMenuScreens<int> {
   notes,
@@ -83,7 +83,7 @@ class DrawerMenu extends StatelessWidget {
               leading: const Icon(Icons.settings),
               onTap: () {
                 Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const Settings()));
+                    MaterialPageRoute(builder: (context) => const SettingsScreen()));
               },
             ),
           ],

@@ -45,14 +45,16 @@ class NoteItem extends StatelessWidget {
             onSelected?.call(false);
             return;
           }
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => NewNoteScreen(
-                  note: note,
-                  isEditable: isEditable,
-                ),
-              ));
+          Future.delayed(const Duration(milliseconds: 300), () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NewNoteScreen(
+                    note: note,
+                    isEditable: isEditable,
+                  ),
+                ));
+          });
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
 import 'package:get_it/get_it.dart';
@@ -31,10 +32,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = DarkTheme().theme;
+
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+      statusBarColor: theme.scaffoldBackgroundColor,
+      systemNavigationBarColor: theme.scaffoldBackgroundColor,
+    ));
+
     return MaterialApp(
       title: 'Google Keep Clone',
-      theme: DarkTheme().theme,
+      theme: theme,
       home: buildHome(context),
+      debugShowCheckedModeBanner: false,
     );
   }
 

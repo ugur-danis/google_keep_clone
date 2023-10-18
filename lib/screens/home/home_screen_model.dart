@@ -35,9 +35,21 @@ mixin _HomeScreenMixin on State<HomeScreen> {
     }
   }
 
-  void onChangeSelectedNotes(Note note, bool isSelected) {}
+  void onChangeSelectedNotes(Note note, bool isSelected) {
+    setState(() {
+      if (isSelected && !_selectedNotes.contains(note)) {
+        _selectedNotes.add(note);
+      } else {
+        _selectedNotes.remove(note);
+      }
+    });
+  }
 
-  void clearSelectedNotes() {}
+  void clearSelectedNotes() {
+    setState(() {
+      _selectedNotes.clear();
+    });
+  }
 
   void focusClear() => FocusScope.of(context).unfocus();
 

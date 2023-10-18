@@ -57,7 +57,12 @@ mixin _HomeScreenMixin on State<HomeScreen> {
 
   void deleteNote() {}
 
-  void createNoteCopy() async {}
+  void createNoteCopy() async {
+    final Note note = _selectedNotes.first;
+    note.id = null;
+    await _noteManager.add(note);
+    clearSelectedNotes();
+  }
 
   void navToSearchScreen() {
     Navigator.of(context).push(

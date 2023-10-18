@@ -39,6 +39,11 @@ class FirebaseArchiveManager implements IFirebaseArchiveManager {
   }
 
   @override
+  Future<void> add(Note note) async {
+    _archiveDal.add(note);
+  }
+
+  @override
   Future<void> restore(Note note) async {
     await _noteDal.add(note);
     await _archiveDal.delete(note);

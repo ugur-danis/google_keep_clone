@@ -53,7 +53,14 @@ mixin _HomeScreenMixin on State<HomeScreen> {
 
   void focusClear() => FocusScope.of(context).unfocus();
 
-  void archiveNotes() {}
+  void archiveNotes() {
+    for (var note in _selectedNotes) {
+      _noteManager.moveToArchive(note);
+    }
+
+    notifyNoteArchived(List.from(_selectedNotes));
+    clearSelectedNotes();
+  }
 
   void deleteNote() {
     for (var note in _selectedNotes) {
@@ -107,7 +114,26 @@ mixin _HomeScreenMixin on State<HomeScreen> {
     );
   }
 
-  void notifyNoteArchived(List<Note> archivedNotes) {}
+  void notifyNoteArchived(List<Note> archivedNotes) {
+    const String singleItemText = 'Note archived';
+    const String multiItemText = 'Notes archived';
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 6),
+        content:
+            Text(archivedNotes.length > 1 ? multiItemText : singleItemText),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            for (var note in archivedNotes) {
+              _archiveManager.restore(note);
+            }
+          },
+        ),
+      ),
+    );
+  }
 
   void _handleNotesChange(List<Note> notes) => _streamController.add(notes);
 }

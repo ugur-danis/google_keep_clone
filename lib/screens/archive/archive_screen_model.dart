@@ -2,6 +2,7 @@ part of 'archive_screen.dart';
 
 mixin _ArchiveScreenMixin on State<ArchiveScreen> {
   late final IFirebaseArchiveManager _archiveManager;
+  late final IFirebaseNoteManager _noteManager;
   late final StreamController _streamController;
   late final List<Note> _selectedNotes;
   int _gridCrossAxisCount = 2;
@@ -11,6 +12,7 @@ mixin _ArchiveScreenMixin on State<ArchiveScreen> {
     super.initState();
     _archiveManager = locator<IFirebaseArchiveManager>();
     _archiveManager.addListener(_handleNotesChange);
+    _noteManager = locator<IFirebaseNoteManager>();
     _streamController = StreamController();
     _selectedNotes = [];
 
@@ -64,7 +66,12 @@ mixin _ArchiveScreenMixin on State<ArchiveScreen> {
     clearSelectedNotes();
   }
 
-  void createNoteCopy() async {}
+  void createNoteCopy() async {
+    final Note note = _selectedNotes.first;
+    note.id = null;
+    await _noteManager.add(note);
+    clearSelectedNotes();
+  }
 
   void toggleGridCrossAxisCount() {
     setState(() {

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../../main.dart';
 import '../../models/Note.dart';
 import '../../services/archive/interfaces/IFirebaseArchiveManager.dart';
+import '../../services/note/interfaces/IFirebaseNoteManager.dart';
 import '../../widgets/drawer_menu.dart';
 import '../../widgets/illustrated_message.dart';
 import '../../widgets/note_item.dart';

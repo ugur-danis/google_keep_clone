@@ -66,7 +66,10 @@ mixin _ArchiveScreenMixin on State<ArchiveScreen> {
     });
   }
 
-  void navToSearchScreen() {}
+  void navToSearchScreen() {
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => const SearchNoteScreen()));
+  }
 
   void _handleNotesChange(List<Note> notes) => _streamController.add(notes);
 }

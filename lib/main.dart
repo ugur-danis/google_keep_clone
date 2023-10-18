@@ -33,11 +33,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = DarkTheme().theme;
-
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-      statusBarColor: theme.scaffoldBackgroundColor,
-      systemNavigationBarColor: theme.scaffoldBackgroundColor,
-    ));
+    setSystemUIStyle(theme);
 
     return MaterialApp(
       title: 'Google Keep Clone',
@@ -45,6 +41,14 @@ class MyApp extends StatelessWidget {
       home: buildHome(context),
       debugShowCheckedModeBanner: false,
     );
+  }
+
+  void setSystemUIStyle(ThemeData theme) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+      statusBarColor: theme.scaffoldBackgroundColor,
+      systemNavigationBarColor: theme.scaffoldBackgroundColor,
+      systemNavigationBarDividerColor: theme.scaffoldBackgroundColor,
+    ));
   }
 
   FutureBuilder<bool> buildHome(BuildContext context) {

@@ -4,6 +4,7 @@ mixin _ArchiveScreenMixin on State<ArchiveScreen> {
   late final IFirebaseArchiveManager _archiveManager;
   late final StreamController _streamController;
   late final List<Note> _selectedNotes;
+  int _gridCrossAxisCount = 2;
 
   @override
   void initState() {
@@ -46,6 +47,16 @@ mixin _ArchiveScreenMixin on State<ArchiveScreen> {
       _selectedNotes.clear();
     });
   }
+
+  void unarchiveNote() {}
+
+  void deleteNote() {}
+
+  void createNoteCopy() async {}
+
+  void toggleGridCrossAxisCount() {}
+
+  void navToSearchScreen() {}
 
   void _handleNotesChange(List<Note> notes) => _streamController.add(notes);
 }

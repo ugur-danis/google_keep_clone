@@ -3,4 +3,4 @@
 import '../../../models/Note.dart';
 import '../../interfaces/IEntityRepository.dart';
 
-abstract class IRecycleBinDal extends IEntityRepository<Note> {}
+abstract class ITrashDal extends IEntityRepository<Note> {}

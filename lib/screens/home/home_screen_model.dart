@@ -64,7 +64,7 @@ mixin _HomeScreenMixin on State<HomeScreen> {
 
   void deleteNote() {
     for (var note in _selectedNotes) {
-      _noteManager.moveToRecycleBin(note);
+      _noteManager.moveToTrash(note);
     }
 
     notifyNoteDeleted(List.from(_selectedNotes));

@@ -5,19 +5,19 @@ import '../../models/User.dart';
 import '../../utils/types/FetchQuery.dart';
 import '../auth/interfaces/IFirebaseAuthDal.dart';
 import '../note/interfaces/INoteDal.dart';
-import 'interfaces/IFirebaseRecycleBinDal.dart';
-import 'interfaces/IFirebaseRecycleBinManager.dart';
+import 'interfaces/IFirebaseTrashDal.dart';
+import 'interfaces/IFirebaseTrashManager.dart';
 
-class FirebaseRecycleBinManager implements IFirebaseRecycleBinManager {
-  final IFirebaseRecycleBinDal _recycleBinDal;
+class FirebaseTrashManager implements IFirebaseTrashManager {
+  final IFirebaseTrashDal _trashDal;
   final IFirebaseAuthDal _authDal;
   final INoteDal _noteDal;
 
-  FirebaseRecycleBinManager({
-    required IFirebaseRecycleBinDal recycleBinDal,
+  FirebaseTrashManager({
+    required IFirebaseTrashDal trashDal,
     required IFirebaseAuthDal authDal,
     required INoteDal noteDal,
-  })  : _recycleBinDal = recycleBinDal,
+  })  : _trashDal = trashDal,
         _authDal = authDal,
         _noteDal = noteDal;
 
@@ -31,24 +31,24 @@ class FirebaseRecycleBinManager implements IFirebaseRecycleBinManager {
     querie ??= {};
     querie['userId'] = user.id;
 
-    return _recycleBinDal.getAll(querie);
+    return _trashDal.getAll(querie);
   }
 
   @override
   Future<void> restore(Note note) async {
     await _noteDal.add(note);
-    await _recycleBinDal.delete(note);
+    await _trashDal.delete(note);
   }
 
   @override
   Future<void> delete(Note note) async {
-    _recycleBinDal.delete(note);
+    _trashDal.delete(note);
   }
 
   @override
   Future<void> allDelete() async {
     final List<Note> notes = await getAll();
-    Future.forEach(notes, (note) async => await _recycleBinDal.delete(note));
+    Future.forEach(notes, (note) async => await _trashDal.delete(note));
   }
 
   @override
@@ -61,11 +61,11 @@ class FirebaseRecycleBinManager implements IFirebaseRecycleBinManager {
     querie ??= {};
     querie['userId'] = user.id;
 
-    _recycleBinDal.addListener(callback, querie);
+    _trashDal.addListener(callback, querie);
   }
 
   @override
   void removeListener() {
-    _recycleBinDal.removeListener();
+    _trashDal.removeListener();
   }
 }

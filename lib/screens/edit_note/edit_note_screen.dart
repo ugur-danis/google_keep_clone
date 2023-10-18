@@ -5,10 +5,10 @@ import '../../main.dart';
 import '../../providers/auth_provider.dart';
 import '../../models/Note.dart';
 import '../../services/note/interfaces/IFirebaseNoteManager.dart';
-import '../../services/recycle_bin/interfaces/IFirebaseRecycleBinManager.dart';
+import '../../services/trash/interfaces/IFirebaseTrashManager.dart';
 import '../../utils/formatters/date_formatter.dart';
 import '../home/home_screen.dart';
-import '../recycle_bin/recycle_bin_screen.dart';
+import '../trash/trash_screen.dart';
 
 part 'edit_note_screen_model.dart';
 
@@ -94,11 +94,11 @@ class _EditNoteScreenState extends State<EditNoteScreen>
     Widget continueButton = TextButton(
       child: const Text("Delete"),
       onPressed: () {
-        _recycleBinManager.delete(_note);
+        _trashManager.delete(_note);
 
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
-            builder: (context) => const RecycleBinScreen(),
+            builder: (context) => const TrashScreen(),
           ),
         );
       },

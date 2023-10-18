@@ -2,7 +2,7 @@ part of 'edit_note_screen.dart';
 
 mixin _EditNoteScreenMixin on State<EditNoteScreen> {
   late final IFirebaseNoteManager _noteManager;
-  late final IFirebaseRecycleBinManager _recycleBinManager;
+  late final IFirebaseTrashManager _trashManager;
   late final Note _note;
 
   final TextEditingController _titleEditingController = TextEditingController();
@@ -13,7 +13,7 @@ mixin _EditNoteScreenMixin on State<EditNoteScreen> {
     super.initState();
 
     _noteManager = locator<IFirebaseNoteManager>();
-    _recycleBinManager = locator<IFirebaseRecycleBinManager>();
+    _trashManager = locator<IFirebaseTrashManager>();
 
     if (widget.note == null) {
       _handleNewNote();
@@ -56,7 +56,7 @@ mixin _EditNoteScreenMixin on State<EditNoteScreen> {
 
   void deleteNote() {
     Navigator.popUntil(context, (route) => route.isFirst);
-    _noteManager.moveToRecycleBin(_note);
+    _noteManager.moveToTrash(_note);
     notifyNoteDeleted();
   }
 
@@ -87,7 +87,7 @@ mixin _EditNoteScreenMixin on State<EditNoteScreen> {
 
   Future<bool> onWillPop() {
     if (_note.note!.isEmpty && _note.title!.isEmpty) {
-      _noteManager.moveToRecycleBin(_note);
+      _noteManager.moveToTrash(_note);
     }
 
     return Future.value(true);

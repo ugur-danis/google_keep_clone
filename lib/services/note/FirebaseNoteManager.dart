@@ -1,6 +1,6 @@
 // ignore_for_file: file_names
 
-import 'package:google_keep_clone/services/recycle_bin/interfaces/IFirebaseRecycleBinDal.dart';
+import 'package:google_keep_clone/services/trash/interfaces/IFirebaseTrashDal.dart';
 
 import '../../models/Note.dart';
 import '../../models/User.dart';
@@ -12,17 +12,17 @@ import 'interfaces/IFirebaseNoteManager.dart';
 
 class FirebaseNoteManager implements IFirebaseNoteManager {
   final IFirebaseNoteDal _noteDal;
-  final IFirebaseRecycleBinDal _recycleBinDal;
+  final IFirebaseTrashDal _trashDal;
   final IFirebaseAuthDal _authDal;
   final IFirebaseArchiveDal _archiveDal;
 
   FirebaseNoteManager({
     required IFirebaseNoteDal noteDal,
-    required IFirebaseRecycleBinDal recycleBinDal,
+    required IFirebaseTrashDal trashDal,
     required IFirebaseAuthDal authDal,
     required IFirebaseArchiveDal archiveDal,
   })  : _noteDal = noteDal,
-        _recycleBinDal = recycleBinDal,
+        _trashDal = trashDal,
         _authDal = authDal,
         _archiveDal = archiveDal;
 
@@ -37,9 +37,9 @@ class FirebaseNoteManager implements IFirebaseNoteManager {
   }
 
   @override
-  Future<void> moveToRecycleBin(Note note) async {
+  Future<void> moveToTrash(Note note) async {
     _noteDal.delete(note);
-    _recycleBinDal.add(note);
+    _trashDal.add(note);
   }
 
   @override
@@ -51,7 +51,7 @@ class FirebaseNoteManager implements IFirebaseNoteManager {
   @override
   Future<void> restore(Note note) async {
     _noteDal.add(note);
-    _recycleBinDal.delete(note);
+    _trashDal.delete(note);
   }
 
   @override

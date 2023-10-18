@@ -4,28 +4,27 @@ import 'package:flutter/material.dart';
 
 import '../../main.dart';
 import '../../models/Note.dart';
-import '../../services/recycle_bin/interfaces/IFirebaseRecycleBinManager.dart';
+import '../../services/trash/interfaces/IFirebaseTrashManager.dart';
 import '../../widgets/drawer_menu.dart';
 import '../../widgets/note_item.dart';
 
-part 'recycle_bin_view_model.dart';
+part 'trash_screen_model.dart';
 
-class RecycleBinScreen extends StatefulWidget {
-  const RecycleBinScreen({super.key});
+class TrashScreen extends StatefulWidget {
+  const TrashScreen({super.key});
 
   @override
-  State<RecycleBinScreen> createState() => _RecycleBinScreenState();
+  State<TrashScreen> createState() => _TrashScreenState();
 }
 
-class _RecycleBinScreenState extends State<RecycleBinScreen>
-    with _RecycleBinScreenMixin {
+class _TrashScreenState extends State<TrashScreen> with _TrashScreenMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar:
           _selectedNotes.isEmpty ? buildAppBar() : buildItemSelectedAppBar(),
-      drawer: const DrawerMenu(screen: DrawerMenuScreens.recycleBin),
+      drawer: const DrawerMenu(screen: DrawerMenuScreens.trash),
       body: SafeArea(
         child: buildContent(),
       ),

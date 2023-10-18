@@ -16,10 +16,10 @@ import '../../services/note/FirebaseNoteDal.dart';
 import '../../services/note/FirebaseNoteManager.dart';
 import '../../services/note/interfaces/IFirebaseNoteDal.dart';
 import '../../services/note/interfaces/IFirebaseNoteManager.dart';
-import '../../services/recycle_bin/FirebaseRecycleBinDal.dart';
-import '../../services/recycle_bin/FirebaseRecycleBinManager.dart';
-import '../../services/recycle_bin/interfaces/IFirebaseRecycleBinDal.dart';
-import '../../services/recycle_bin/interfaces/IFirebaseRecycleBinManager.dart';
+import '../../services/trash/FirebaseTrashDal.dart';
+import '../../services/trash/FirebaseTrashManager.dart';
+import '../../services/trash/interfaces/IFirebaseTrashDal.dart';
+import '../../services/trash/interfaces/IFirebaseTrashManager.dart';
 import 'IConfigureDependencies.dart';
 
 class FirebaseConfigureDependencies implements IConfigureDependencies {
@@ -31,34 +31,32 @@ class FirebaseConfigureDependencies implements IConfigureDependencies {
     final IFirebaseAuthDal authDal = FirebaseAuthDal();
     final IFirebaseNoteDal noteDal = FirebaseNoteDal();
     final IFirebaseArchiveDal archiveDal = FirebaseArchiveDal();
-    final IFirebaseRecycleBinDal recycleBinDal = FirebaseRecycleBinDal();
+    final IFirebaseTrashDal trashDal = FirebaseTrashDal();
 
     final IAuthManager authManager = AuthManager(authDal: authDal);
     final IFirebaseNoteManager noteManager = FirebaseNoteManager(
       noteDal: noteDal,
       authDal: authDal,
-      recycleBinDal: recycleBinDal,
+      trashDal: trashDal,
       archiveDal: archiveDal,
     );
     final IFirebaseArchiveManager archiveManager = FirebaseArchiveManager(
       archiveDal: archiveDal,
       authDal: authDal,
       noteDal: noteDal,
-      recycleBinDal: recycleBinDal,
+      trashDal: trashDal,
     );
 
-    final IFirebaseRecycleBinManager recycleBinManager =
-        FirebaseRecycleBinManager(
+    final IFirebaseTrashManager trashManager = FirebaseTrashManager(
       noteDal: noteDal,
       authDal: authDal,
-      recycleBinDal: recycleBinDal,
+      trashDal: trashDal,
     );
 
     locator.registerLazySingleton<IAuthManager>(() => authManager);
     locator.registerLazySingleton<IFirebaseNoteManager>(() => noteManager);
     locator
         .registerLazySingleton<IFirebaseArchiveManager>(() => archiveManager);
-    locator.registerLazySingleton<IFirebaseRecycleBinManager>(
-        () => recycleBinManager);
+    locator.registerLazySingleton<IFirebaseTrashManager>(() => trashManager);
   }
 }

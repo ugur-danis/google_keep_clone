@@ -2,7 +2,7 @@
 
 import '../../../models/Note.dart';
 import '../../interfaces/IFirebaseEntityRepository.dart';
-import 'IRecycleBinDal.dart';
+import 'ITrashDal.dart';
 
-abstract class IFirebaseRecycleBinDal extends IRecycleBinDal
+abstract class IFirebaseTrashDal extends ITrashDal
     implements IFirebaseEntityRepository<Note> {}

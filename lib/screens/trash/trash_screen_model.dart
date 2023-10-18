@@ -1,15 +1,15 @@
-part of 'recycle_bin_screen.dart';
+part of 'trash_screen.dart';
 
-mixin _RecycleBinScreenMixin on State<RecycleBinScreen> {
-  late final IFirebaseRecycleBinManager _recycleBinManager;
+mixin _TrashScreenMixin on State<TrashScreen> {
+  late final IFirebaseTrashManager _trashManager;
   late final StreamController _streamController;
   late final List<Note> _selectedNotes;
 
   @override
   void initState() {
     super.initState();
-    _recycleBinManager = locator<IFirebaseRecycleBinManager>();
-    _recycleBinManager.addListener(_handleNotesChange);
+    _trashManager = locator<IFirebaseTrashManager>();
+    _trashManager.addListener(_handleNotesChange);
     _streamController = StreamController();
     _selectedNotes = [];
 
@@ -19,13 +19,13 @@ mixin _RecycleBinScreenMixin on State<RecycleBinScreen> {
   @override
   void dispose() {
     super.dispose();
-    _recycleBinManager.removeListener();
+    _trashManager.removeListener();
     _streamController.close();
   }
 
   Future<void> fetchNotes() async {
     try {
-      await _recycleBinManager.getAll();
+      await _trashManager.getAll();
     } catch (e) {
       _streamController.addError(e);
     }
@@ -33,7 +33,7 @@ mixin _RecycleBinScreenMixin on State<RecycleBinScreen> {
 
   Future<void> deleteAllNotes() async {
     try {
-      await _recycleBinManager.allDelete();
+      await _trashManager.allDelete();
     } catch (e) {
       _streamController.addError(e);
     }
@@ -41,7 +41,7 @@ mixin _RecycleBinScreenMixin on State<RecycleBinScreen> {
 
   Future<void> deleteSelectedNotes() async {
     for (Note note in _selectedNotes) {
-      await _recycleBinManager.delete(note);
+      await _trashManager.delete(note);
     }
 
     clearSelectedNotes();
@@ -49,7 +49,7 @@ mixin _RecycleBinScreenMixin on State<RecycleBinScreen> {
 
   Future<void> restoreSelectedNotes() async {
     for (Note note in _selectedNotes) {
-      await _recycleBinManager.restore(note);
+      await _trashManager.restore(note);
     }
 
     clearSelectedNotes();

@@ -2,9 +2,9 @@
 
 import '../../../models/Note.dart';
 import '../../../utils/types/FetchQuery.dart';
-import 'IRecycleBinManager.dart';
+import 'ITrashManager.dart';
 
-abstract class IFirebaseRecycleBinManager extends IRecycleBinManager {
+abstract class IFirebaseTrashManager extends ITrashManager {
   void addListener(Function(List<Note>) callback, [FetchQuery? querie]);
   void removeListener();
 }

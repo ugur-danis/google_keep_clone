@@ -8,9 +8,9 @@ import 'dart:developer' as developer;
 
 import '../../models/Note.dart';
 import '../../utils/types/FetchQuery.dart';
-import 'interfaces/IFirebaseRecycleBinDal.dart';
+import 'interfaces/IFirebaseTrashDal.dart';
 
-class FirebaseRecycleBinDal implements IFirebaseRecycleBinDal {
+class FirebaseTrashDal implements IFirebaseTrashDal {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   StreamSubscription<QuerySnapshot<Map<String, dynamic>>>? _listener;
 
@@ -26,7 +26,7 @@ class FirebaseRecycleBinDal implements IFirebaseRecycleBinDal {
 
     try {
       final QuerySnapshot<Map<String, dynamic>> snapshot = await _firestore
-          .collection('recycle_bin')
+          .collection('trash')
           .where(
             'userId',
             isEqualTo: querie?['userId'],
@@ -48,7 +48,7 @@ class FirebaseRecycleBinDal implements IFirebaseRecycleBinDal {
   Future<void> add(Note note) async {
     try {
       final DocumentReference<Map<String, dynamic>> ref =
-          _firestore.collection('recycle_bin').doc(note.id);
+          _firestore.collection('trash').doc(note.id);
       await ref.set(note.toMap());
     } catch (e) {
       developer.log('\x1B[31m$e\x1B[0m');
@@ -58,7 +58,7 @@ class FirebaseRecycleBinDal implements IFirebaseRecycleBinDal {
   @override
   Future<void> delete(Note note) async {
     try {
-      await _firestore.collection('recycle_bin').doc(note.id).delete();
+      await _firestore.collection('trash').doc(note.id).delete();
     } catch (e) {
       developer.log('\x1B[31m$e\x1B[0m');
     }
@@ -75,7 +75,7 @@ class FirebaseRecycleBinDal implements IFirebaseRecycleBinDal {
     removeListener();
 
     final Query<Map<String, dynamic>> snapshot = _firestore
-        .collection('recycle_bin')
+        .collection('trash')
         .where('userId', isEqualTo: querie?['userId']);
 
     _listener = snapshot.snapshots().listen(

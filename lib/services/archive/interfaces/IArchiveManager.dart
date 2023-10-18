@@ -9,5 +9,5 @@ abstract class IArchiveManager {
   Future<void> restore(Note note);
   Future<void> allDelete();
   Future<void> delete(Note note);
-  Future<void> moveToRecycleBin(Note note);
+  Future<void> moveToTrash(Note note);
 }

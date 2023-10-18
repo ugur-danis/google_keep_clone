@@ -3,7 +3,7 @@
 import '../../../models/Note.dart';
 import '../../../utils/types/FetchQuery.dart';
 
-abstract class IRecycleBinManager {
+abstract class ITrashManager {
   Future<List<Note>> getAll([FetchQuery? querie]);
   Future<void> restore(Note note);
   Future<void> allDelete();

@@ -5,7 +5,7 @@ import '../../models/User.dart';
 import '../../utils/types/FetchQuery.dart';
 import '../auth/interfaces/IFirebaseAuthDal.dart';
 import '../note/interfaces/IFirebaseNoteDal.dart';
-import '../recycle_bin/interfaces/IFirebaseRecycleBinDal.dart';
+import '../trash/interfaces/IFirebaseTrashDal.dart';
 import 'interfaces/IFirebaseArchiveDal.dart';
 import 'interfaces/IFirebaseArchiveManager.dart';
 
@@ -13,17 +13,17 @@ class FirebaseArchiveManager implements IFirebaseArchiveManager {
   final IFirebaseArchiveDal _archiveDal;
   final IFirebaseAuthDal _authDal;
   final IFirebaseNoteDal _noteDal;
-  final IFirebaseRecycleBinDal _recycleBinDal;
+  final IFirebaseTrashDal _trashDal;
 
   FirebaseArchiveManager({
     required IFirebaseArchiveDal archiveDal,
     required IFirebaseAuthDal authDal,
     required IFirebaseNoteDal noteDal,
-    required IFirebaseRecycleBinDal recycleBinDal,
+    required IFirebaseTrashDal trashDal,
   })  : _archiveDal = archiveDal,
         _authDal = authDal,
         _noteDal = noteDal,
-        _recycleBinDal = recycleBinDal;
+        _trashDal = trashDal;
 
   @override
   Future<List<Note>> getAll([FetchQuery? querie]) async {
@@ -50,8 +50,8 @@ class FirebaseArchiveManager implements IFirebaseArchiveManager {
   }
 
   @override
-  Future<void> moveToRecycleBin(Note note) async {
-    _recycleBinDal.add(note);
+  Future<void> moveToTrash(Note note) async {
+    _trashDal.add(note);
     _archiveDal.delete(note);
   }
 

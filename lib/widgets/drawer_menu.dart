@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants/color.dart';
 import '../screens/archive/archive_screen.dart';
 import '../screens/home/home_screen.dart';
-import '../screens/recycle_bin/recycle_bin_screen.dart';
+import '../screens/trash/trash_screen.dart';
 import '../screens/settings/settings_screen.dart';
 
 enum DrawerMenuScreens<int> {
@@ -11,7 +11,7 @@ enum DrawerMenuScreens<int> {
   reminders,
   tag,
   archive,
-  recycleBin,
+  trash,
   settings;
 }
 
@@ -72,10 +72,10 @@ class DrawerMenu extends StatelessWidget {
               onTap: () => navTo(context, const ArchiveScreen()),
             ),
             ListTile(
-              selected: screen == DrawerMenuScreens.recycleBin,
-              title: const Text('Recycle Bin'),
+              selected: screen == DrawerMenuScreens.trash,
+              title: const Text('Trash'),
               leading: const Icon(Icons.delete_outlined),
-              onTap: () => navTo(context, const RecycleBinScreen()),
+              onTap: () => navTo(context, const TrashScreen()),
             ),
             ListTile(
               selected: screen == DrawerMenuScreens.settings,

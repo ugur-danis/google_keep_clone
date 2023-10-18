@@ -48,7 +48,13 @@ mixin _ArchiveScreenMixin on State<ArchiveScreen> {
     });
   }
 
-  void unarchiveNote() {}
+  void unarchiveNote() {
+    for (var note in _selectedNotes) {
+      _archiveManager.restore(note);
+    }
+
+    clearSelectedNotes();
+  }
 
   void deleteNote() {}
 

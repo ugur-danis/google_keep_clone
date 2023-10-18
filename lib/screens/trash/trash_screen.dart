@@ -20,13 +20,13 @@ class TrashScreen extends StatefulWidget {
 class _TrashScreenState extends State<TrashScreen> with _TrashScreenMixin {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar:
-          _selectedNotes.isEmpty ? buildAppBar() : buildItemSelectedAppBar(),
-      drawer: const DrawerMenu(screen: DrawerMenuScreens.trash),
-      body: SafeArea(
-        child: buildContent(),
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar:
+            _selectedNotes.isEmpty ? buildAppBar() : buildItemSelectedAppBar(),
+        drawer: const DrawerMenu(screen: DrawerMenuScreens.trash),
+        body: buildContent(),
       ),
     );
   }

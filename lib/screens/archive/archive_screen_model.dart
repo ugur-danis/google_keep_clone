@@ -54,7 +54,11 @@ mixin _ArchiveScreenMixin on State<ArchiveScreen> {
 
   void createNoteCopy() async {}
 
-  void toggleGridCrossAxisCount() {}
+  void toggleGridCrossAxisCount() {
+    setState(() {
+      _gridCrossAxisCount = _gridCrossAxisCount == 2 ? 1 : 2;
+    });
+  }
 
   void navToSearchScreen() {}
 

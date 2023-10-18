@@ -29,23 +29,36 @@ class FirebaseConfigureDependencies implements IConfigureDependencies {
         options: DefaultFirebaseOptions.currentPlatform);
 
     final IFirebaseAuthDal authDal = FirebaseAuthDal();
-    final IAuthManager authManager = AuthManager(authDal: authDal);
     final IFirebaseNoteDal noteDal = FirebaseNoteDal();
+    final IFirebaseArchiveDal archiveDal = FirebaseArchiveDal();
     final IFirebaseRecycleBinDal recycleBinDal = FirebaseRecycleBinDal();
+
+    final IAuthManager authManager = AuthManager(authDal: authDal);
     final IFirebaseNoteManager noteManager = FirebaseNoteManager(
-        noteDal: noteDal, authDal: authDal, recycleBinDal: recycleBinDal);
+      noteDal: noteDal,
+      authDal: authDal,
+      recycleBinDal: recycleBinDal,
+      archiveDal: archiveDal,
+    );
+    final IFirebaseArchiveManager archiveManager = FirebaseArchiveManager(
+      archiveDal: archiveDal,
+      authDal: authDal,
+      noteDal: noteDal,
+      recycleBinDal: recycleBinDal,
+    );
+
     final IFirebaseRecycleBinManager recycleBinManager =
         FirebaseRecycleBinManager(
-            noteDal: noteDal, authDal: authDal, recycleBinDal: recycleBinDal);
-    final IFirebaseArchiveDal archiveDal = FirebaseArchiveDal();
-    final IFirebaseArchiveManager archiveManager = FirebaseArchiveManager(
-        archiveDal: archiveDal, authDal: authDal, noteDal: noteDal);
+      noteDal: noteDal,
+      authDal: authDal,
+      recycleBinDal: recycleBinDal,
+    );
 
     locator.registerLazySingleton<IAuthManager>(() => authManager);
     locator.registerLazySingleton<IFirebaseNoteManager>(() => noteManager);
-    locator.registerLazySingleton<IFirebaseRecycleBinManager>(
-        () => recycleBinManager);
     locator
         .registerLazySingleton<IFirebaseArchiveManager>(() => archiveManager);
+    locator.registerLazySingleton<IFirebaseRecycleBinManager>(
+        () => recycleBinManager);
   }
 }

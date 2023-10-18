@@ -56,7 +56,13 @@ mixin _ArchiveScreenMixin on State<ArchiveScreen> {
     clearSelectedNotes();
   }
 
-  void deleteNote() {}
+  void deleteNote() {
+    for (var note in _selectedNotes) {
+      _archiveManager.moveToRecycleBin(note);
+    }
+
+    clearSelectedNotes();
+  }
 
   void createNoteCopy() async {}
 

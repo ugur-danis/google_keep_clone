@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
@@ -10,6 +9,7 @@ import '../../models/Note.dart';
 import '../../services/archive/interfaces/IFirebaseArchiveManager.dart';
 import '../../services/note/interfaces/IFirebaseNoteManager.dart';
 import '../../providers/auth_provider.dart';
+import '../../utils/theme/dark_theme.dart';
 import '../../widgets/drawer_menu.dart';
 import '../../widgets/illustrated_message.dart';
 import '../../widgets/note_item.dart';
@@ -29,8 +29,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> with _HomeScreenMixin {
   @override
   Widget build(BuildContext context) {
-    setSystemNavigationBar(context);
-
     return SafeArea(
       child: GestureDetector(
         onTap: focusClear,
@@ -47,14 +45,6 @@ class _HomeScreenState extends State<HomeScreen> with _HomeScreenMixin {
         ),
       ),
     );
-  }
-
-  void setSystemNavigationBar(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-      systemNavigationBarColor: Theme.of(context).bottomAppBarTheme.color,
-      systemNavigationBarDividerColor:
-          Theme.of(context).bottomAppBarTheme.color,
-    ));
   }
 
   PreferredSize buildDefaultAppBar() {
@@ -194,13 +184,19 @@ class _HomeScreenState extends State<HomeScreen> with _HomeScreenMixin {
                 }
                 return buildGridView(snapshot);
               } else {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+                return buildProgressIndicator();
               }
             },
           ),
         ],
+      ),
+    );
+  }
+
+  Expanded buildProgressIndicator() {
+    return const Expanded(
+      child: Center(
+        child: CircularProgressIndicator(),
       ),
     );
   }

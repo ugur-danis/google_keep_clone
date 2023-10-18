@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
 import 'package:get_it/get_it.dart';
@@ -19,6 +18,8 @@ Future<void> main() async {
   );
   await appInit.init();
 
+  DarkTheme.setDefaultSystemUIOverlayStyle();
+
   runApp(
     MultiProvider(
       providers: appInit.providers,
@@ -32,23 +33,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = DarkTheme().theme;
-    setSystemUIStyle(theme);
-
     return MaterialApp(
       title: 'Google Keep Clone',
-      theme: theme,
+      theme: DarkTheme.theme,
       home: buildHome(context),
       debugShowCheckedModeBanner: false,
     );
-  }
-
-  void setSystemUIStyle(ThemeData theme) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-      statusBarColor: theme.scaffoldBackgroundColor,
-      systemNavigationBarColor: theme.scaffoldBackgroundColor,
-      systemNavigationBarDividerColor: theme.scaffoldBackgroundColor,
-    ));
   }
 
   FutureBuilder<bool> buildHome(BuildContext context) {

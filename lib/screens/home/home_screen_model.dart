@@ -11,6 +11,8 @@ mixin _HomeScreenMixin on State<HomeScreen> {
   void initState() {
     super.initState();
 
+    DarkTheme.setForHomeScreenSystemUIOverlayStyle();
+
     _noteManager = locator<IFirebaseNoteManager>();
     _noteManager.addListener(_handleNotesChange);
     _archiveManager = locator<IFirebaseArchiveManager>();

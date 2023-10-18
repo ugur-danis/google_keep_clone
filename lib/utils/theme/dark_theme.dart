@@ -28,9 +28,11 @@ class DarkTheme {
       ),
       bottomAppBarTheme: const BottomAppBarTheme(
         color: CustomColors.caviar,
+        elevation: 0,
       ),
       appBarTheme: const AppBarTheme(
         backgroundColor: CustomColors.caviar,
+        elevation: 0,
         actionsIconTheme: IconThemeData(color: CustomColors.ladyNicole),
       ),
       switchTheme: SwitchThemeData(

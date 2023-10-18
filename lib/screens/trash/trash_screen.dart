@@ -35,7 +35,7 @@ class _TrashScreenState extends State<TrashScreen> with _TrashScreenMixin {
     return AppBar(
       titleSpacing: 0,
       backgroundColor: Colors.transparent,
-      title: Text('Recyle Bin', style: Theme.of(context).textTheme.titleMedium),
+      title: Text('Trash', style: Theme.of(context).textTheme.titleMedium),
       actions: [
         PopupMenuButton(
           itemBuilder: (BuildContext context) => <PopupMenuEntry>[

@@ -55,7 +55,14 @@ mixin _HomeScreenMixin on State<HomeScreen> {
 
   void archiveNotes() {}
 
-  void deleteNote() {}
+  void deleteNote() {
+    for (var note in _selectedNotes) {
+      _noteManager.moveToRecycleBin(note);
+    }
+
+    notifyNoteDeleted(List.from(_selectedNotes));
+    clearSelectedNotes();
+  }
 
   void createNoteCopy() async {
     final Note note = _selectedNotes.first;
@@ -80,7 +87,25 @@ mixin _HomeScreenMixin on State<HomeScreen> {
     });
   }
 
-  void notifyNoteDeleted(List<Note> deletedNotes) {}
+  void notifyNoteDeleted(List<Note> deletedNotes) {
+    const String singleItemText = 'Note moved to trash';
+    const String multiItemText = 'Notes moved to trash';
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 6),
+        content: Text(deletedNotes.length > 1 ? multiItemText : singleItemText),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            for (var note in deletedNotes) {
+              _noteManager.restore(note);
+            }
+          },
+        ),
+      ),
+    );
+  }
 
   void notifyNoteArchived(List<Note> archivedNotes) {}
 

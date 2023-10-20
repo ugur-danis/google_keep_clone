@@ -95,8 +95,8 @@ class _ArchiveScreenState extends State<ArchiveScreen>
       ),
       actions: [
         IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.notifications_none),
+          onPressed: updateNotePinned,
+          icon: const Icon(Icons.push_pin_outlined),
         ),
         IconButton(
           onPressed: () {},

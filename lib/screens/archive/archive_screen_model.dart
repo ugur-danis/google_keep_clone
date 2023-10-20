@@ -73,6 +73,16 @@ mixin _ArchiveScreenMixin on State<ArchiveScreen> {
     clearSelectedNotes();
   }
 
+  void updateNotePinned() {
+    for (var note in _selectedNotes) {
+      note.pinned = true;
+      _archiveManager.restore(note);
+      _noteManager.update(note);
+    }
+
+    clearSelectedNotes();
+  }
+
   void toggleGridCrossAxisCount() {
     setState(() {
       _gridCrossAxisCount = _gridCrossAxisCount == 2 ? 1 : 2;

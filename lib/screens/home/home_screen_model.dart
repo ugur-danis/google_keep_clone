@@ -3,7 +3,7 @@ part of 'home_screen.dart';
 mixin _HomeScreenMixin on State<HomeScreen> {
   late final IFirebaseNoteManager _noteManager;
   late final IFirebaseArchiveManager _archiveManager;
-  late final StreamController _streamController;
+  late final StreamController<List<Note>> _streamController;
   late final List<Note> _selectedNotes;
   int _gridCrossAxisCount = 2;
 
@@ -16,7 +16,7 @@ mixin _HomeScreenMixin on State<HomeScreen> {
     _noteManager = locator<IFirebaseNoteManager>();
     _noteManager.addListener(_handleNotesChange);
     _archiveManager = locator<IFirebaseArchiveManager>();
-    _streamController = StreamController();
+    _streamController = StreamController<List<Note>>();
     _selectedNotes = [];
 
     fetchNotes();
@@ -78,6 +78,21 @@ mixin _HomeScreenMixin on State<HomeScreen> {
     note.id = null;
     await _noteManager.add(note);
     clearSelectedNotes();
+  }
+
+  void updateNotePinned() {
+    final bool pinned = _selectedNotes.any((n) => n.pinned == false);
+
+    for (var note in _selectedNotes) {
+      note.pinned = pinned;
+      _noteManager.update(note);
+    }
+
+    clearSelectedNotes();
+  }
+
+  List<Note> filterNotesByPinned(List<Note> notes, bool pinned) {
+    return notes.where((n) => n.pinned == pinned).toList();
   }
 
   void navToSearchScreen() {

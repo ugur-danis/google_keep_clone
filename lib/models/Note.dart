@@ -9,6 +9,7 @@ class Note extends IEntity {
   String? title;
   String? note;
   DateTime? lastEditDate;
+  bool? pinned;
 
   Note({
     this.id,
@@ -16,6 +17,7 @@ class Note extends IEntity {
     this.lastEditDate,
     this.title = '',
     this.note = '',
+    this.pinned = false,
   });
 
   factory Note.fromFirestore(
@@ -28,6 +30,7 @@ class Note extends IEntity {
       userId: data?['userId'],
       title: data?['title'],
       note: data?['note'],
+      pinned: data?['pinned'],
       lastEditDate: (data?['lastEditDate'] as Timestamp).toDate(),
     );
   }
@@ -37,6 +40,7 @@ class Note extends IEntity {
         userId = data['userId'],
         title = data['title'],
         note = data['note'],
+        pinned = data['pinned'],
         lastEditDate = (data['lastEditDate'] as Timestamp).toDate();
 
   @override
@@ -45,6 +49,7 @@ class Note extends IEntity {
         'userId': userId,
         'title': title,
         'note': note,
+        'pinned': pinned,
         'lastEditDate': Timestamp.fromDate(lastEditDate!),
       };
 
@@ -53,6 +58,7 @@ class Note extends IEntity {
     String? userId,
     String? title,
     String? note,
+    bool? pinned,
     DateTime? lastEditDate,
   }) =>
       Note(
@@ -60,11 +66,13 @@ class Note extends IEntity {
         userId: userId ?? this.userId,
         title: title ?? this.title,
         note: note ?? this.note,
+        pinned: pinned ?? this.pinned,
         lastEditDate: lastEditDate ?? this.lastEditDate,
       );
 
   @override
-  int get hashCode => Object.hash(id, userId, title, note, lastEditDate);
+  int get hashCode =>
+      Object.hash(id, userId, title, note, lastEditDate, pinned);
 
   @override
   bool operator ==(Object other) =>
@@ -75,5 +83,6 @@ class Note extends IEntity {
           userId == other.userId &&
           title == other.title &&
           note == other.note &&
+          pinned == other.pinned &&
           lastEditDate == other.lastEditDate;
 }

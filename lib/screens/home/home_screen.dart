@@ -120,8 +120,10 @@ class _HomeScreenState extends State<HomeScreen> with _HomeScreenMixin {
       ),
       actions: [
         IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.notifications_none),
+          onPressed: updateNotePinned,
+          icon: Icon(_selectedNotes.any((n) => n.pinned == false)
+              ? Icons.push_pin_outlined
+              : Icons.push_pin),
         ),
         IconButton(
           onPressed: () {},
@@ -173,24 +175,111 @@ class _HomeScreenState extends State<HomeScreen> with _HomeScreenMixin {
       padding: const EdgeInsets.only(top: 20),
       child: Column(
         children: [
-          StreamBuilder(
-            stream: _streamController.stream,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(child: Text(snapshot.error.toString()));
-              } else if (snapshot.hasData) {
-                if (snapshot.data.length < 1) {
-                  return buildNoNotesMessage(context);
-                }
-                return buildGridView(snapshot);
-              } else {
-                return buildProgressIndicator();
-              }
-            },
+          buildNotesStreamBuilder(),
+        ],
+      ),
+    );
+  }
+
+  StreamBuilder<List<Note>> buildNotesStreamBuilder() {
+    return StreamBuilder(
+      stream: _streamController.stream,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return buildErrorMessage(snapshot.error);
+        } else if (snapshot.hasData) {
+          if (snapshot.data!.isEmpty) {
+            return buildNoNotesMessage(context);
+          }
+          return buildGridViews(snapshot.data!);
+        }
+        return buildProgressIndicator();
+      },
+    );
+  }
+
+  Expanded buildGridViews(List<Note> notes) {
+    final List<Note> unpinnedNotes = filterNotesByPinned(notes, false);
+    final List<Note> pinnedNotes = filterNotesByPinned(notes, true);
+
+    final List<Widget> children = [];
+
+    if (pinnedNotes.isNotEmpty) {
+      children.add(buildPinnedNotesGridView(pinnedNotes));
+    }
+    if (pinnedNotes.isNotEmpty && unpinnedNotes.isNotEmpty) {
+      children.add(const Padding(
+        padding: EdgeInsets.only(left: 30, bottom: 10),
+        child: Text('Others'),
+      ));
+    }
+    if (unpinnedNotes.isNotEmpty) {
+      children.add(buildUnpinnedNotesGridView(unpinnedNotes));
+    }
+
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: children,
+      ),
+    );
+  }
+
+  Widget buildPinnedNotesGridView(List<Note> notes) {
+    if (notes.isEmpty) return const SizedBox.shrink();
+
+    return Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(left: 30, bottom: 10),
+            child: Text('Pinned'),
+          ),
+          Expanded(
+            child: GridView.count(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
+              crossAxisCount: _gridCrossAxisCount,
+              children: List.generate(
+                notes.length,
+                (index) => buildNoteItem(notes[index]),
+              ),
+            ),
           ),
         ],
       ),
     );
+  }
+
+  Widget buildUnpinnedNotesGridView(List<Note> notes) {
+    if (notes.isEmpty) return const SizedBox.shrink();
+
+    return Expanded(
+      child: GridView.count(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
+        crossAxisCount: _gridCrossAxisCount,
+        children: List.generate(
+          notes.length,
+          (index) => buildNoteItem(notes[index]),
+        ),
+      ),
+    );
+  }
+
+  NoteItem buildNoteItem(Note note) {
+    return NoteItem(
+      note: note,
+      selected: _selectedNotes.contains(note),
+      onSelected: (bool isSelected) {
+        onChangeSelectedNotes(note, isSelected);
+      },
+    );
+  }
+
+  Center buildErrorMessage(Object? error) {
+    return Center(child: Text(error.toString()));
   }
 
   Expanded buildProgressIndicator() {
@@ -198,32 +287,6 @@ class _HomeScreenState extends State<HomeScreen> with _HomeScreenMixin {
       child: Center(
         child: CircularProgressIndicator(),
       ),
-    );
-  }
-
-  Expanded buildGridView(AsyncSnapshot<dynamic> snapshot) {
-    return Expanded(
-      child: GridView.count(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
-        crossAxisCount: _gridCrossAxisCount,
-        children: List.generate(
-          snapshot.data.length,
-          (index) => buildNoteItem(snapshot, index),
-        ),
-      ),
-    );
-  }
-
-  NoteItem buildNoteItem(AsyncSnapshot<dynamic> snapshot, int index) {
-    final Note note = snapshot.data[index];
-
-    return NoteItem(
-      note: note,
-      selected: _selectedNotes.contains(note),
-      onSelected: (bool isSelected) {
-        onChangeSelectedNotes(note, isSelected);
-      },
     );
   }
 

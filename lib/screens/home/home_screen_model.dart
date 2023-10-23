@@ -17,7 +17,17 @@ mixin _HomeScreenMixin on State<HomeScreen> {
     _streamController = StreamController<List<Note>>();
     _selectedNotes = [];
 
+    setSystemUITheme();
     fetchNotes();
+  }
+
+  void setSystemUITheme() {
+    ThemeData theme = context.read<ThemeProvider>().getTheme;
+    SystemUITheme.setStatusAndNavBar(
+      navBarColor: theme.bottomAppBarTheme.color,
+      navBarDividerColor: theme.bottomAppBarTheme.color,
+      statusBarColor: theme.scaffoldBackgroundColor,
+    );
   }
 
   @override

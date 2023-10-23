@@ -8,6 +8,7 @@ class Note extends IEntity {
   String? userId;
   String? title;
   String? note;
+  int? color;
   DateTime? lastEditDate;
   bool? pinned;
 
@@ -15,6 +16,7 @@ class Note extends IEntity {
     this.id,
     this.userId,
     this.lastEditDate,
+    this.color,
     this.title = '',
     this.note = '',
     this.pinned = false,
@@ -30,6 +32,7 @@ class Note extends IEntity {
       userId: data?['userId'],
       title: data?['title'],
       note: data?['note'],
+      color: data?['color'],
       pinned: data?['pinned'],
       lastEditDate: (data?['lastEditDate'] as Timestamp).toDate(),
     );
@@ -40,6 +43,7 @@ class Note extends IEntity {
         userId = data['userId'],
         title = data['title'],
         note = data['note'],
+        color = data['color'],
         pinned = data['pinned'],
         lastEditDate = (data['lastEditDate'] as Timestamp).toDate();
 
@@ -49,6 +53,7 @@ class Note extends IEntity {
         'userId': userId,
         'title': title,
         'note': note,
+        'color': color,
         'pinned': pinned,
         'lastEditDate': Timestamp.fromDate(lastEditDate!),
       };
@@ -58,6 +63,7 @@ class Note extends IEntity {
     String? userId,
     String? title,
     String? note,
+    int? color,
     bool? pinned,
     DateTime? lastEditDate,
   }) =>
@@ -66,13 +72,14 @@ class Note extends IEntity {
         userId: userId ?? this.userId,
         title: title ?? this.title,
         note: note ?? this.note,
+        color: color ?? this.color,
         pinned: pinned ?? this.pinned,
         lastEditDate: lastEditDate ?? this.lastEditDate,
       );
 
   @override
   int get hashCode =>
-      Object.hash(id, userId, title, note, lastEditDate, pinned);
+      Object.hash(id, userId, title, note, lastEditDate, pinned, color);
 
   @override
   bool operator ==(Object other) =>
@@ -83,6 +90,7 @@ class Note extends IEntity {
           userId == other.userId &&
           title == other.title &&
           note == other.note &&
+          color == other.color &&
           pinned == other.pinned &&
           lastEditDate == other.lastEditDate;
 }

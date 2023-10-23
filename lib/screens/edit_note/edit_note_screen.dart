@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../constants/color.dart';
 import '../../main.dart';
 import '../../providers/auth_provider.dart';
 import '../../models/Note.dart';
+import '../../providers/theme_provider.dart';
 import '../../services/note/interfaces/IFirebaseNoteManager.dart';
 import '../../services/trash/interfaces/IFirebaseTrashManager.dart';
 import '../../utils/formatters/date_formatter.dart';
+import '../../utils/theme/system_ui_theme.dart';
+import '../../widgets/note_color_picker.dart';
 import '../home/home_screen.dart';
 import '../trash/trash_screen.dart';
 
@@ -34,6 +38,7 @@ class _EditNoteScreenState extends State<EditNoteScreen>
       child: WillPopScope(
         onWillPop: onWillPop,
         child: Scaffold(
+          backgroundColor: _note.color == null ? null : Color(_note.color!),
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             actions: !widget.isEditable
@@ -154,6 +159,20 @@ class _EditNoteScreenState extends State<EditNoteScreen>
     );
   }
 
+  void showChangeNoteColorBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => NoteColorPicker(
+        changed: onChangeNoteColor,
+        selected: _note.color == null ? null : Color(_note.color!),
+      ),
+      backgroundColor: CustomColors.caviar,
+      elevation: 0,
+      useSafeArea: true,
+      shape: const RoundedRectangleBorder(),
+    );
+  }
+
   Row buildBottomNavigationBar(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -165,7 +184,7 @@ class _EditNoteScreenState extends State<EditNoteScreen>
         ),
         IconButton(
           disabledColor: Colors.white30,
-          onPressed: !widget.isEditable ? null : () {},
+          onPressed: !widget.isEditable ? null : showChangeNoteColorBottomSheet,
           icon: const Icon(Icons.color_lens_outlined),
         ),
         Expanded(

@@ -6,10 +6,11 @@ import 'package:provider/provider.dart';
 
 import '../../main.dart';
 import '../../models/Note.dart';
+import '../../providers/theme_provider.dart';
 import '../../services/archive/interfaces/IFirebaseArchiveManager.dart';
 import '../../services/note/interfaces/IFirebaseNoteManager.dart';
 import '../../providers/auth_provider.dart';
-import '../../utils/theme/dark_theme.dart';
+import '../../utils/theme/system_ui_theme.dart';
 import '../../widgets/drawer_menu.dart';
 import '../../widgets/illustrated_message.dart';
 import '../../widgets/note_item.dart';
@@ -26,7 +27,26 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with _HomeScreenMixin {
+class _HomeScreenState extends State<HomeScreen>
+    with RouteAware, _HomeScreenMixin {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
+  void didPopNext() {
+    super.didPop();
+    setSystemUITheme();
+  }
+
+  @override
+  void didPushNext() {
+    super.didPushNext();
+    context.read<ThemeProvider>().getAppTheme.setDefaultSystemUIOverlayStyle();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

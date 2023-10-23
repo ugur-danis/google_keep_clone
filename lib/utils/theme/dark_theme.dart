@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../../constants/color.dart';
 import 'interfaces/app_theme.dart';
+import 'system_ui_theme.dart';
 
 class DarkTheme implements AppTheme {
   @override
@@ -64,10 +64,11 @@ class DarkTheme implements AppTheme {
 
   @override
   void setDefaultSystemUIOverlayStyle() {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-      statusBarColor: theme.scaffoldBackgroundColor,
-      systemNavigationBarColor: theme.scaffoldBackgroundColor,
-      systemNavigationBarDividerColor: theme.scaffoldBackgroundColor,
-    ));
+    Color color = theme.scaffoldBackgroundColor;
+    SystemUITheme.setStatusAndNavBar(
+      statusBarColor: color,
+      navBarColor: color,
+      navBarDividerColor: color,
+    );
   }
 }

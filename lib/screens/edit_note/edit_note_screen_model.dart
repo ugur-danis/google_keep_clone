@@ -21,6 +21,10 @@ mixin _EditNoteScreenMixin on State<EditNoteScreen> {
       _note = widget.note!.copyWith();
     }
 
+    if (_note.color != null) {
+      setSystemColorByNoteColor();
+    }
+
     _initController();
   }
 
@@ -85,7 +89,36 @@ mixin _EditNoteScreenMixin on State<EditNoteScreen> {
     );
   }
 
+  void onChangeNoteColor(Color? color) {
+    setState(() {
+      _note.color = color?.value;
+    });
+
+    _noteManager.update(_note);
+    if (color != null) {
+      setSystemColorByNoteColor();
+    } else {
+      clearSystemColor();
+    }
+  }
+
+  void setSystemColorByNoteColor() {
+    Color color = Color(_note.color!);
+
+    SystemUITheme.setStatusAndNavBar(
+      statusBarColor: color,
+      navBarColor: color,
+      navBarDividerColor: color,
+    );
+  }
+
+  void clearSystemColor() {
+    context.read<ThemeProvider>().getAppTheme.setDefaultSystemUIOverlayStyle();
+  }
+
   Future<bool> onWillPop() {
+    clearSystemColor();
+
     if (_note.note!.isEmpty && _note.title!.isEmpty) {
       _noteManager.moveToTrash(_note);
     }

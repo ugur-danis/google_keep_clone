@@ -17,6 +17,7 @@ class NoteItem extends StatelessWidget {
   final bool isEditable;
   final ValueSetter<bool>? onSelected;
   bool selected;
+  bool _isTapped = false;
 
   @override
   Widget build(BuildContext context) {
@@ -24,55 +25,80 @@ class NoteItem extends StatelessWidget {
       semanticContainer: false,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       elevation: 0,
-      color: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        side: BorderSide(
-          color: selected
-              ? Colors.lightBlueAccent
-              : Theme.of(context).colorScheme.outline,
-          width: selected ? 3 : .5,
-        ),
-        borderRadius: const BorderRadius.all(Radius.circular(12)),
-      ),
+      color: note.color == null ? Colors.transparent : Color(note.color!),
+      shape: buildShape(context),
       child: InkWell(
-        onLongPress: () {
-          selected = true;
-          onSelected?.call(true);
-        },
-        onTap: () {
-          if (selected) {
-            selected = false;
-            onSelected?.call(false);
-            return;
-          }
-          Future.delayed(const Duration(milliseconds: 300), () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => EditNoteScreen(
-                    note: note,
-                    isEditable: isEditable,
-                  ),
-                ));
-          });
-        },
+        onLongPress: onLongPress,
+        onTap: () => onTap(context),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Text(note.title!),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: Text(note.note!,
-                    maxLines: 6, overflow: TextOverflow.ellipsis),
-              ),
-            )
+            buildNoteTitle(),
+            buildNoteContent(),
           ],
         ),
       ),
+    );
+  }
+
+  Expanded buildNoteContent() {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child: Text(note.note!, maxLines: 6, overflow: TextOverflow.ellipsis),
+      ),
+    );
+  }
+
+  Padding buildNoteTitle() {
+    return Padding(
+      padding: const EdgeInsets.all(10),
+      child: Text(note.title!),
+    );
+  }
+
+  void onTap(BuildContext context) {
+    if (_isTapped) return;
+
+    if (selected) {
+      selected = false;
+      onSelected?.call(false);
+      return;
+    }
+
+    Future.delayed(const Duration(milliseconds: 300), () {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => EditNoteScreen(
+              note: note,
+              isEditable: isEditable,
+            ),
+          ));
+      _isTapped = false;
+    });
+
+    _isTapped = true;
+  }
+
+  void onLongPress() {
+    selected = true;
+    onSelected?.call(true);
+  }
+
+  RoundedRectangleBorder? buildShape(BuildContext context) {
+    if (!selected && note.color != null) {
+      return null;
+    }
+
+    return RoundedRectangleBorder(
+      side: BorderSide(
+        width: selected ? 3 : 1,
+        color: selected
+            ? Colors.lightBlueAccent
+            : Theme.of(context).colorScheme.outline,
+      ),
+      borderRadius: const BorderRadius.all(Radius.circular(12)),
     );
   }
 }

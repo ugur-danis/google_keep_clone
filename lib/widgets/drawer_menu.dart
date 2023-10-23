@@ -5,7 +5,6 @@ import '../screens/archive/archive_screen.dart';
 import '../screens/home/home_screen.dart';
 import '../screens/trash/trash_screen.dart';
 import '../screens/settings/settings_screen.dart';
-import '../utils/theme/dark_theme.dart';
 
 enum DrawerMenuScreens<int> {
   notes,
@@ -25,9 +24,6 @@ class DrawerMenu extends StatelessWidget {
   final DrawerMenuScreens screen;
 
   void navTo(BuildContext context, Widget widget) {
-    if (widget != const HomeScreen()) {
-      DarkTheme.setDefaultSystemUIOverlayStyle();
-    }
     Navigator.of(context).pop(); // close the drawer
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => widget));
   }

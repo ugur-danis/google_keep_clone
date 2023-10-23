@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../constants/color.dart';
+import 'interfaces/app_theme.dart';
 
-class DarkTheme {
-  DarkTheme._();
-
-  static final ThemeData theme = ThemeData.dark(useMaterial3: true).copyWith(
+class DarkTheme implements AppTheme {
+  @override
+  ThemeData theme = ThemeData.dark(useMaterial3: true).copyWith(
     colorScheme: const ColorScheme.dark(
       primary: Colors.white,
       secondary: Colors.white54,
@@ -62,18 +62,12 @@ class DarkTheme {
     ),
   );
 
-  static void setDefaultSystemUIOverlayStyle() {
+  @override
+  void setDefaultSystemUIOverlayStyle() {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
       statusBarColor: theme.scaffoldBackgroundColor,
       systemNavigationBarColor: theme.scaffoldBackgroundColor,
       systemNavigationBarDividerColor: theme.scaffoldBackgroundColor,
-    ));
-  }
-
-  static void setForHomeScreenSystemUIOverlayStyle() {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
-      systemNavigationBarColor: theme.bottomAppBarTheme.color,
-      systemNavigationBarDividerColor: theme.bottomAppBarTheme.color,
     ));
   }
 }

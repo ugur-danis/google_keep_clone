@@ -4,11 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:get_it/get_it.dart';
 
 import 'providers/auth_provider.dart';
+import 'providers/theme_provider.dart';
 import 'screens/home/home_screen.dart';
 import 'screens/sign_in/sign_in_screen.dart';
 import 'utils/init/FirebaseConfigureDependencies.dart';
 import 'utils/init/app_init.dart';
-import 'utils/theme/dark_theme.dart';
 
 final GetIt locator = GetIt.instance;
 
@@ -17,8 +17,6 @@ Future<void> main() async {
     configureDependencies: FirebaseConfigureDependencies(),
   );
   await appInit.init();
-
-  DarkTheme.setDefaultSystemUIOverlayStyle();
 
   runApp(
     MultiProvider(
@@ -33,9 +31,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return MaterialApp(
       title: 'Google Keep Clone',
-      theme: DarkTheme.theme,
+      theme: themeProvider.getTheme,
       home: buildHome(context),
       debugShowCheckedModeBanner: false,
     );

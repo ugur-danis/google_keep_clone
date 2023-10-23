@@ -7,9 +7,9 @@ class ThemeProvider extends ChangeNotifier {
 
   ThemeProvider(this._appTheme);
 
-  get getAppTheme => _appTheme;
+  AppTheme get getAppTheme => _appTheme;
 
-  get getTheme => _appTheme.theme;
+  ThemeData get getTheme => _appTheme.theme;
 
   set setTheme(AppTheme appTheme) {
     _appTheme = appTheme;

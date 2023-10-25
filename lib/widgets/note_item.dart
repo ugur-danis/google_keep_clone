@@ -30,12 +30,15 @@ class NoteItem extends StatelessWidget {
       child: InkWell(
         onLongPress: onLongPress,
         onTap: () => onTap(context),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            buildNoteTitle(),
-            buildNoteContent(),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              buildNoteTitle(),
+              buildNoteContent(),
+            ],
+          ),
         ),
       ),
     );
@@ -43,16 +46,13 @@ class NoteItem extends StatelessWidget {
 
   Expanded buildNoteContent() {
     return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Text(note.note!, maxLines: 6, overflow: TextOverflow.ellipsis),
-      ),
+      child: Text(note.note!, maxLines: 6, overflow: TextOverflow.ellipsis),
     );
   }
 
   Padding buildNoteTitle() {
     return Padding(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.only(bottom: 10),
       child: Text(note.title!),
     );
   }

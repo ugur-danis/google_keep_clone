@@ -129,8 +129,10 @@ class _ArchiveScreenState extends State<ArchiveScreen>
               }
               return buildGridView(snapshot);
             } else {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return const Expanded(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
               );
             }
           },
@@ -139,10 +141,14 @@ class _ArchiveScreenState extends State<ArchiveScreen>
     );
   }
 
-  IllustratedMessage buildNoNotesMessage(BuildContext context) {
-    return const IllustratedMessage(
-      icon: Icons.archive_outlined,
-      text: 'Your archived notes appear here',
+  Expanded buildNoNotesMessage(BuildContext context) {
+    return const Expanded(
+      child: Center(
+        child: IllustratedMessage(
+          icon: Icons.archive_outlined,
+          text: 'Your archived notes appear here',
+        ),
+      ),
     );
   }
 

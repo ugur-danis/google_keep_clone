@@ -19,6 +19,8 @@ import '../edit_note/edit_note_screen.dart';
 import '../search_note/search_note_screen.dart';
 
 part 'home_screen_model.dart';
+part 'widgets/bottom_bar.dart';
+part 'widgets/user_avatar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -58,40 +60,8 @@ class _HomeScreenState extends State<HomeScreen>
           drawer: const DrawerMenu(screen: DrawerMenuScreens.notes),
           bottomNavigationBar: const _BottomBar(),
           floatingActionButton: buildFloatingButton(),
-          appBar: _selectedNotes.isEmpty
-              ? buildDefaultAppBar()
-              : buildItemSelectedAppBar(),
+          appBar: _selectedNotes.isNotEmpty ? buildItemSelectedAppBar() : null,
           body: buildContent(),
-        ),
-      ),
-    );
-  }
-
-  PreferredSize buildDefaultAppBar() {
-    return PreferredSize(
-      preferredSize: const Size.fromHeight(56 + 10), // with top padding
-      child: Padding(
-        padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
-        child: GestureDetector(
-          onTap: navToSearchScreen,
-          child: AppBar(
-            scrolledUnderElevation: 0,
-            titleSpacing: 0,
-            shape: const StadiumBorder(),
-            title: Text(
-              'Search in your notes',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodySmall!
-                  .copyWith(color: Theme.of(context).colorScheme.secondary),
-            ),
-            actions: [
-              buildSwitchViewButton(),
-              const SizedBox(width: 10),
-              buildAvatar(),
-              const SizedBox(width: 10),
-            ],
-          ),
         ),
       ),
     );
@@ -171,31 +141,39 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  Widget buildAvatar() {
-    return InkWell(
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return const UserMenu();
-          },
-        );
-      },
-      child: CircleAvatar(
-        radius: 16,
-        backgroundImage: context.watch<AuthProvider>().user?.photoURL != null
-            ? Image.network(context.watch<AuthProvider>().user!.photoURL!).image
-            : null,
+  Widget buildContent() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+      child: NestedScrollView(
+        floatHeaderSlivers: true,
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
+          if (_selectedNotes.isNotEmpty) return [];
+          return [buildSliverAppBar(context)];
+        },
+        body: buildNotesStreamBuilder(),
       ),
     );
   }
 
-  Widget buildContent() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20),
-      child: Column(
-        children: [
-          buildNotesStreamBuilder(),
+  SliverPadding buildSliverAppBar(BuildContext context) {
+    return SliverPadding(
+      padding: const EdgeInsets.only(bottom: 20),
+      sliver: SliverAppBar(
+        scrolledUnderElevation: 0,
+        titleSpacing: 0,
+        shape: const StadiumBorder(),
+        title: Text(
+          'Search in your notes',
+          style: Theme.of(context)
+              .textTheme
+              .bodySmall!
+              .copyWith(color: Theme.of(context).colorScheme.secondary),
+        ),
+        actions: [
+          buildSwitchViewButton(),
+          const SizedBox(width: 10),
+          const _UserAvatar(),
+          const SizedBox(width: 10),
         ],
       ),
     );
@@ -218,72 +196,52 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  Expanded buildGridViews(List<Note> notes) {
+  Widget buildGridViews(List<Note> notes) {
     final List<Note> unpinnedNotes = filterNotesByPinned(notes, false);
     final List<Note> pinnedNotes = filterNotesByPinned(notes, true);
 
     final List<Widget> children = [];
 
     if (pinnedNotes.isNotEmpty) {
-      children.add(buildPinnedNotesGridView(pinnedNotes));
+      children.add(SliverToBoxAdapter(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 0, 0, 10),
+          child: Text(
+            'Pinned',
+            style: Theme.of(context).textTheme.labelMedium,
+          ),
+        ),
+      ));
+      children.add(buildNoteSliverGrid(pinnedNotes));
     }
     if (pinnedNotes.isNotEmpty && unpinnedNotes.isNotEmpty) {
-      children.add(const Padding(
-        padding: EdgeInsets.only(left: 30, bottom: 10),
-        child: Text('Others'),
+      children.add(SliverToBoxAdapter(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20, 20, 0, 10),
+          child: Text(
+            'Others',
+            style: Theme.of(context).textTheme.labelMedium,
+          ),
+        ),
       ));
     }
     if (unpinnedNotes.isNotEmpty) {
-      children.add(buildUnpinnedNotesGridView(unpinnedNotes));
+      children.add(buildNoteSliverGrid(unpinnedNotes));
     }
 
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: children,
-      ),
-    );
+    return CustomScrollView(slivers: children);
   }
 
-  Widget buildPinnedNotesGridView(List<Note> notes) {
-    if (notes.isEmpty) return const SizedBox.shrink();
-
-    return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(left: 30, bottom: 10),
-            child: Text('Pinned'),
-          ),
-          Expanded(
-            child: GridView.count(
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
-              crossAxisCount: _gridCrossAxisCount,
-              children: List.generate(
-                notes.length,
-                (index) => buildNoteItem(notes[index]),
-              ),
-            ),
-          ),
-        ],
+  SliverGrid buildNoteSliverGrid(List<Note> notes) {
+    return SliverGrid(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) => buildNoteItem(notes[index]),
+        childCount: notes.length,
       ),
-    );
-  }
-
-  Widget buildUnpinnedNotesGridView(List<Note> notes) {
-    if (notes.isEmpty) return const SizedBox.shrink();
-
-    return Expanded(
-      child: GridView.count(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        padding: const EdgeInsets.only(left: 10, right: 10, bottom: 20),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: _gridCrossAxisCount,
-        children: List.generate(
-          notes.length,
-          (index) => buildNoteItem(notes[index]),
-        ),
+        crossAxisSpacing: 4,
+        mainAxisSpacing: 4,
       ),
     );
   }
@@ -302,12 +260,8 @@ class _HomeScreenState extends State<HomeScreen>
     return Center(child: Text(error.toString()));
   }
 
-  Expanded buildProgressIndicator() {
-    return const Expanded(
-      child: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
+  Center buildProgressIndicator() {
+    return const Center(child: CircularProgressIndicator());
   }
 
   IllustratedMessage buildNoNotesMessage(BuildContext context) {
@@ -322,46 +276,6 @@ class _HomeScreenState extends State<HomeScreen>
       onPressed: navToEditNoteScreen,
       shape: const CircleBorder(),
       child: SvgPicture.asset('assets/images/google-plus-icon.svg', width: 30),
-    );
-  }
-}
-
-class _BottomBar extends StatelessWidget {
-  const _BottomBar();
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomAppBar(
-      height: 50,
-      shape: const CircularNotchedRectangle(),
-      padding: const EdgeInsets.all(0),
-      clipBehavior: Clip.antiAlias,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          IconButton(
-            tooltip: 'New list',
-            icon: const Icon(Icons.check_box_outlined),
-            onPressed: () {},
-          ),
-          IconButton(
-            tooltip: 'New draw note',
-            icon: const Icon(Icons.brush),
-            onPressed: () {},
-          ),
-          IconButton(
-            tooltip: 'New voice note',
-            icon: const Icon(Icons.mic_none),
-            onPressed: () {},
-          ),
-          IconButton(
-            tooltip: 'New image note',
-            icon: const Icon(Icons.image_outlined),
-            onPressed: () {},
-          )
-        ],
-      ),
     );
   }
 }

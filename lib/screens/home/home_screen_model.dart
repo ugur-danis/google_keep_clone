@@ -14,11 +14,18 @@ mixin _HomeScreenMixin on State<HomeScreen> {
     _noteManager = locator<IFirebaseNoteManager>();
     _noteManager.addListener(_handleNotesChange);
     _archiveManager = locator<IFirebaseArchiveManager>();
-    _streamController = StreamController<List<Note>>();
+    _streamController = StreamController<List<Note>>.broadcast();
     _selectedNotes = [];
 
     setSystemUITheme();
     fetchNotes();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _noteManager.removeListener();
+    _streamController.close();
   }
 
   void setSystemUITheme() {
@@ -28,13 +35,6 @@ mixin _HomeScreenMixin on State<HomeScreen> {
       navBarDividerColor: theme.bottomAppBarTheme.color,
       statusBarColor: theme.scaffoldBackgroundColor,
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _noteManager.removeListener();
-    _streamController.close();
   }
 
   Future<void> fetchNotes() async {
@@ -60,8 +60,6 @@ mixin _HomeScreenMixin on State<HomeScreen> {
       _selectedNotes.clear();
     });
   }
-
-  void focusClear() => FocusScope.of(context).unfocus();
 
   void archiveNotes() {
     for (var note in _selectedNotes) {
@@ -159,6 +157,8 @@ mixin _HomeScreenMixin on State<HomeScreen> {
       ),
     );
   }
+
+  void focusClear() => FocusScope.of(context).unfocus();
 
   void _handleNotesChange(List<Note> notes) => _streamController.add(notes);
 }

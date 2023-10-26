@@ -159,6 +159,9 @@ class _HomeScreenState extends State<HomeScreen>
     return SliverPadding(
       padding: const EdgeInsets.only(bottom: 20),
       sliver: SliverAppBar(
+        flexibleSpace: FlexibleSpaceBar(
+          background: GestureDetector(onTap: navToSearchScreen),
+        ),
         scrolledUnderElevation: 0,
         titleSpacing: 0,
         shape: const StadiumBorder(),

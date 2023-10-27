@@ -32,24 +32,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>
     with RouteAware, _HomeScreenMixin {
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    routeObserver.subscribe(this, ModalRoute.of(context)!);
-  }
-
-  @override
-  void didPopNext() {
-    super.didPop();
-    setSystemUITheme();
-  }
-
-  @override
-  void didPushNext() {
-    super.didPushNext();
-    context.read<ThemeProvider>().getAppTheme.setDefaultSystemUIOverlayStyle();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: GestureDetector(

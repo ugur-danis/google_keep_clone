@@ -1,6 +1,6 @@
 part of 'home_screen.dart';
 
-mixin _HomeScreenMixin on State<HomeScreen> {
+mixin _HomeScreenMixin on State<HomeScreen>, RouteAware {
   late final IFirebaseNoteManager _noteManager;
   late final IFirebaseArchiveManager _archiveManager;
   late final StreamController<List<Note>> _streamController;
@@ -26,6 +26,24 @@ mixin _HomeScreenMixin on State<HomeScreen> {
     super.dispose();
     _noteManager.removeListener();
     _streamController.close();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
+  void didPopNext() {
+    super.didPop();
+    setSystemUITheme();
+  }
+
+  @override
+  void didPushNext() {
+    super.didPushNext();
+    context.read<ThemeProvider>().getAppTheme.setDefaultSystemUIOverlayStyle();
   }
 
   void setSystemUITheme() {

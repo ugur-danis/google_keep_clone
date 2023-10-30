@@ -41,6 +41,7 @@ class _SignInScreenState extends State<SignInScreen> with _SignInScreenMixin {
                   OutlineInput(
                     labelText: 'E-posta',
                     controller: _eMailController,
+                    textInputType: TextInputType.emailAddress,
                   ),
                   const SizedBox(height: 20),
                   OutlineInput(

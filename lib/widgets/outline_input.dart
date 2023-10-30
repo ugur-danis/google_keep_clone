@@ -5,10 +5,12 @@ class OutlineInput extends TextField {
     super.key,
     String? labelText,
     bool obscureText = false,
+    TextInputType? textInputType,
     TextEditingController? controller,
   }) : super(
           controller: controller,
           obscureText: obscureText,
+          keyboardType: textInputType,
           decoration: InputDecoration(
             labelText: labelText,
             floatingLabelBehavior: FloatingLabelBehavior.auto,

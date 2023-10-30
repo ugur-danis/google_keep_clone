@@ -10,7 +10,7 @@ class Note extends IEntity {
   String? note;
   int? color;
   DateTime? lastEditDate;
-  bool? pinned;
+  bool pinned;
 
   Note({
     this.id,

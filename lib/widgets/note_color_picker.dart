@@ -6,6 +6,9 @@ class NoteColorPicker extends StatefulWidget {
   NoteColorPicker({
     super.key,
     this.selected,
+    this.title = 'Color',
+    this.horizontal = true,
+    this.dialog = false,
     required this.changed,
   }) {
     _colors = [
@@ -23,6 +26,9 @@ class NoteColorPicker extends StatefulWidget {
 
   late final List<Color> _colors;
   final ValueChanged<Color?> changed;
+  final String title;
+  final bool horizontal;
+  final bool dialog;
   Color? selected;
 
   @override
@@ -53,19 +59,16 @@ class _NoteColorPickerState extends State<NoteColorPicker> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
+      height: widget.horizontal ? 160 : MediaQuery.of(context).size.height / 2,
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 40),
-      color: selected,
+      color: widget.dialog ? null : selected,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           buildColorTitle(context),
-          SizedBox(
-            width: double.infinity,
-            height: 60,
-            child: buildGridView(),
-          ),
+          buildGridView(),
         ],
       ),
     );
@@ -75,20 +78,23 @@ class _NoteColorPickerState extends State<NoteColorPicker> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 25, left: 6),
       child: Text(
-        'Color',
+        widget.title,
         style: Theme.of(context).textTheme.labelMedium,
       ),
     );
   }
 
-  GridView buildGridView() {
-    return GridView.count(
-      crossAxisCount: 1,
-      scrollDirection: Axis.horizontal,
-      mainAxisSpacing: 15,
-      children: List.generate(
-        widget._colors.length,
-        (index) => buildColorItem(index),
+  Expanded buildGridView() {
+    return Expanded(
+      child: GridView.count(
+        crossAxisCount: widget.horizontal ? 1 : 4,
+        scrollDirection: widget.horizontal ? Axis.horizontal : Axis.vertical,
+        mainAxisSpacing: 15,
+        crossAxisSpacing: 10,
+        children: List.generate(
+          widget._colors.length,
+          (index) => buildColorItem(index),
+        ),
       ),
     );
   }

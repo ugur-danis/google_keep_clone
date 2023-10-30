@@ -117,6 +117,16 @@ mixin _HomeScreenMixin on State<HomeScreen>, RouteAware {
     clearSelectedNotes();
   }
 
+  void changeNoteColor(Color? color) {
+    for (var note in _selectedNotes) {
+      note.color = color?.value;
+      _noteManager.update(note);
+    }
+
+    Navigator.of(context).pop();
+    clearSelectedNotes();
+  }
+
   List<Note> filterNotesByPinned(List<Note> notes, bool pinned) {
     return notes.where((n) => n.pinned == pinned).toList();
   }

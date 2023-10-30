@@ -13,6 +13,7 @@ import '../../services/note/interfaces/IFirebaseNoteManager.dart';
 import '../../utils/theme/system_ui_theme.dart';
 import '../../widgets/drawer_menu.dart';
 import '../../widgets/illustrated_message.dart';
+import '../../widgets/note_color_picker.dart';
 import '../../widgets/note_item.dart';
 import '../../widgets/user_menu.dart';
 import '../edit_note/edit_note_screen.dart';
@@ -102,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen>
           icon: const Icon(Icons.notification_add_sharp),
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: showNoteColorPickerDialog,
           icon: const Icon(Icons.color_lens_outlined),
         ),
         IconButton(
@@ -253,6 +254,41 @@ class _HomeScreenState extends State<HomeScreen>
     return const IllustratedMessage(
       icon: Icons.lightbulb_outline,
       text: 'Notes you add appear here',
+    );
+  }
+
+  void showNoteColorPickerDialog() {
+    AlertDialog alert = AlertDialog(
+      content: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height / 2,
+        child: Column(
+          children: [
+            NoteColorPicker(
+              title: '',
+              horizontal: false,
+              dialog: true,
+              selected: _selectedNotes.every((note) =>
+                      note.color != null &&
+                      note.color == _selectedNotes.first.color)
+                  ? Color(_selectedNotes.first.color!)
+                  : null,
+              changed: changeNoteColor,
+            ),
+          ],
+        ),
+      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+      title: Text(
+        'Note color',
+        style: Theme.of(context).textTheme.headlineSmall,
+      ),
+    );
+
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      builder: (context) => alert,
     );
   }
 

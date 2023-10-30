@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
 
   FutureBuilder<bool> buildHome(BuildContext context) {
     return FutureBuilder<bool>(
-      future: context.read<AuthProvider>().checkSession(),
+      future: context.read<AuthProvider>().hasSession,
       builder: (context, snapshot) {
         if (snapshot.data == null) {
           return const CircularProgressIndicator();

@@ -3,27 +3,27 @@
 import '../../models/Note.dart';
 import '../../models/User.dart';
 import '../../utils/types/FetchQuery.dart';
-import '../auth/interfaces/IFirebaseAuthDal.dart';
 import '../note/interfaces/INoteDal.dart';
+import '../user/interfaces/IFirebaseUserDal.dart';
 import 'interfaces/IFirebaseTrashDal.dart';
 import 'interfaces/IFirebaseTrashManager.dart';
 
 class FirebaseTrashManager implements IFirebaseTrashManager {
   final IFirebaseTrashDal _trashDal;
-  final IFirebaseAuthDal _authDal;
+  final IFirebaseUserDal _userDal;
   final INoteDal _noteDal;
 
   FirebaseTrashManager({
     required IFirebaseTrashDal trashDal,
-    required IFirebaseAuthDal authDal,
+    required IFirebaseUserDal userDal,
     required INoteDal noteDal,
   })  : _trashDal = trashDal,
-        _authDal = authDal,
+        _userDal = userDal,
         _noteDal = noteDal;
 
   @override
   Future<List<Note>> getAll([FetchQuery? querie]) async {
-    User? user = await _authDal.getUser();
+    User? user = await _userDal.getUser();
     if (user == null) {
       throw Exception('User not found');
     }
@@ -53,7 +53,7 @@ class FirebaseTrashManager implements IFirebaseTrashManager {
 
   @override
   void addListener(Function(List<Note>) callback, [FetchQuery? querie]) async {
-    User? user = await _authDal.getUser();
+    User? user = await _userDal.getUser();
     if (user == null) {
       throw Exception('User not found');
     }

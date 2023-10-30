@@ -6,24 +6,24 @@ import '../../models/Note.dart';
 import '../../models/User.dart';
 import '../../utils/types/FetchQuery.dart';
 import '../archive/interfaces/IFirebaseArchiveDal.dart';
-import '../auth/interfaces/IFirebaseAuthDal.dart';
+import '../user/interfaces/IFirebaseUserDal.dart';
 import 'interfaces/IFirebaseNoteDal.dart';
 import 'interfaces/IFirebaseNoteManager.dart';
 
 class FirebaseNoteManager implements IFirebaseNoteManager {
   final IFirebaseNoteDal _noteDal;
   final IFirebaseTrashDal _trashDal;
-  final IFirebaseAuthDal _authDal;
+  final IFirebaseUserDal _userDal;
   final IFirebaseArchiveDal _archiveDal;
 
   FirebaseNoteManager({
     required IFirebaseNoteDal noteDal,
     required IFirebaseTrashDal trashDal,
-    required IFirebaseAuthDal authDal,
+    required IFirebaseUserDal userDal,
     required IFirebaseArchiveDal archiveDal,
   })  : _noteDal = noteDal,
         _trashDal = trashDal,
-        _authDal = authDal,
+        _userDal = userDal,
         _archiveDal = archiveDal;
 
   @override
@@ -56,7 +56,7 @@ class FirebaseNoteManager implements IFirebaseNoteManager {
 
   @override
   Future<Note?> get([FetchQuery? querie]) async {
-    User? user = await _authDal.getUser();
+    User? user = await _userDal.getUser();
     if (user == null) {
       throw Exception('User not found');
     }
@@ -69,7 +69,7 @@ class FirebaseNoteManager implements IFirebaseNoteManager {
 
   @override
   Future<List<Note>> getAll([FetchQuery? querie]) async {
-    User? user = await _authDal.getUser();
+    User? user = await _userDal.getUser();
     if (user == null) {
       throw Exception('User not found');
     }
@@ -88,7 +88,7 @@ class FirebaseNoteManager implements IFirebaseNoteManager {
   @override
   void addListener(Function(List<Note> p1) callback,
       [FetchQuery? querie]) async {
-    User? user = await _authDal.getUser();
+    User? user = await _userDal.getUser();
     if (user == null) {
       throw Exception('User not found');
     }

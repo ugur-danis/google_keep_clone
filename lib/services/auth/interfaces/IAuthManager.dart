@@ -4,7 +4,6 @@ import '../../../models/User.dart';
 
 abstract class IAuthManager {
   Future<bool> checkSession();
-  Future<User?> getUser();
   Future<User?> signInWithEmailAndPassword(
       {required String email, required String password});
   Future<User?> signInWithGoogle();

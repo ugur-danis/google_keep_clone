@@ -8,6 +8,12 @@ mixin _SignUpScreenMixin on State<SignUpScreen> {
   bool _isShowPassword = false;
 
   @override
+  void initState() {
+    super.initState();
+    _authManager = locator<IAuthManager>();
+  }
+
+  @override
   void dispose() {
     super.dispose();
 
@@ -15,19 +21,14 @@ mixin _SignUpScreenMixin on State<SignUpScreen> {
     _passwordController.dispose();
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _authManager = locator<IAuthManager>();
-  }
-
   void _signUpWithEmail() async {
     try {
       await _authManager.signUp(
-          email: _eMailController.text, password: _passwordController.text);
+        email: _eMailController.text,
+        password: _passwordController.text,
+      );
 
-      Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const SignInScreen()));
+      _navToSignInScreen();
     } catch (e) {
       throw Exception('Sign up error!');
     }

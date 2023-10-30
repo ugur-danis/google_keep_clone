@@ -3,9 +3,9 @@ import 'package:provider/provider.dart';
 
 import '../../constants/color.dart';
 import '../../main.dart';
-import '../../providers/auth_provider.dart';
 import '../../models/Note.dart';
 import '../../providers/theme_provider.dart';
+import '../../providers/user_provider.dart';
 import '../../services/note/interfaces/IFirebaseNoteManager.dart';
 import '../../services/trash/interfaces/IFirebaseTrashManager.dart';
 import '../../utils/formatters/date_formatter.dart';

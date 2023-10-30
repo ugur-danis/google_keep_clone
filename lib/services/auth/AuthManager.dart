@@ -15,11 +15,6 @@ class AuthManager implements IAuthManager {
   }
 
   @override
-  Future<User?> getUser() async {
-    return await _authDal.getUser();
-  }
-
-  @override
   Future<User?> signInWithEmailAndPassword(
       {required String email, required String password}) async {
     return await _authDal.signInWithEmailAndPassword(

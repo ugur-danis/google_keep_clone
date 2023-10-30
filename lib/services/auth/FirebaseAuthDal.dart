@@ -17,11 +17,6 @@ class FirebaseAuthDal implements IFirebaseAuthDal {
   }
 
   @override
-  Future<User?> getUser() async {
-    return User.fromFirebaseUser(_firebaseAuth.currentUser);
-  }
-
-  @override
   Future<User?> signInWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
@@ -69,7 +64,6 @@ class FirebaseAuthDal implements IFirebaseAuthDal {
           email: email, password: password);
     } on FirebaseAuth.FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
         print('The password provided is too weak.');
       } else if (e.code == 'email-already-in-use') {
         print('The account already exists for that email.');

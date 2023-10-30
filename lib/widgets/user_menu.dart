@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/auth_provider.dart';
+import '../providers/user_provider.dart';
 import '../screens/sign_in/sign_in_screen.dart';
 
 class UserMenu extends StatelessWidget {
@@ -139,11 +140,11 @@ class UserMenu extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      context.watch<AuthProvider>().user?.username ?? '',
+                      context.watch<UserProvider>().user?.username ?? '',
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     Text(
-                      context.watch<AuthProvider>().user!.email!,
+                      context.watch<UserProvider>().user!.email!,
                       style: Theme.of(context).textTheme.bodySmall!.copyWith(
                             color: Theme.of(context).colorScheme.secondary,
                           ),
@@ -176,8 +177,8 @@ class UserMenu extends StatelessWidget {
       onTap: () {},
       child: CircleAvatar(
         radius: 20,
-        backgroundImage: context.watch<AuthProvider>().user?.photoURL != null
-            ? Image.network(context.watch<AuthProvider>().user!.photoURL!).image
+        backgroundImage: context.watch<UserProvider>().user?.photo != null
+            ? Image.network(context.watch<UserProvider>().user!.photo!).image
             : null,
         child: Container(
           width: 20,

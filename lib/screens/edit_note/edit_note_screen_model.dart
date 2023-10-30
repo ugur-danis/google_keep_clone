@@ -30,7 +30,7 @@ mixin _EditNoteScreenMixin on State<EditNoteScreen> {
 
   void _handleNewNote() {
     _note = Note(
-      userId: context.read<AuthProvider>().user?.id,
+      userId: context.read<UserProvider>().user?.id,
       title: '',
       note: '',
       lastEditDate: DateTime.now(),

@@ -5,15 +5,15 @@ class _UserAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AuthProvider authProvider = Provider.of<AuthProvider>(context);
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return InkWell(
       onTap: () =>
           showDialog(context: context, builder: (context) => const UserMenu()),
       child: CircleAvatar(
         radius: 16,
-        backgroundImage: authProvider.user?.photoURL != null
-            ? Image.network(authProvider.user!.photoURL!).image
+        backgroundImage: userProvider.user?.photo != null
+            ? Image.network(userProvider.user!.photo!).image
             : null,
       ),
     );

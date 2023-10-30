@@ -1,11 +1,11 @@
 library login_screen;
 
 import 'package:flutter/material.dart';
-import 'package:google_keep_clone/providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 
 import '../../main.dart';
 import '../../models/User.dart';
+import '../../providers/user_provider.dart';
 import '../../services/auth/interfaces/IAuthManager.dart';
 import '../../widgets/outline_input.dart';
 import '../home/home_screen.dart';

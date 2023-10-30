@@ -3,31 +3,31 @@
 import '../../models/Note.dart';
 import '../../models/User.dart';
 import '../../utils/types/FetchQuery.dart';
-import '../auth/interfaces/IFirebaseAuthDal.dart';
 import '../note/interfaces/IFirebaseNoteDal.dart';
 import '../trash/interfaces/IFirebaseTrashDal.dart';
+import '../user/interfaces/IFirebaseUserDal.dart';
 import 'interfaces/IFirebaseArchiveDal.dart';
 import 'interfaces/IFirebaseArchiveManager.dart';
 
 class FirebaseArchiveManager implements IFirebaseArchiveManager {
   final IFirebaseArchiveDal _archiveDal;
-  final IFirebaseAuthDal _authDal;
+  final IFirebaseUserDal _userDal;
   final IFirebaseNoteDal _noteDal;
   final IFirebaseTrashDal _trashDal;
 
   FirebaseArchiveManager({
     required IFirebaseArchiveDal archiveDal,
-    required IFirebaseAuthDal authDal,
+    required IFirebaseUserDal userDal,
     required IFirebaseNoteDal noteDal,
     required IFirebaseTrashDal trashDal,
   })  : _archiveDal = archiveDal,
-        _authDal = authDal,
+        _userDal = userDal,
         _noteDal = noteDal,
         _trashDal = trashDal;
 
   @override
   Future<List<Note>> getAll([FetchQuery? querie]) async {
-    User? user = await _authDal.getUser();
+    User? user = await _userDal.getUser();
     if (user == null) {
       throw Exception('User not found');
     }
@@ -68,7 +68,7 @@ class FirebaseArchiveManager implements IFirebaseArchiveManager {
 
   @override
   void addListener(Function(List<Note>) callback, [FetchQuery? querie]) async {
-    User? user = await _authDal.getUser();
+    User? user = await _userDal.getUser();
     if (user == null) {
       throw Exception('User not found');
     }

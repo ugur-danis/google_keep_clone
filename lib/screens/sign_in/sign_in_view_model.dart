@@ -2,43 +2,51 @@ part of 'sign_in_screen.dart';
 
 mixin _SignInScreenMixin on State<SignInScreen> {
   late final IAuthManager _authManager;
+  late final UserProvider _userProvider;
   final TextEditingController _eMailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   bool _isShowPassword = false;
 
   @override
+  void initState() {
+    super.initState();
+    _authManager = locator<IAuthManager>();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _userProvider = Provider.of<UserProvider>(context, listen: false);
+    });
+  }
+
+  @override
   void dispose() {
     super.dispose();
-
     _eMailController.dispose();
     _passwordController.dispose();
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _authManager = locator<IAuthManager>();
-  }
-
   void _signInWithGoogle() async {
     User? user = await _authManager.signInWithGoogle();
-    if (user != null) {
-      context.read<AuthProvider>().setUser(user);
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const HomeScreen()));
-    }
+    if (user == null) return;
+
+    _userProvider.setUser(user);
+    _navToHomeScreen();
   }
 
   void _signInWithEmailAndPassword() async {
     User? user = await _authManager.signInWithEmailAndPassword(
-        email: _eMailController.text, password: _passwordController.text);
+      email: _eMailController.text,
+      password: _passwordController.text,
+    );
+    if (user == null) return;
 
-    if (user != null) {
-      context.read<AuthProvider>().setUser(user);
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const HomeScreen()));
-    }
+    _userProvider.setUser(user);
+    _navToHomeScreen();
+  }
+
+  void _onTogglePasswordVisibility(bool? value) {
+    setState(() {
+      _isShowPassword = value ?? false;
+    });
   }
 
   void _navToSignUpScreen() {
@@ -48,9 +56,8 @@ mixin _SignInScreenMixin on State<SignInScreen> {
     );
   }
 
-  void _onTogglePasswordVisibility(bool? value) {
-    setState(() {
-      _isShowPassword = value ?? false;
-    });
+  void _navToHomeScreen() {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => const HomeScreen()));
   }
 }

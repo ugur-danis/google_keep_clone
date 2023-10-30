@@ -13,4 +13,13 @@ class FirebaseUserDal implements IFirebaseUserDal {
   Future<User?> getUser() async {
     return User.fromFirebaseUser(_firebaseAuth.currentUser);
   }
+
+  @override
+  Future<void> updatePhoto(String? photoUrl) async {
+    try {
+      await _firebaseAuth.currentUser!.updatePhotoURL(photoUrl);
+    } catch (e) {
+      print(e);
+    }
+  }
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 
 import '../main.dart';
@@ -19,4 +21,9 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> changeProfilePhoto(File photo) async {
+    final String? photoUrl = await _userManager.changeProfilePicture(photo);
+    _user!.photo = photoUrl;
+    notifyListeners();
+  }
 }

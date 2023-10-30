@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/auth_provider.dart';
 import '../providers/user_provider.dart';
 import '../screens/sign_in/sign_in_screen.dart';
+import '../utils/image_picker.dart';
 
 class UserMenu extends StatelessWidget {
   const UserMenu({super.key});
@@ -173,8 +174,14 @@ class UserMenu extends StatelessWidget {
   }
 
   GestureDetector userMenuAvatar(BuildContext context) {
+    Future<void> changeProfilePhoto(BuildContext context) async {
+      final file = await ImagePicker().pickFromGallery();
+      if (file == null) return;
+      context.read<UserProvider>().changeProfilePhoto(file);
+    }
+
     return GestureDetector(
-      onTap: () {},
+      onTap: () => changeProfilePhoto(context),
       child: CircleAvatar(
         radius: 20,
         backgroundImage: context.watch<UserProvider>().user?.photo != null

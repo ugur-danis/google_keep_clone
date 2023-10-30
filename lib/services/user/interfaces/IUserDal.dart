@@ -4,3 +4,5 @@ import '../../../models/User.dart';
 
 abstract class IUserDal {
   Future<User?> getUser();
+  Future<void> updatePhoto(String? photoUrl);
+}

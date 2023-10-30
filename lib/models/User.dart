@@ -9,21 +9,21 @@ class User extends IEntity {
     this.id,
     this.username,
     this.email,
-    this.photoURL,
+    this.photo,
     this.refreshToken,
   });
 
-  final String? id;
-  final String? username;
-  final String? email;
-  final String? photoURL;
-  final String? refreshToken;
+  String? id;
+  String? username;
+  String? email;
+  String? photo;
+  String? refreshToken;
 
   User.fromFirebaseUser(FirebaseAuth.User? user)
       : id = user?.uid,
         username = user?.displayName,
         email = user?.email,
-        photoURL = user?.photoURL,
+        photo = user?.photoURL,
         refreshToken = user?.refreshToken;
 
   @override
@@ -31,7 +31,7 @@ class User extends IEntity {
         'id': id,
         'username': username,
         'email': email,
-        'photoURL': photoURL,
+        'photoURL': photo,
         'refreshToken': refreshToken,
       };
 }

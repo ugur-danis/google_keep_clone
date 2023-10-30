@@ -6,3 +6,5 @@ import '../../../models/User.dart';
 
 abstract class IUserManager {
   Future<User?> getUser();
+  Future<String?> changeProfilePicture(File photo);
+}

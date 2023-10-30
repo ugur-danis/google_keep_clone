@@ -12,6 +12,10 @@ import '../../services/auth/AuthManager.dart';
 import '../../services/auth/FirebaseAuthDal.dart';
 import '../../services/auth/interfaces/IAuthManager.dart';
 import '../../services/auth/interfaces/IFirebaseAuthDal.dart';
+import '../../services/firebase_storage/FirebaseStorageDal.dart';
+import '../../services/firebase_storage/FirebaseStorageManager.dart';
+import '../../services/firebase_storage/interfaces/IFirebaseStorageDal.dart';
+import '../../services/firebase_storage/interfaces/IFirebaseStorageManager.dart';
 import '../../services/note/FirebaseNoteDal.dart';
 import '../../services/note/FirebaseNoteManager.dart';
 import '../../services/note/interfaces/IFirebaseNoteDal.dart';
@@ -37,9 +41,15 @@ class FirebaseConfigureDependencies implements IConfigureDependencies {
     final IFirebaseNoteDal noteDal = FirebaseNoteDal();
     final IFirebaseArchiveDal archiveDal = FirebaseArchiveDal();
     final IFirebaseTrashDal trashDal = FirebaseTrashDal();
+    final IFirebaseStorageDal firebaseStorageDal = FirebaseStorageDal();
 
     final IAuthManager authManager = AuthManager(authDal: authDal);
-    final IUserManager userManager = UserManager(userDal: userDal);
+    final IFirebaseStorageManager firebaseStorageManager =
+        FirebaseStorageManager(storageDal: firebaseStorageDal);
+    final IUserManager userManager = UserManager(
+      userDal: userDal,
+      firebaseStorageManager: firebaseStorageManager,
+    );
     final IFirebaseNoteManager noteManager = FirebaseNoteManager(
       noteDal: noteDal,
       userDal: userDal,

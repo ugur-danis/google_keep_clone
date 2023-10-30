@@ -98,8 +98,10 @@ mixin _HomeScreenMixin on State<HomeScreen>, RouteAware {
   }
 
   void createNoteCopy() async {
-    final Note note = _selectedNotes.first;
+    final Note note = _selectedNotes.first.copyWith();
     note.id = null;
+    note.pinned = false;
+
     await _noteManager.add(note);
     clearSelectedNotes();
   }

@@ -3,6 +3,7 @@ part of 'edit_note_screen.dart';
 mixin _EditNoteScreenMixin on State<EditNoteScreen> {
   late final IFirebaseNoteManager _noteManager;
   late final IFirebaseTrashManager _trashManager;
+  late final IFirebaseArchiveManager _archiveManager;
   late final Note _note;
 
   final TextEditingController _titleEditingController = TextEditingController();
@@ -14,6 +15,7 @@ mixin _EditNoteScreenMixin on State<EditNoteScreen> {
 
     _noteManager = locator<IFirebaseNoteManager>();
     _trashManager = locator<IFirebaseTrashManager>();
+    _archiveManager = locator<IFirebaseArchiveManager>();
 
     if (widget.note == null) {
       _handleNewNote();
@@ -114,6 +116,49 @@ mixin _EditNoteScreenMixin on State<EditNoteScreen> {
 
   void clearSystemColor() {
     context.read<ThemeProvider>().getAppTheme.setDefaultSystemUIOverlayStyle();
+  }
+
+  void createNoteCopy() async {
+    final Note note = _note.copyWith();
+    note.id = null;
+    note.pinned = false;
+
+    Navigator.of(context).pop();
+    await _noteManager.add(note);
+    navToEditNoteScreen(note);
+  }
+
+  void navToEditNoteScreen(Note note) {
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => EditNoteScreen(note: note)));
+  }
+
+  void updateNotePinned() {
+    setState(() {
+      _note.pinned = !_note.pinned;
+    });
+    _noteManager.update(_note);
+  }
+
+  void archiveNotes() {
+    Navigator.of(context).pop();
+    _noteManager.moveToArchive(_note);
+    notifyNoteArchived();
+  }
+
+  void notifyNoteArchived() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        duration: const Duration(seconds: 6),
+        content: const Text('Note archived'),
+        action: SnackBarAction(
+          label: 'Undo',
+          onPressed: () {
+            _archiveManager.restore(_note);
+          },
+        ),
+      ),
+    );
   }
 
   Future<bool> onWillPop() {

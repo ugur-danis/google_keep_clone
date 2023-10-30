@@ -6,6 +6,7 @@ import '../../main.dart';
 import '../../models/Note.dart';
 import '../../providers/theme_provider.dart';
 import '../../providers/user_provider.dart';
+import '../../services/archive/interfaces/IFirebaseArchiveManager.dart';
 import '../../services/note/interfaces/IFirebaseNoteManager.dart';
 import '../../services/trash/interfaces/IFirebaseTrashManager.dart';
 import '../../utils/formatters/date_formatter.dart';
@@ -45,15 +46,17 @@ class _EditNoteScreenState extends State<EditNoteScreen>
                 ? []
                 : [
                     IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.push_pin_outlined),
+                      onPressed: updateNotePinned,
+                      icon: Icon(_note.pinned
+                          ? Icons.push_pin
+                          : Icons.push_pin_outlined),
                     ),
                     IconButton(
                       onPressed: () {},
                       icon: const Icon(Icons.notification_add_outlined),
                     ),
                     IconButton(
-                      onPressed: () {},
+                      onPressed: archiveNotes,
                       icon: const Icon(Icons.archive_outlined),
                     ),
                   ],
@@ -136,6 +139,11 @@ class _EditNoteScreenState extends State<EditNoteScreen>
         leading: const Icon(Icons.delete_outlined),
         title: const Text('Delete'),
         onTap: deleteNote,
+      ));
+      actionList.add(ListTile(
+        leading: const Icon(Icons.content_copy_outlined),
+        title: const Text('Create a copy'),
+        onTap: createNoteCopy,
       ));
     } else {
       actionList.add(ListTile(

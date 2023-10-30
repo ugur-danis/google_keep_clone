@@ -28,6 +28,7 @@ class FirebaseNoteManager implements IFirebaseNoteManager {
 
   @override
   Future<void> add(Note note) async {
+    note.lastEditDate = DateTime.now();
     _noteDal.add(note);
   }
 
@@ -38,6 +39,7 @@ class FirebaseNoteManager implements IFirebaseNoteManager {
 
   @override
   Future<void> moveToTrash(Note note) async {
+    note.lastEditDate = DateTime.now();
     _noteDal.delete(note);
     _trashDal.add(note);
   }
@@ -50,6 +52,7 @@ class FirebaseNoteManager implements IFirebaseNoteManager {
 
   @override
   Future<void> restore(Note note) async {
+    note.lastEditDate = DateTime.now();
     _noteDal.add(note);
     _trashDal.delete(note);
   }
@@ -82,6 +85,7 @@ class FirebaseNoteManager implements IFirebaseNoteManager {
 
   @override
   Future<void> update(Note note) async {
+    note.lastEditDate = DateTime.now();
     _noteDal.update(note);
   }
 

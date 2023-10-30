@@ -62,9 +62,9 @@ class FirebaseNoteDal implements IFirebaseNoteDal {
   }
 
   @override
-  Future<void> delete(Note entity) async {
+  Future<void> delete(Note note) async {
     try {
-      await _firestore.collection('notes').doc(entity.id).delete();
+      await _firestore.collection('notes').doc(note.id).delete();
     } catch (e) {
       developer.log('\x1B[31m$e\x1B[0m');
     }
@@ -73,7 +73,6 @@ class FirebaseNoteDal implements IFirebaseNoteDal {
   @override
   Future<void> update(Note note) async {
     try {
-      note.lastEditDate = DateTime.now();
       await _firestore.collection('notes').doc(note.id).update(note.toMap());
     } catch (e) {
       developer.log('\x1B[31m$e\x1B[0m');

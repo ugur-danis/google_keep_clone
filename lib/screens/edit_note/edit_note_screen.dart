@@ -44,27 +44,34 @@ class _EditNoteScreenState extends State<EditNoteScreen>
           backgroundColor: _note.color == null ? null : Color(_note.color!),
           appBar: AppBar(
             backgroundColor: Colors.transparent,
-            actions: !widget.isEditable
+            actions: !widget.isEditable && !widget.isArchived
                 ? []
-                : [
-                    IconButton(
-                      onPressed: updateNotePinned,
-                      icon: Icon(_note.pinned
-                          ? Icons.push_pin
-                          : Icons.push_pin_outlined),
-                    ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.notification_add_outlined),
-                    ),
-                    IconButton(
-                      onPressed:
-                          widget.isArchived ? unarchiveNote : archiveNotes,
-                      icon: Icon(widget.isArchived
-                          ? Icons.unarchive_outlined
-                          : Icons.archive_outlined),
-                    ),
-                  ],
+                : !widget.isEditable && widget.isArchived
+                    ? [
+                        IconButton(
+                          onPressed: unarchiveNote,
+                          icon: const Icon(Icons.unarchive_outlined),
+                        ),
+                      ]
+                    : [
+                        IconButton(
+                          onPressed: updateNotePinned,
+                          icon: Icon(_note.pinned
+                              ? Icons.push_pin
+                              : Icons.push_pin_outlined),
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.notification_add_outlined),
+                        ),
+                        IconButton(
+                          onPressed:
+                              widget.isArchived ? unarchiveNote : archiveNotes,
+                          icon: Icon(widget.isArchived
+                              ? Icons.unarchive_outlined
+                              : Icons.archive_outlined),
+                        ),
+                      ],
           ),
           bottomNavigationBar: buildBottomNavigationBar(context),
           body: SingleChildScrollView(

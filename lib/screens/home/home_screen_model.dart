@@ -127,6 +127,15 @@ mixin _HomeScreenMixin on State<HomeScreen>, RouteAware {
     clearSelectedNotes();
   }
 
+  Future<void> sendNote() async {
+    final ShareResult result = await ShareUtils()
+        .shareWithResult(ShareData(_selectedNotes.first.note!));
+
+    if (result.status != ShareResultStatus.success) {
+      ToastMessage().showToast(ToastMessageData(msg: result.raw));
+    }
+  }
+
   List<Note> filterNotesByPinned(List<Note> notes, bool pinned) {
     return notes.where((n) => n.pinned == pinned).toList();
   }

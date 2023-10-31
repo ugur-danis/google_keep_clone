@@ -10,7 +10,9 @@ import '../../providers/theme_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../services/archive/interfaces/IFirebaseArchiveManager.dart';
 import '../../services/note/interfaces/IFirebaseNoteManager.dart';
+import '../../utils/share_utils.dart';
 import '../../utils/theme/system_ui_theme.dart';
+import '../../utils/toast_message.dart';
 import '../../widgets/drawer_menu.dart';
 import '../../widgets/illustrated_message.dart';
 import '../../widgets/note_color_picker.dart';
@@ -69,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen>
           child: const Text('Create a copy'),
         ),
         PopupMenuItem(
-          onTap: () {},
+          onTap: sendNote,
           child: const Text('Send'),
         )
       ]);

@@ -152,6 +152,15 @@ mixin _EditNoteScreenMixin on State<EditNoteScreen> {
     navToEditNoteScreen(_note);
   }
 
+  Future<void> sendNote() async {
+    final ShareResult result =
+        await ShareUtils().shareWithResult(ShareData(_note.note!));
+
+    if (result.status != ShareResultStatus.success) {
+      ToastMessage().showToast(ToastMessageData(msg: result.raw));
+    }
+  }
+
   void notifyNoteArchived(bool isArchived) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

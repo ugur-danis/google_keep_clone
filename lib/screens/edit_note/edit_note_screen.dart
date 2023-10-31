@@ -10,7 +10,9 @@ import '../../services/archive/interfaces/IFirebaseArchiveManager.dart';
 import '../../services/note/interfaces/IFirebaseNoteManager.dart';
 import '../../services/trash/interfaces/IFirebaseTrashManager.dart';
 import '../../utils/formatters/date_formatter.dart';
+import '../../utils/share_utils.dart';
 import '../../utils/theme/system_ui_theme.dart';
+import '../../utils/toast_message.dart';
 import '../../widgets/note_color_picker.dart';
 import '../home/home_screen.dart';
 import '../trash/trash_screen.dart';
@@ -156,6 +158,11 @@ class _EditNoteScreenState extends State<EditNoteScreen>
         leading: const Icon(Icons.content_copy_outlined),
         title: const Text('Create a copy'),
         onTap: createNoteCopy,
+      ));
+      actionList.add(ListTile(
+        leading: const Icon(Icons.share_outlined),
+        title: const Text('Send'),
+        onTap: sendNote,
       ));
     } else {
       actionList.add(ListTile(

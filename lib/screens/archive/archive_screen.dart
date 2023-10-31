@@ -171,6 +171,7 @@ class _ArchiveScreenState extends State<ArchiveScreen>
 
     return NoteItem(
       note: note,
+      isArchived: true,
       isEditable: false,
       selected: _selectedNotes.contains(note),
       onSelected: (bool isSelected) {

@@ -9,12 +9,14 @@ class NoteItem extends StatelessWidget {
     super.key,
     required this.note,
     this.isEditable = true,
-    this.onSelected,
+    this.isArchived = false,
     this.selected = false,
+    this.onSelected,
   });
 
   final Note note;
   final bool isEditable;
+  final bool isArchived;
   final ValueSetter<bool>? onSelected;
   bool selected;
   bool _isTapped = false;
@@ -73,6 +75,7 @@ class NoteItem extends StatelessWidget {
             builder: (context) => EditNoteScreen(
               note: note,
               isEditable: isEditable,
+              isArchived: isArchived,
             ),
           ));
       _isTapped = false;

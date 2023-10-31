@@ -22,10 +22,12 @@ class EditNoteScreen extends StatefulWidget {
     super.key,
     this.note,
     this.isEditable = true,
+    this.isArchived = false,
   });
 
   final Note? note;
   final bool isEditable;
+  final bool isArchived;
 
   @override
   State<EditNoteScreen> createState() => _EditNoteScreenState();
@@ -56,8 +58,11 @@ class _EditNoteScreenState extends State<EditNoteScreen>
                       icon: const Icon(Icons.notification_add_outlined),
                     ),
                     IconButton(
-                      onPressed: archiveNotes,
-                      icon: const Icon(Icons.archive_outlined),
+                      onPressed:
+                          widget.isArchived ? unarchiveNote : archiveNotes,
+                      icon: Icon(widget.isArchived
+                          ? Icons.unarchive_outlined
+                          : Icons.archive_outlined),
                     ),
                   ],
           ),

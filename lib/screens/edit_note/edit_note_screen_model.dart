@@ -143,18 +143,28 @@ mixin _EditNoteScreenMixin on State<EditNoteScreen> {
   void archiveNotes() {
     Navigator.of(context).pop();
     _noteManager.moveToArchive(_note);
-    notifyNoteArchived();
+    notifyNoteArchived(true);
   }
 
-  void notifyNoteArchived() {
+  void unarchiveNote() {
+    _archiveManager.restore(_note);
+    notifyNoteArchived(false);
+    navToEditNoteScreen(_note);
+  }
+
+  void notifyNoteArchived(bool isArchived) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         duration: const Duration(seconds: 6),
-        content: const Text('Note archived'),
+        content: Text(isArchived ? 'Note archived' : 'Note unarchived'),
         action: SnackBarAction(
           label: 'Undo',
           onPressed: () {
-            _archiveManager.restore(_note);
+            if (isArchived) {
+              _archiveManager.restore(_note);
+            } else {
+              _noteManager.moveToArchive(_note);
+            }
           },
         ),
       ),

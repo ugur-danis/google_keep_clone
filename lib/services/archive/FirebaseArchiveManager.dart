@@ -3,6 +3,7 @@
 import '../../models/Note.dart';
 import '../../models/User.dart';
 import '../../utils/types/FetchQuery.dart';
+import '../../utils/types/add_listener_callback.dart';
 import '../note/interfaces/IFirebaseNoteDal.dart';
 import '../trash/interfaces/IFirebaseTrashDal.dart';
 import '../user/interfaces/IFirebaseUserDal.dart';
@@ -67,7 +68,8 @@ class FirebaseArchiveManager implements IFirebaseArchiveManager {
   }
 
   @override
-  void addListener(Function(List<Note>) callback, [FetchQuery? querie]) async {
+  void addListener(AddListenerCallback<Note> callback,
+      [FetchQuery? querie]) async {
     User? user = await _userDal.getUser();
     if (user == null) {
       throw Exception('User not found');

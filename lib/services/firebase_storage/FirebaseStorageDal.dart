@@ -15,8 +15,7 @@ class FirebaseStorageDal implements IFirebaseStorageDal {
       TaskSnapshot snapshot = await _firebaseStorage.ref(path).putFile(file);
       return snapshot.ref.getDownloadURL();
     } catch (e) {
-      print(e);
+      rethrow;
     }
-    return null;
   }
 }

@@ -1,10 +1,10 @@
 // ignore_for_file: file_names
 
-import 'package:firebase_auth/firebase_auth.dart' as FirebaseAuth;
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
 import '../services/interfaces/IEntity.dart';
 
-class User extends IEntity {
+class User extends IEntity<User> {
   User({
     this.id,
     this.username,
@@ -13,13 +13,15 @@ class User extends IEntity {
     this.refreshToken,
   });
 
+  @override
+  // ignore: overridden_fields
   String? id;
   String? username;
   String? email;
   String? photo;
   String? refreshToken;
 
-  User.fromFirebaseUser(FirebaseAuth.User? user)
+  User.fromFirebaseUser(firebase_auth.User? user)
       : id = user?.uid,
         username = user?.displayName,
         email = user?.email,
@@ -34,4 +36,14 @@ class User extends IEntity {
         'photoURL': photo,
         'refreshToken': refreshToken,
       };
+
+  @override
+  User fromMap(Map<String, dynamic> data) {
+    return User(
+      username: data['username'],
+      email: data['email'],
+      photo: data['photo'],
+      refreshToken: data['refreshToken'],
+    );
+  }
 }

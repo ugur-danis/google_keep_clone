@@ -1,11 +1,11 @@
 // ignore_for_file: file_names
 
-import 'package:google_keep_clone/services/trash/interfaces/IFirebaseTrashDal.dart';
-
 import '../../models/Note.dart';
 import '../../models/User.dart';
 import '../../utils/types/FetchQuery.dart';
+import '../../utils/types/add_listener_callback.dart';
 import '../archive/interfaces/IFirebaseArchiveDal.dart';
+import '../trash/interfaces/IFirebaseTrashDal.dart';
 import '../user/interfaces/IFirebaseUserDal.dart';
 import 'interfaces/IFirebaseNoteDal.dart';
 import 'interfaces/IFirebaseNoteManager.dart';
@@ -90,7 +90,7 @@ class FirebaseNoteManager implements IFirebaseNoteManager {
   }
 
   @override
-  void addListener(Function(List<Note> p1) callback,
+  void addListener(AddListenerCallback<Note> callback,
       [FetchQuery? querie]) async {
     User? user = await _userDal.getUser();
     if (user == null) {

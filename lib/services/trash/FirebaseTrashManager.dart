@@ -3,6 +3,7 @@
 import '../../models/Note.dart';
 import '../../models/User.dart';
 import '../../utils/types/FetchQuery.dart';
+import '../../utils/types/add_listener_callback.dart';
 import '../note/interfaces/INoteDal.dart';
 import '../user/interfaces/IFirebaseUserDal.dart';
 import 'interfaces/IFirebaseTrashDal.dart';
@@ -52,7 +53,8 @@ class FirebaseTrashManager implements IFirebaseTrashManager {
   }
 
   @override
-  void addListener(Function(List<Note>) callback, [FetchQuery? querie]) async {
+  void addListener(AddListenerCallback<Note> callback,
+      [FetchQuery? querie]) async {
     User? user = await _userDal.getUser();
     if (user == null) {
       throw Exception('User not found');

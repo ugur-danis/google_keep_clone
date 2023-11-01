@@ -3,7 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../services/interfaces/IEntity.dart';
 
-class Note extends IEntity {
+class Note extends IEntity<Note> {
+  @override
+  // ignore: overridden_fields
   String? id;
   String? userId;
   String? title;
@@ -22,30 +24,18 @@ class Note extends IEntity {
     this.pinned = false,
   });
 
-  factory Note.fromFirestore(
-    DocumentSnapshot<Map<String, dynamic>> snapshot,
-    SnapshotOptions? options,
-  ) {
-    final data = snapshot.data();
+  @override
+  Note fromMap(Map<String, dynamic> data) {
     return Note(
-      id: data?['id'],
-      userId: data?['userId'],
-      title: data?['title'],
-      note: data?['note'],
-      color: data?['color'],
-      pinned: data?['pinned'],
-      lastEditDate: (data?['lastEditDate'] as Timestamp).toDate(),
+      id: data['id'],
+      userId: data['userId'],
+      title: data['title'],
+      note: data['note'],
+      color: data['color'],
+      pinned: data['pinned'],
+      lastEditDate: (data['lastEditDate'] as Timestamp).toDate(),
     );
   }
-
-  Note.fromMap(Map<String, dynamic> data)
-      : id = data['id'],
-        userId = data['userId'],
-        title = data['title'],
-        note = data['note'],
-        color = data['color'],
-        pinned = data['pinned'],
-        lastEditDate = (data['lastEditDate'] as Timestamp).toDate();
 
   @override
   Map<String, dynamic> toMap() => {

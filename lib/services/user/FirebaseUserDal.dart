@@ -19,7 +19,7 @@ class FirebaseUserDal implements IFirebaseUserDal {
     try {
       await _firebaseAuth.currentUser!.updatePhotoURL(photoUrl);
     } catch (e) {
-      print(e);
+      rethrow;
     }
   }
 }

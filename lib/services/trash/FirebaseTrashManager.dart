@@ -2,7 +2,7 @@
 
 import '../../models/Note.dart';
 import '../../models/User.dart';
-import '../../utils/types/FetchQuery.dart';
+import '../../utils/fetch_query.dart';
 import '../../utils/types/add_listener_callback.dart';
 import '../note/interfaces/INoteDal.dart';
 import '../user/interfaces/IFirebaseUserDal.dart';
@@ -23,16 +23,19 @@ class FirebaseTrashManager implements IFirebaseTrashManager {
         _noteDal = noteDal;
 
   @override
-  Future<List<Note>> getAll([FetchQuery? querie]) async {
+  Future<List<Note>> getAll([FetchQuery? query]) async {
     User? user = await _userDal.getUser();
     if (user == null) {
       throw Exception('User not found');
     }
 
-    querie ??= {};
-    querie['userId'] = user.id;
+    query ??= FetchQuery(
+      field: 'userId',
+      value: user.id!,
+      operation: FetchQueryOperation.isEqualTo,
+    );
 
-    return _trashDal.getAll(querie);
+    return _trashDal.getAll(query);
   }
 
   @override
@@ -54,16 +57,19 @@ class FirebaseTrashManager implements IFirebaseTrashManager {
 
   @override
   void addListener(AddListenerCallback<Note> callback,
-      [FetchQuery? querie]) async {
+      [FetchQuery? query]) async {
     User? user = await _userDal.getUser();
     if (user == null) {
       throw Exception('User not found');
     }
 
-    querie ??= {};
-    querie['userId'] = user.id;
+    query ??= FetchQuery(
+      field: 'userId',
+      value: user.id!,
+      operation: FetchQueryOperation.isEqualTo,
+    );
 
-    _trashDal.addListener(callback, querie);
+    _trashDal.addListener(callback, query);
   }
 
   @override

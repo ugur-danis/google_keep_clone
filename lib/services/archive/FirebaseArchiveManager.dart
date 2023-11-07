@@ -2,7 +2,7 @@
 
 import '../../models/Note.dart';
 import '../../models/User.dart';
-import '../../utils/types/FetchQuery.dart';
+import '../../utils/fetch_query.dart';
 import '../../utils/types/add_listener_callback.dart';
 import '../note/interfaces/IFirebaseNoteDal.dart';
 import '../trash/interfaces/IFirebaseTrashDal.dart';
@@ -27,16 +27,19 @@ class FirebaseArchiveManager implements IFirebaseArchiveManager {
         _trashDal = trashDal;
 
   @override
-  Future<List<Note>> getAll([FetchQuery? querie]) async {
+  Future<List<Note>> getAll([FetchQuery? query]) async {
     User? user = await _userDal.getUser();
     if (user == null) {
       throw Exception('User not found');
     }
 
-    querie ??= {};
-    querie['userId'] = user.id;
+    query ??= FetchQuery(
+      field: 'userId',
+      value: user.id!,
+      operation: FetchQueryOperation.isEqualTo,
+    );
 
-    return _archiveDal.getAll(querie);
+    return _archiveDal.getAll(query);
   }
 
   @override
@@ -69,16 +72,19 @@ class FirebaseArchiveManager implements IFirebaseArchiveManager {
 
   @override
   void addListener(AddListenerCallback<Note> callback,
-      [FetchQuery? querie]) async {
+      [FetchQuery? query]) async {
     User? user = await _userDal.getUser();
     if (user == null) {
       throw Exception('User not found');
     }
 
-    querie ??= {};
-    querie['userId'] = user.id;
+    query ??= FetchQuery(
+      field: 'userId',
+      value: user.id!,
+      operation: FetchQueryOperation.isEqualTo,
+    );
 
-    _archiveDal.addListener(callback, querie);
+    _archiveDal.addListener(callback, query);
   }
 
   @override

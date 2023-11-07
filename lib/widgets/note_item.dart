@@ -3,6 +3,18 @@ import 'package:flutter/material.dart';
 import '../screens/edit_note/edit_note_screen.dart';
 import '../models/Note.dart';
 
+class _SearchResult {
+  _SearchResult({
+    required this.startIndex,
+    required this.endIndex,
+    required this.lastIndex,
+  });
+
+  final int startIndex;
+  final int endIndex;
+  final int lastIndex;
+}
+
 // ignore: must_be_immutable
 class NoteItem extends StatelessWidget {
   NoteItem({
@@ -12,6 +24,7 @@ class NoteItem extends StatelessWidget {
     this.isArchived = false,
     this.selected = false,
     this.onSelected,
+    this.searchText = '',
   });
 
   final Note note;
@@ -20,6 +33,54 @@ class NoteItem extends StatelessWidget {
   final ValueSetter<bool>? onSelected;
   bool selected;
   bool _isTapped = false;
+  String searchText;
+
+  // ignore: library_private_types_in_public_api
+  _SearchResult findMatchingIndices({required String text, start = 0}) {
+    final String lowerCaseText = text.toLowerCase();
+    final String lowerCaseSearchText = searchText.toLowerCase();
+
+    int startIndex = lowerCaseText.indexOf(lowerCaseSearchText, start);
+    int endIndex = startIndex == -1 ? -1 : startIndex + searchText.length;
+    int lastIndex = lowerCaseText.lastIndexOf(lowerCaseSearchText);
+
+    return _SearchResult(
+      startIndex: startIndex,
+      endIndex: endIndex,
+      lastIndex: lastIndex,
+    );
+  }
+
+  List<TextSpan> highlightMatches(String text) {
+    final List<TextSpan> textSpanList =
+        text.characters.map((c) => TextSpan(text: c)).toList();
+
+    if (searchText.isEmpty) {
+      return textSpanList;
+    }
+
+    int lastIndex = findMatchingIndices(text: text).lastIndex;
+    int startToSearch = 0;
+
+    while (startToSearch <= lastIndex) {
+      final _SearchResult searchResult = findMatchingIndices(
+        text: text,
+        start: startToSearch,
+      );
+
+      if (searchResult.startIndex == -1) {
+        return textSpanList;
+      }
+
+      startToSearch = searchResult.endIndex;
+
+      for (int i = searchResult.startIndex; i < searchResult.endIndex; i++) {
+        textSpanList[i] = _HighlightedTextSpan(text: textSpanList[i].text);
+      }
+    }
+
+    return textSpanList;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +98,8 @@ class NoteItem extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              buildNoteTitle(),
-              buildNoteContent(),
+              buildNoteTitle(context),
+              buildNoteContent(context),
             ],
           ),
         ),
@@ -46,16 +107,28 @@ class NoteItem extends StatelessWidget {
     );
   }
 
-  Expanded buildNoteContent() {
+  Widget buildNoteContent(BuildContext context) {
     return Expanded(
-      child: Text(note.note!, maxLines: 6, overflow: TextOverflow.ellipsis),
+      child: RichText(
+        maxLines: 6,
+        overflow: TextOverflow.ellipsis,
+        text: TextSpan(
+          style: DefaultTextStyle.of(context).style,
+          children: highlightMatches(note.note!),
+        ),
+      ),
     );
   }
 
-  Padding buildNoteTitle() {
+  Padding buildNoteTitle(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
-      child: Text(note.title!),
+      child: RichText(
+        text: TextSpan(
+          style: DefaultTextStyle.of(context).style,
+          children: highlightMatches(note.title!),
+        ),
+      ),
     );
   }
 
@@ -104,4 +177,13 @@ class NoteItem extends StatelessWidget {
       borderRadius: const BorderRadius.all(Radius.circular(12)),
     );
   }
+}
+
+class _HighlightedTextSpan extends TextSpan {
+  const _HighlightedTextSpan({super.text})
+      : super(
+          style: const TextStyle(
+            backgroundColor: Colors.amber,
+          ),
+        );
 }

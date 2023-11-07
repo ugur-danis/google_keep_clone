@@ -6,7 +6,7 @@ import 'dart:developer' as developer;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_keep_clone/services/interfaces/IFirebaseEntityRepository.dart';
 
-import '../../utils/types/FetchQuery.dart';
+import '../../utils/fetch_query.dart';
 import '../../utils/types/add_listener_callback.dart';
 import '../interfaces/IEntity.dart';
 
@@ -36,14 +36,15 @@ class BaseFirebaseEntityRepository<T extends IEntity>
     final ref = collections.reference;
 
     final response = await ref
+        .limit(1)
+        .where(query?.operation.toFirebaseQuery(query) as Object)
         .withConverter<T>(
           fromFirestore: (snapshot, _) => model.fromFirebase(snapshot),
           toFirestore: (value, _) => value.toMap(),
         )
-        .doc(query?['id'])
         .get();
 
-    return response.data();
+    return response.docs.first.data();
   }
 
   @override
@@ -51,6 +52,7 @@ class BaseFirebaseEntityRepository<T extends IEntity>
     final ref = collections.reference;
 
     final response = await ref
+        .where(query?.operation.toFirebaseQuery(query) as Object)
         .withConverter<T>(
           fromFirestore: (snapshot, _) => model.fromFirebase(snapshot),
           toFirestore: (value, _) => value.toMap(),
@@ -91,15 +93,15 @@ class BaseFirebaseEntityRepository<T extends IEntity>
   }
 
   @override
-  void addListener(AddListenerCallback<T> callback, [FetchQuery? querie]) {
+  void addListener(AddListenerCallback<T> callback, [FetchQuery? query]) {
     removeListener();
 
     final snapshot = collections.reference
+        .where(query?.operation.toFirebaseQuery(query) as Object)
         .withConverter<T>(
           fromFirestore: (snapshot, _) => model.fromFirebase(snapshot),
           toFirestore: (value, _) => value.toMap(),
-        )
-        .where('userId', isEqualTo: querie?['userId']);
+        );
 
     listener = snapshot.snapshots().listen(
       (event) {

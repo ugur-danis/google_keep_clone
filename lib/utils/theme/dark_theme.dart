@@ -60,6 +60,8 @@ class DarkTheme implements AppTheme {
     popupMenuTheme: const PopupMenuThemeData(
       color: CustomColors.caviar,
     ),
+    highlightColor: Colors.amberAccent,
+    hoverColor: Colors.black,
   );
 
   @override

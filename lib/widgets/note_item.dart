@@ -51,7 +51,7 @@ class NoteItem extends StatelessWidget {
     );
   }
 
-  List<TextSpan> highlightMatches(String text) {
+  List<TextSpan> highlightMatches(String text, BuildContext context) {
     final List<TextSpan> textSpanList =
         text.characters.map((c) => TextSpan(text: c)).toList();
 
@@ -75,7 +75,10 @@ class NoteItem extends StatelessWidget {
       startToSearch = searchResult.endIndex;
 
       for (int i = searchResult.startIndex; i < searchResult.endIndex; i++) {
-        textSpanList[i] = _HighlightedTextSpan(text: textSpanList[i].text);
+        textSpanList[i] = _HighlightedTextSpan(
+          text: textSpanList[i].text,
+          context: context,
+        );
       }
     }
 
@@ -114,7 +117,7 @@ class NoteItem extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
         text: TextSpan(
           style: DefaultTextStyle.of(context).style,
-          children: highlightMatches(note.note!),
+          children: highlightMatches(note.note!, context),
         ),
       ),
     );
@@ -126,7 +129,7 @@ class NoteItem extends StatelessWidget {
       child: RichText(
         text: TextSpan(
           style: DefaultTextStyle.of(context).style,
-          children: highlightMatches(note.title!),
+          children: highlightMatches(note.title!, context),
         ),
       ),
     );
@@ -180,10 +183,15 @@ class NoteItem extends StatelessWidget {
 }
 
 class _HighlightedTextSpan extends TextSpan {
-  const _HighlightedTextSpan({super.text})
-      : super(
-          style: const TextStyle(
-            backgroundColor: Colors.amber,
+  _HighlightedTextSpan({
+    required super.text,
+    required this.context,
+  }) : super(
+          style: TextStyle(
+            backgroundColor: Theme.of(context).highlightColor,
+            color: Theme.of(context).hoverColor,
           ),
         );
+
+  final BuildContext context;
 }

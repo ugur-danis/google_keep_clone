@@ -196,7 +196,7 @@ class _HomeScreenState extends State<HomeScreen>
       children.add(buildNoteGroupTitle('Others', topPadding: true));
     }
     if (unpinnedNotes.isNotEmpty) {
-      children.add(SliverFillRemaining(child: buildNoteGrid(unpinnedNotes)));
+      children.add(SliverToBoxAdapter(child: buildNoteGrid(unpinnedNotes)));
     }
 
     return CustomScrollView(slivers: children);

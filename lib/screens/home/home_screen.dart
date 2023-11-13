@@ -190,13 +190,13 @@ class _HomeScreenState extends State<HomeScreen>
 
     if (pinnedNotes.isNotEmpty) {
       children.add(buildNoteGroupTitle('Pinned'));
-      children.add(SliverToBoxAdapter(child: buildNoteGrid(pinnedNotes)));
+      children.add(buildNoteGrid(pinnedNotes));
     }
     if (pinnedNotes.isNotEmpty && unpinnedNotes.isNotEmpty) {
       children.add(buildNoteGroupTitle('Others', topPadding: true));
     }
     if (unpinnedNotes.isNotEmpty) {
-      children.add(SliverToBoxAdapter(child: buildNoteGrid(unpinnedNotes)));
+      children.add(buildNoteGrid(unpinnedNotes));
     }
 
     return CustomScrollView(slivers: children);
@@ -215,13 +215,15 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  NoteGrid buildNoteGrid(List<Note> notes) {
-    return NoteGrid(
-      crossAxisCount: _gridCrossAxisCount,
-      items: notes,
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemBuilder: (context, index) => buildNoteItem(notes[index]),
+  SliverToBoxAdapter buildNoteGrid(List<Note> notes) {
+    return SliverToBoxAdapter(
+      child: NoteGrid(
+        crossAxisCount: _gridCrossAxisCount,
+        items: notes,
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (context, index) => buildNoteItem(notes[index]),
+      ),
     );
   }
 

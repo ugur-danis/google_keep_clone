@@ -8,6 +8,7 @@ import '../../services/archive/interfaces/IFirebaseArchiveManager.dart';
 import '../../services/note/interfaces/IFirebaseNoteManager.dart';
 import '../../widgets/drawer_menu.dart';
 import '../../widgets/illustrated_message.dart';
+import '../../widgets/note_grid.dart';
 import '../../widgets/note_item.dart';
 import '../search_note/search_note_screen.dart';
 
@@ -154,21 +155,15 @@ class _ArchiveScreenState extends State<ArchiveScreen>
 
   Expanded buildGridView(AsyncSnapshot<dynamic> snapshot) {
     return Expanded(
-      child: GridView.count(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+      child: NoteGrid(
+        items: snapshot.data,
         crossAxisCount: _gridCrossAxisCount,
-        children: List.generate(
-          snapshot.data.length,
-          (index) => buildNoteItem(snapshot, index),
-        ),
+        itemBuilder: (context, index) => buildNoteItem(snapshot.data[index]),
       ),
     );
   }
 
-  NoteItem buildNoteItem(AsyncSnapshot<dynamic> snapshot, int index) {
-    final Note note = snapshot.data[index];
-
+  NoteItem buildNoteItem(Note note) {
     return NoteItem(
       note: note,
       isArchived: true,

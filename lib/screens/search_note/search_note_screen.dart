@@ -7,6 +7,7 @@ import '../../models/Note.dart';
 import '../../services/note/interfaces/IFirebaseNoteManager.dart';
 import '../../utils/fetch_query.dart';
 import '../../widgets/illustrated_message.dart';
+import '../../widgets/note_grid.dart';
 import '../../widgets/note_item.dart';
 
 part 'search_note_view_model.dart';
@@ -73,18 +74,10 @@ class _SearchNoteScreenState extends State<SearchNoteScreen>
     );
   }
 
-  Widget buildNoteGrid(List<Note> notes) {
-    return GridView.custom(
-      padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-      childrenDelegate: SliverChildBuilderDelegate(
-        childCount: notes.length,
-        (context, index) => buildNoteItem(notes[index]),
-      ),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 2,
-        crossAxisSpacing: 4,
-        mainAxisSpacing: 4,
-      ),
+  NoteGrid buildNoteGrid(List<Note> notes) {
+    return NoteGrid(
+      items: notes,
+      itemBuilder: (context, index) => buildNoteItem(notes[index]),
     );
   }
 

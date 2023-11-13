@@ -6,6 +6,7 @@ import '../../main.dart';
 import '../../models/Note.dart';
 import '../../services/trash/interfaces/IFirebaseTrashManager.dart';
 import '../../widgets/drawer_menu.dart';
+import '../../widgets/note_grid.dart';
 import '../../widgets/note_item.dart';
 
 part 'trash_screen_model.dart';
@@ -105,21 +106,14 @@ class _TrashScreenState extends State<TrashScreen> with _TrashScreenMixin {
     ));
   }
 
-  GridView buildGridView(AsyncSnapshot<dynamic> snapshot) {
-    return GridView.count(
-      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-      crossAxisCount: 2,
-      children: List.generate(
-        snapshot.data.length,
-        (index) => buildNoteItem(snapshot, index),
-      ),
+  NoteGrid buildGridView(AsyncSnapshot<dynamic> snapshot) {
+    return NoteGrid(
+      items: snapshot.data,
+      itemBuilder: (context, index) => buildNoteItem(snapshot.data[index]),
     );
   }
 
-  NoteItem buildNoteItem(AsyncSnapshot<dynamic> snapshot, int index) {
-    final Note note = snapshot.data![index];
-
+  NoteItem buildNoteItem(Note note) {
     return NoteItem(
       note: note,
       isEditable: false,

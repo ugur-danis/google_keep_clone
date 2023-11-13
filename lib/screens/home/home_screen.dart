@@ -16,6 +16,7 @@ import '../../utils/toast_message.dart';
 import '../../widgets/drawer_menu.dart';
 import '../../widgets/illustrated_message.dart';
 import '../../widgets/note_color_picker.dart';
+import '../../widgets/note_grid.dart';
 import '../../widgets/note_item.dart';
 import '../../widgets/user_menu.dart';
 import '../edit_note/edit_note_screen.dart';
@@ -127,22 +128,19 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget buildContent() {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
-      child: NestedScrollView(
-        floatHeaderSlivers: true,
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
-          if (_selectedNotes.isNotEmpty) return [];
-          return [buildSliverAppBar(context)];
-        },
-        body: buildNotesStreamBuilder(),
-      ),
+    return NestedScrollView(
+      floatHeaderSlivers: true,
+      headerSliverBuilder: (context, innerBoxIsScrolled) {
+        if (_selectedNotes.isNotEmpty) return [];
+        return [buildSliverAppBar(context)];
+      },
+      body: buildNotesStreamBuilder(),
     );
   }
 
   SliverPadding buildSliverAppBar(BuildContext context) {
     return SliverPadding(
-      padding: const EdgeInsets.only(bottom: 20),
+      padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
       sliver: SliverAppBar(
         flexibleSpace: FlexibleSpaceBar(
           background: GestureDetector(onTap: navToSearchScreen),
@@ -191,46 +189,39 @@ class _HomeScreenState extends State<HomeScreen>
     final List<Widget> children = [];
 
     if (pinnedNotes.isNotEmpty) {
-      children.add(SliverToBoxAdapter(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 0, 0, 10),
-          child: Text(
-            'Pinned',
-            style: Theme.of(context).textTheme.labelMedium,
-          ),
-        ),
-      ));
-      children.add(buildNoteSliverGrid(pinnedNotes));
+      children.add(buildNoteGroupTitle('Pinned'));
+      children.add(SliverToBoxAdapter(child: buildNoteGrid(pinnedNotes)));
     }
     if (pinnedNotes.isNotEmpty && unpinnedNotes.isNotEmpty) {
-      children.add(SliverToBoxAdapter(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20, 20, 0, 10),
-          child: Text(
-            'Others',
-            style: Theme.of(context).textTheme.labelMedium,
-          ),
-        ),
-      ));
+      children.add(buildNoteGroupTitle('Others', topPadding: true));
     }
     if (unpinnedNotes.isNotEmpty) {
-      children.add(buildNoteSliverGrid(unpinnedNotes));
+      children.add(SliverFillRemaining(child: buildNoteGrid(unpinnedNotes)));
     }
 
     return CustomScrollView(slivers: children);
   }
 
-  SliverGrid buildNoteSliverGrid(List<Note> notes) {
-    return SliverGrid(
-      delegate: SliverChildBuilderDelegate(
-        (context, index) => buildNoteItem(notes[index]),
-        childCount: notes.length,
+  SliverToBoxAdapter buildNoteGroupTitle(String title,
+      {bool topPadding = false}) {
+    return SliverToBoxAdapter(
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(30, topPadding ? 10 : 0, 0, 10),
+        child: Text(
+          title,
+          style: Theme.of(context).textTheme.labelMedium,
+        ),
       ),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: _gridCrossAxisCount,
-        crossAxisSpacing: 4,
-        mainAxisSpacing: 4,
-      ),
+    );
+  }
+
+  NoteGrid buildNoteGrid(List<Note> notes) {
+    return NoteGrid(
+      crossAxisCount: _gridCrossAxisCount,
+      items: notes,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemBuilder: (context, index) => buildNoteItem(notes[index]),
     );
   }
 

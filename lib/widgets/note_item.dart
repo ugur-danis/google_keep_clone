@@ -36,7 +36,7 @@ class NoteItem extends StatelessWidget {
   String searchText;
 
   // ignore: library_private_types_in_public_api
-  _SearchResult findMatchingIndices({required String text, start = 0}) {
+  _SearchResult _findMatchingIndices({required String text, start = 0}) {
     final String lowerCaseText = text.toLowerCase();
     final String lowerCaseSearchText = searchText.toLowerCase();
 
@@ -51,7 +51,7 @@ class NoteItem extends StatelessWidget {
     );
   }
 
-  List<TextSpan> highlightMatches(String text, BuildContext context) {
+  List<TextSpan> _highlightMatches(String text, BuildContext context) {
     final List<TextSpan> textSpanList =
         text.characters.map((c) => TextSpan(text: c)).toList();
 
@@ -59,11 +59,11 @@ class NoteItem extends StatelessWidget {
       return textSpanList;
     }
 
-    int lastIndex = findMatchingIndices(text: text).lastIndex;
+    int lastIndex = _findMatchingIndices(text: text).lastIndex;
     int startToSearch = 0;
 
     while (startToSearch <= lastIndex) {
-      final _SearchResult searchResult = findMatchingIndices(
+      final _SearchResult searchResult = _findMatchingIndices(
         text: text,
         start: startToSearch,
       );
@@ -87,49 +87,51 @@ class NoteItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      semanticContainer: false,
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      elevation: 0,
-      color: note.color == null ? Colors.transparent : Color(note.color!),
-      shape: buildShape(context),
-      child: InkWell(
-        onLongPress: onLongPress,
-        onTap: () => onTap(context),
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              buildNoteTitle(context),
-              buildNoteContent(context),
-            ],
+    return IntrinsicHeight(
+      child: Card(
+        semanticContainer: false,
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        elevation: 0,
+        color: note.color == null ? Colors.transparent : Color(note.color!),
+        shape: _buildShape(context),
+        child: InkWell(
+          onLongPress: _onLongPress,
+          onTap: () => onTap(context),
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildNoteTitle(context),
+                _buildNoteContent(context),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget buildNoteContent(BuildContext context) {
+  Widget _buildNoteContent(BuildContext context) {
     return Expanded(
       child: RichText(
         maxLines: 6,
         overflow: TextOverflow.ellipsis,
         text: TextSpan(
           style: DefaultTextStyle.of(context).style,
-          children: highlightMatches(note.note!, context),
+          children: _highlightMatches(note.note!, context),
         ),
       ),
     );
   }
 
-  Padding buildNoteTitle(BuildContext context) {
+  Padding _buildNoteTitle(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: RichText(
         text: TextSpan(
           style: DefaultTextStyle.of(context).style,
-          children: highlightMatches(note.title!, context),
+          children: _highlightMatches(note.title!, context),
         ),
       ),
     );
@@ -160,12 +162,12 @@ class NoteItem extends StatelessWidget {
     _isTapped = true;
   }
 
-  void onLongPress() {
+  void _onLongPress() {
     selected = true;
     onSelected?.call(true);
   }
 
-  RoundedRectangleBorder? buildShape(BuildContext context) {
+  RoundedRectangleBorder? _buildShape(BuildContext context) {
     if (!selected && note.color != null) {
       return null;
     }

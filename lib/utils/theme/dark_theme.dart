@@ -33,6 +33,7 @@ class DarkTheme implements AppTheme {
     appBarTheme: const AppBarTheme(
       backgroundColor: CustomColors.caviar,
       elevation: 0,
+      scrolledUnderElevation: 0,
       actionsIconTheme: IconThemeData(color: CustomColors.ladyNicole),
     ),
     switchTheme: SwitchThemeData(

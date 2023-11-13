@@ -10,26 +10,24 @@ class NoteColorPicker extends StatefulWidget {
     this.horizontal = true,
     this.dialog = false,
     required this.changed,
-  }) {
-    _colors = [
-      NoteColors.none,
-      NoteColors.shiraz,
-      NoteColors.sisKebab,
-      NoteColors.forwardFuchsia,
-      NoteColors.royalPurple,
-      NoteColors.botanicalNight,
-      NoteColors.mallard,
-      NoteColors.pacificNavy,
-      NoteColors.youngNight,
-    ];
-  }
+  });
 
-  late final List<Color> _colors;
+  final List<Color> _colors = [
+    NoteColors.none,
+    NoteColors.shiraz,
+    NoteColors.sisKebab,
+    NoteColors.forwardFuchsia,
+    NoteColors.royalPurple,
+    NoteColors.botanicalNight,
+    NoteColors.mallard,
+    NoteColors.pacificNavy,
+    NoteColors.youngNight,
+  ];
   final ValueChanged<Color?> changed;
   final String title;
   final bool horizontal;
   final bool dialog;
-  Color? selected;
+  final Color? selected;
 
   @override
   State<NoteColorPicker> createState() => _NoteColorPickerState();
@@ -114,12 +112,12 @@ class _NoteColorPickerState extends State<NoteColorPicker> {
 }
 
 class _ColorItem extends StatelessWidget {
-  _ColorItem({
+  const _ColorItem({
     required this.color,
     this.selected = false,
   });
 
-  bool selected;
+  final bool selected;
   final Color color;
 
   @override

@@ -50,7 +50,7 @@ class UserMenu extends StatelessWidget {
             TextButton(
               onPressed: () {},
               child: Text(
-                'Gizlilik Politikası',
+                'Privacy Policy',
                 style: TextStyle(
                   fontSize: Theme.of(context).textTheme.bodySmall!.fontSize,
                   color: Theme.of(context).colorScheme.secondary,
@@ -61,7 +61,7 @@ class UserMenu extends StatelessWidget {
             TextButton(
               onPressed: () {},
               child: Text(
-                'Hizmet Şartları',
+                'Terms of Service',
                 style: TextStyle(
                   fontSize: Theme.of(context).textTheme.bodySmall!.fontSize,
                   color: Theme.of(context).colorScheme.secondary,
@@ -89,13 +89,13 @@ class UserMenu extends StatelessWidget {
                 alignment: Alignment.centerLeft,
               ),
               label: Text(
-                'Başka bir hesap ekle',
+                'Add another account',
                 style: Theme.of(context).textTheme.labelLarge,
               ),
               onPressed: () async {
-                await context.read<AuthProvider>().signOut();
                 Navigator.of(context).pushReplacement(MaterialPageRoute(
                     builder: (context) => const SignInScreen()));
+                await context.read<AuthProvider>().signOut();
               },
               icon: const Icon(
                 Icons.person_add_alt,
@@ -111,7 +111,7 @@ class UserMenu extends StatelessWidget {
                 alignment: Alignment.centerLeft,
               ),
               label: Text(
-                'Bu cihazdaki hesapları yönet',
+                'Manage accounts on this device',
                 style: Theme.of(context).textTheme.labelLarge,
               ),
               onPressed: () {},
@@ -167,17 +167,19 @@ class UserMenu extends StatelessWidget {
                 ),
               ),
               onPressed: () {},
-              child: const Text('Google Hesabınızı Yönetin'))
+              child: const Text('Manage Your Google Account'))
         ],
       ),
     );
   }
 
   GestureDetector userMenuAvatar(BuildContext context) {
+    final UserProvider userProvider = Provider.of<UserProvider>(context);
+
     Future<void> changeProfilePhoto(BuildContext context) async {
       final file = await ImagePicker().pickFromGallery();
       if (file == null) return;
-      context.read<UserProvider>().changeProfilePhoto(file);
+      userProvider.changeProfilePhoto(file);
     }
 
     return GestureDetector(
